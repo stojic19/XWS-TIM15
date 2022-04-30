@@ -4,7 +4,7 @@
 // 	protoc        v3.20.1
 // source: followers_microservice/followers_microservice.proto
 
-package followers_microservice
+package followers
 
 import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
