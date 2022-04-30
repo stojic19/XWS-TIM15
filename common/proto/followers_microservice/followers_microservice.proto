@@ -10,13 +10,13 @@ service FollowersService{
   rpc Follow(FollowRequest) returns(FollowResponse){
     option(google.api.http) = {
       put: "/followers/follow"
-      body: "follow"
+      body: "*"
     };
   }
   rpc ConfirmFollow(ConfirmFollowRequest) returns(ConfirmFollowResponse){
     option(google.api.http) = {
       put: "/followers/followRequest"
-      body: "followRequest"
+      body: "*"
     };
   }
   rpc GetFollowing(GetFollowingRequest) returns(GetFollowingResponse){
