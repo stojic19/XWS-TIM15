@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.20.1
-// source: followers_microservice/followers_microservice.proto
+// source: followers/followers.proto
 
 package followers
 
@@ -173,5 +173,5 @@ var FollowersService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "followers_microservice/followers_microservice.proto",
+	Metadata: "followers/followers.proto",
 }
