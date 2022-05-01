@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b432fc6b-4262-4b80-8f8a-e67bdf5d7cf1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../Followers_microservice/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Followers_microservice/proto/followers.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Followers_microservice/proto/followers.pb.gw.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Followers_microservice/proto/followers.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Followers_microservice/proto/followers_grpc.pb.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Followers_microservice/proto/google/api/annotations.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Followers_microservice/proto/google/api/field_behavior.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Followers_microservice/proto/google/api/http.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Followers_microservice/proto/google/api/httpbody.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Followers_microservice/startup/config/config.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Followers_microservice/startup/server.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/startup/config/config.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Followers_microservice/infrastructure/api/followers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/../Followers_microservice/infrastructure/api/followers_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../common/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/../common/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../common/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/../common/go.sum" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" url="file://C:/Program Files/Go" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="28ZslYauoach3g0L59k7LrefmB7" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "go.import.settings.migrated": "true",
+    "last_opened_file_path": "D:/ftn/GODINA4/LETNJI/XML/Projekat/XWS-TIM15"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>
