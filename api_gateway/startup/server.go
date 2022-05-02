@@ -1,10 +1,10 @@
 package startup
 
 import (
-	followers "Followers_microservice/proto" //MORACE SA GITHUBA
 	"api_gateway/startup/config"
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	followers "github.com/stojic19/XWS-TIM15/common/followers" //MORACE SA GITHUBA
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

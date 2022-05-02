@@ -1,4 +1,4 @@
-module common
+module github.com/stojic19/XWS-TIM15/common
 
 go 1.18
 
