@@ -1,9 +1,12 @@
-module Followers_microservice
+module github.com/stojic19/XWS-TIM15/Followers_microservice
 
 go 1.18
 
+replace github.com/stojic19/XWS-TIM15/common => ../common
+
 require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.0
+	github.com/stojic19/XWS-TIM15/common v0.0.0-00010101000000-000000000000
 	google.golang.org/genproto v0.0.0-20220429170224-98d788798c3e
 	google.golang.org/grpc v1.46.0
 	google.golang.org/protobuf v1.28.0

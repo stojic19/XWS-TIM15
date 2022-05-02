@@ -1,8 +1,8 @@
 package api
 
 import (
-	followers "Followers_microservice/proto" //MORACE SA GITHUBA
 	"context"
+	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 )
 
 type FollowersHandler struct {

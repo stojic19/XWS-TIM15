@@ -1,12 +1,15 @@
 package startup
 
 import (
-	"api_gateway/startup/config"
+	"context"
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	followers "github.com/stojic19/XWS-TIM15/common/followers" //MORACE SA GITHUBA
+	"github.com/stojic19/XWS-TIM15/api_gateway/startup/config"
+	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"log"
+	"net/http"
 )
 
 type Server struct {
@@ -19,11 +22,19 @@ func NewServer(config *config.Config) *Server {
 		config: config,
 		mux:    runtime.NewServeMux(),
 	}
+	server.initHandlers()
 	return server
 }
 
-func (server *Server) InitHandlers() {
+func (server *Server) initHandlers() {
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	followersEndpoint := fmt.Sprintf("%s:%s", server.config.FollowersHost, server.config.FollowersPort)
-	err := followers.RegisterFollowersServiceHandlerFromEndpoint()
+	err := followers.RegisterFollowersServiceHandlerFromEndpoint(context.TODO(), server.mux, followersEndpoint, opts)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func (server *Server) Start() {
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), server.mux))
 }

@@ -1,10 +1,10 @@
 package startup
 
 import (
-	"Followers_microservice/infrastructure/api"
-	followers "Followers_microservice/proto"
-	"Followers_microservice/startup/config"
 	"fmt"
+	"github.com/stojic19/XWS-TIM15/Followers_microservice/infrastructure/api"
+	"github.com/stojic19/XWS-TIM15/Followers_microservice/startup/config"
+	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"google.golang.org/grpc"
 	"log"
 	"net"
