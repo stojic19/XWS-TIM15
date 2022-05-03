@@ -1,9 +1,9 @@
 package domain
 
 type User struct {
-	username         string
-	following        []User
-	followers        []User
-	followRequests   []User
-	followerRequests []User
+	Username         string
+	Following        []User
+	Followers        []User
+	FollowRequests   []User
+	FollowerRequests []User
 }

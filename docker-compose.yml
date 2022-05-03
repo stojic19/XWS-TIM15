@@ -10,6 +10,25 @@ services:
     restart: on-failure
     environment:
       FOLLOWERS_SERVICE_PORT: ${FOLLOWERS_SERVICE_PORT}
+      FOLLOWERS_DB_DATABASE: ${FOLLOWERS_DB_DATABASE}
+      FOLLOWERS_DB_URI: ${FOLLOWERS_DB_URI}
+      FOLLOWERS_DB_USER: ${FOLLOWERS_DB_USER}
+      FOLLOWERS_DB_PASS: ${FOLLOWERS_DB_PASS}
+      FOLLOWERS_DB_VERSION: ${FOLLOWERS_DB_VERSION}
+    depends_on:
+      - followers_db
+    networks:
+      - network
+
+  followers_db:
+    image: neo4j
+    container_name: followers_db
+    restart: on-failure
+    environment:
+      NEO4J_AUTH: none
+    ports:
+      - 7474:7474
+      - 7687:7687
     networks:
       - network
             
@@ -21,14 +40,14 @@ services:
       dockerfile: ./api_gateway/Dockerfile
     restart: on-failure
     ports:
-      - ${GATEWAY_PORT}:${GATEWAY_PORT}
+      - 8000:8000
     environment:
       GATEWAY_PORT: ${GATEWAY_PORT}
       FOLLOWERS_SERVICE_HOST: ${FOLLOWERS_SERVICE_HOST}
       FOLLOWERS_SERVICE_PORT: ${FOLLOWERS_SERVICE_PORT}
     networks:
       - network
-      
+
 networks:
   network:
     driver: bridge
