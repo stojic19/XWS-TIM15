@@ -1,24 +1,35 @@
-package main
+package persistence
 
 import (
+	"fmt"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/domain"
+	"io"
+	"log"
 )
 
-func main() {
-	//config := cfg.NewConfig()
-	//server := startup.NewServer(config)
-	//server.Start()
-	username := "neo4j"
-	password := "neo4j"
-	database := "neo4j"
-	//url := "http://localhost:7474"
-	url := "bolt://localhost:7687"
-	driver, _ := neo4j.NewDriver(url, neo4j.BasicAuth(username, password, ""))
-	session := driver.NewSession(neo4j.SessionConfig{
+const (
+	DATABASE   = "catalogue"
+	COLLECTION = "product"
+)
+
+type FollowersStore struct {
+	driver neo4j.Driver
+}
+
+func NewFollowersStore(driver *neo4j.Driver) *FollowersStore {
+	return &FollowersStore{
+		driver: *driver,
+	}
+}
+
+func (store *FollowersStore) GetFollowing(username string) ([]*domain.User, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
 		AccessMode:   neo4j.AccessModeRead,
-		DatabaseName: database,
+		DatabaseName: "followers",
 	})
+	defer unsafeClose(session)
+
 	followers, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		records, err := tx.Run(
 			"MATCH (:User {username:$username})<-[:FOLLOWING]-(follower) RETURN follower",
@@ -37,8 +48,14 @@ func main() {
 		}
 		return results, nil
 	})
+	if err != nil {
+		return nil, err
+	}
+	return followers.([]*domain.User), nil
+}
 
-	print("GOTOVO")
-	print(followers)
-	print(err)
+func unsafeClose(closeable io.Closer) {
+	if err := closeable.Close(); err != nil {
+		log.Fatal(fmt.Errorf("could not close resource: %w", err))
+	}
 }
