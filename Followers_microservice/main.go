@@ -13,12 +13,11 @@ func main() {
 	//password := "neo4j"
 	//database := "neo4j"
 	//url := "http://localhost:7474"
-	url := "bolt://localhost:7687"
-	driver, _ := neo4j.NewDriver(url, neo4j.BasicAuth("neo4j", "password", ""))
+	url := "neo4j://followers_db:7687"
+	driver, _ := neo4j.NewDriver(url, neo4j.BasicAuth("neo4j", "neo4j", ""))
 	defer driver.Close()
-	session := driver.NewSession(neo4j.SessionConfig{
-		AccessMode:   neo4j.AccessModeRead,
-		DatabaseName: "followers",
+	/*session := driver.NewSession(neo4j.SessionConfig{
+		AccessMode: neo4j.AccessModeRead,
 	})
 	defer session.Close()
 	followers, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
@@ -39,34 +38,38 @@ func main() {
 			results = append(results, &user)
 		}
 		return results, nil
+	})*/
+	session := driver.NewSession(neo4j.SessionConfig{
+		AccessMode: neo4j.AccessModeWrite,
 	})
-	/*	session := driver.NewSession(neo4j.SessionConfig{
-			AccessMode: neo4j.AccessModeWrite,
+	defer session.Close()
+	followers, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		records, err := tx.Run("CREATE (n:User { username: $username}) RETURN n.username", map[string]interface{}{
+			"username": "ralo",
 		})
-		defer session.Close()
-		followers, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-			records, err := tx.Run("MATCH (n:User { username: $username}) RETURN n.username", map[string]interface{}{
-				"username": "ralo",
-			})
-			//records, err := tx.Run(
-			//	"MATCH (:User {username:$username})<-[:FOLLOWING]-(follower) RETURN follower",
-			//	map[string]interface{}{"username": username})
-			if err != nil {
-				return nil, err
+		//records, err := tx.Run(
+		//	"MATCH (:User {username:$username})<-[:FOLLOWING]-(follower) RETURN follower",
+		//	map[string]interface{}{"username": username})
+		if err != nil {
+			return nil, err
+		}
+		results := []*domain.User{}
+		for records.Next() {
+			record := records.Record()
+			username, _ := record.Get("n.username")
+			user := domain.User{
+				Username: username.(string),
 			}
-			results := []*domain.User{}
-			for records.Next() {
-				record := records.Record()
-				username, _ := record.Get("n.username")
-				user := domain.User{
-					Username: username.(string),
-				}
-				results = append(results, &user)
-			}
-			return results, nil
-		})*/
-
-	print("GOTOVO")
-	print(followers)
+			results = append(results, &user)
+		}
+		return results, nil
+	})
+	if err != nil {
+		print("PANIKA")
+		panic(err)
+	}
+	print("GOTOVO!!")
+	print((followers.([]*domain.User))[0].Username)
+	print(len(followers.([]*domain.User)))
 	print(err)
 }

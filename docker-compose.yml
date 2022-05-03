@@ -26,6 +26,9 @@ services:
     restart: on-failure
     environment:
       NEO4J_AUTH: none
+    ports:
+      - 7474:7474
+      - 7687:7687
     networks:
       - network
             
@@ -37,7 +40,7 @@ services:
       dockerfile: ./api_gateway/Dockerfile
     restart: on-failure
     ports:
-      - ${GATEWAY_PORT}:${GATEWAY_PORT}
+      - 8000:8000
     environment:
       GATEWAY_PORT: ${GATEWAY_PORT}
       FOLLOWERS_SERVICE_HOST: ${FOLLOWERS_SERVICE_HOST}
