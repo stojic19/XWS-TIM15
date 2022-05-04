@@ -12,7 +12,6 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
-	"os"
 	"strings"
 )
 
@@ -34,12 +33,12 @@ func NewServer(config *config.Config) *Server {
 }
 
 func (server *Server) Start() {
-	configuration := parseConfiguration()
+	configuration := server.parseConfiguration()
 	driver, err := configuration.NewDriver()
 	if err != nil {
 		log.Fatal(err)
 	}
-	followersStore := server.initFollowersStore(&driver)
+	followersStore := server.initFollowersStore(&driver, configuration.Database)
 
 	followersService := server.initFollowersService(followersStore)
 	followersHandler := server.initFollowersHandler(followersService)
@@ -47,26 +46,18 @@ func (server *Server) Start() {
 	server.startGrpcServer(followersHandler)
 }
 
-func parseConfiguration() *Neo4jConfiguration {
-	database := lookupEnvOrGetDefault("NEO4J_DATABASE", "followers")
-	if !strings.HasPrefix(lookupEnvOrGetDefault("NEO4J_VERSION", "4"), "4") {
+func (server *Server) parseConfiguration() *Neo4jConfiguration {
+	database := server.config.DbDatabase
+	if !strings.HasPrefix(server.config.DbNeo4jVersion, "4") {
 		database = ""
 	}
 	return &Neo4jConfiguration{
-		Url: lookupEnvOrGetDefault("NEO4J_URI", "neo4j+s://demo.neo4jlabs.com"),
+		Url: fmt.Sprintf("neo4j://%s:%s", server.config.DbHost, server.config.DbPort), //config.LookupEnvOrGetDefault("NEO4J_URI", "neo4j+s://demo.neo4jlabs.com")
 		//Username: lookupEnvOrGetDefault("NEO4J_USER", "neo4j"),
-		Username: "neo4j",
+		Username: server.config.DbUsername,
 		//Password: lookupEnvOrGetDefault("NEO4J_PASSWORD", "password"),
-		Password: "password",
+		Password: server.config.DbPassword,
 		Database: database,
-	}
-}
-
-func lookupEnvOrGetDefault(key string, defaultValue string) string {
-	if env, found := os.LookupEnv(key); !found {
-		return defaultValue
-	} else {
-		return env
 	}
 }
 
@@ -74,8 +65,8 @@ func (nc *Neo4jConfiguration) NewDriver() (neo4j.Driver, error) {
 	return neo4j.NewDriver(nc.Url, neo4j.BasicAuth(nc.Username, nc.Password, ""))
 }
 
-func (server *Server) initFollowersStore(driver *neo4j.Driver) domain.FollowersStore {
-	return persistence.NewFollowersStore(driver)
+func (server *Server) initFollowersStore(driver *neo4j.Driver, dbName string) domain.FollowersStore {
+	return persistence.NewFollowersStore(driver, dbName)
 }
 
 func (server *Server) initFollowersService(store domain.FollowersStore) *application.FollowersService {

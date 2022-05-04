@@ -1,15 +1,15 @@
 package main
 
 import (
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	"github.com/stojic19/XWS-TIM15/Followers_microservice/domain"
+	"github.com/stojic19/XWS-TIM15/Followers_microservice/startup"
+	"github.com/stojic19/XWS-TIM15/Followers_microservice/startup/config"
 )
 
 func main() {
-	//config := cfg.NewConfig()
-	//server := startup.NewServer(config)
-	//server.Start()
-	//username := "neo4j"
+	config := config.NewConfig()
+	server := startup.NewServer(config)
+	server.Start()
+	/*//username := "neo4j"
 	//password := "neo4j"
 	//database := "neo4j"
 	//url := "http://localhost:7474"
@@ -39,7 +39,7 @@ func main() {
 		}
 		return results, nil
 	})*/
-	session := driver.NewSession(neo4j.SessionConfig{
+	/*session := driver.NewSession(neo4j.SessionConfig{
 		AccessMode: neo4j.AccessModeWrite,
 	})
 	defer session.Close()
@@ -71,5 +71,5 @@ func main() {
 	print("GOTOVO!!")
 	print((followers.([]*domain.User))[0].Username)
 	print(len(followers.([]*domain.User)))
-	print(err)
+	print(err)*/
 }

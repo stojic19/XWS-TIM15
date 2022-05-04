@@ -10,11 +10,11 @@ services:
     restart: on-failure
     environment:
       FOLLOWERS_SERVICE_PORT: ${FOLLOWERS_SERVICE_PORT}
-      FOLLOWERS_DB_DATABASE: ${FOLLOWERS_DB_DATABASE}
-      FOLLOWERS_DB_URI: ${FOLLOWERS_DB_URI}
-      FOLLOWERS_DB_USER: ${FOLLOWERS_DB_USER}
-      FOLLOWERS_DB_PASS: ${FOLLOWERS_DB_PASS}
-      FOLLOWERS_DB_VERSION: ${FOLLOWERS_DB_VERSION}
+      NEO4J_DATABASE: ${NEO4J_DATABASE}
+      FOLLOWERS_DB_HOST: ${FOLLOWERS_DB_HOST}
+      NEO4J_USER: ${NEO4J_USER}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
+      NEO4J_VERSION: ${NEO4J_VERSION}
     depends_on:
       - followers_db
     networks:
@@ -40,7 +40,7 @@ services:
       dockerfile: ./api_gateway/Dockerfile
     restart: on-failure
     ports:
-      - 8000:8000
+      - ${GATEWAY_PORT}:${GATEWAY_PORT}
     environment:
       GATEWAY_PORT: ${GATEWAY_PORT}
       FOLLOWERS_SERVICE_HOST: ${FOLLOWERS_SERVICE_HOST}

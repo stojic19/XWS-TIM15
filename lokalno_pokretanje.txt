@@ -1,0 +1,15 @@
+Obezbediti da svaki mikroservis ima sopstveni port
+Lista varijabli (primer):
+FOLLOWERS_DB_HOST=localhost
+FOLLOWERS_DB_PORT=7687
+FOLLOWERS_SERVICE_HOST=localhost
+FOLLOWERS_SERVICE_PORT=8001
+GATEWAY_PORT=8000
+GATEWAY_HOST=localhost ali ovo nije bitno kolko se meni cini (trenutno)
+NEO4J_DATABASE=neo4j
+NEO4J_PASSWORD=password
+NEO4J_USER=neo4j
+NEO4J_VERSION=4
+
+Ko koristi docker desktop...postoji neki problem pri menjanju vrednosti varijabli u .env fajlu, 
+nisam jos pronasao resenje osim da se vrednosti hardkoduju u docker-compose
