@@ -1,29 +1,32 @@
-package com.example.usermicroservice.model;
+package com.example.usermicroservice.dto;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import com.example.usermicroservice.model.Gender;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
-@Getter
-@Setter
-@Document(collection = "User")
-public class User {
-    @Id
-    private String id;
+public class UserDto {
 
+    private String id;
+    @NotEmpty(message = "Username cannot be null or empty!")
     private String username;
+    @NotEmpty(message = "Password cannot be null or empty!")
     private String password;
+    @NotEmpty(message = "Name cannot be null or empty!")
     private String name;
+    @Email (message = "Email should be valid!")
     private String email;
+    @NotEmpty(message = "Telephone number cannot be null or empty!")
     private String telephoneNo;
+    @NotEmpty(message = "Gender cannot be null or empty!")
     private Gender gender;
+    @NotEmpty(message = "Date of birth cannot be null or empty!")
     private Date dateOfBirth;
+    @NotEmpty(message = "Biography cannot be null or empty!")
     private String biography;
 
-    public User(String id, String username, String password, String name, String email, String telephoneNo, Gender gender, Date dateOfBirth, String biography) {
+    public UserDto(String id, String username, String password, String name, String email, String telephoneNo, Gender gender, Date dateOfBirth, String biography) {
         this.id = id;
         this.username = username;
         this.password = password;
