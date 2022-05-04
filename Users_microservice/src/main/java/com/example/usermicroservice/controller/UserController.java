@@ -1,5 +1,6 @@
 package com.example.usermicroservice.controller;
 
+import com.example.usermicroservice.dto.UpdateUserDto;
 import com.example.usermicroservice.dto.UserDto;
 import com.example.usermicroservice.mapper.UserMapper;
 import com.example.usermicroservice.model.User;
@@ -26,6 +27,18 @@ public class UserController {
         if(userService.usernameExists(userDto.getUsername()))
             return "Username already exists!";
         return "Added user with id " + userService.addUser(userMapper.UserDtoToUser(userDto)).getId();
+    }
+
+    @PostMapping("/updateUser")
+    public String updateUser(@RequestBody UpdateUserDto userDto){
+        if(isNullOrEmpty(userDto.getId(), userDto.getUsername(), userDto.getPassword(), userDto.getName(), userDto.getEmail(), userDto.getTelephoneNo(), userDto.getGender().toString(), userDto.getDateOfBirth().toString(), userDto.getBiography()))
+            return "None of fields cannot be empty!";
+        if(!isNullOrEmpty(userDto.getNewUsername())&&!userDto.getUsername().equals(userDto.getNewUsername()))
+            if(userService.usernameExists(userDto.getNewUsername()))
+                return "Username already exists!";
+            else
+                userDto.setUsername(userDto.getNewUsername());
+        return "Updated user with id " + userService.updateUser(userMapper.UpdateUserDtoToUser(userDto)).getId();
     }
 
     private static boolean isNullOrEmpty(String... strArr){
