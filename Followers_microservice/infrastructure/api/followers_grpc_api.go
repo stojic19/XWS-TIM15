@@ -35,5 +35,12 @@ func (handler *FollowersHandler) ConfirmFollow(ctx context.Context, request *fol
 }
 
 func (handler *FollowersHandler) Follow(ctx context.Context, request *followers.FollowRequest) (*followers.FollowResponse, error) {
-	return nil, nil
+	followerUsername := request.FollowerUsername
+	followedUsername := request.FollowedUsername
+	response, err := handler.service.Follow(followerUsername, followedUsername)
+	if err != nil {
+		return nil, err
+	}
+	responsePb := &followers.FollowResponse{Response: response}
+	return responsePb, nil
 }

@@ -52,6 +52,58 @@ func (store *FollowersStore) GetFollowing(username string) ([]*domain.User, erro
 	return followers.([]*domain.User), nil
 }
 
+func (store *FollowersStore) Follow(followerUsername string, followedUsername string) (string, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeWrite,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		result, err := tx.Run(
+			"MERGE (followed:User {username: $followedUsername}) "+
+				"ON CREATE SET followed.username = $followedUsername "+
+				"MERGE (follower:User {username: $followerUsername}) "+
+				"ON CREATE SET follower.username = $followerUsername "+
+				"MERGE (followed) <- [:FOLLOWING] - (follower)",
+			map[string]interface{}{"followedUsername": followedUsername, "followerUsername": followerUsername})
+		if err != nil {
+			return nil, err
+		}
+		return result.Consume()
+	})
+	if err != nil {
+		return "Failed to follow: " + followerUsername + " -> " + followedUsername, err
+	}
+	return session.LastBookmark(), nil
+}
+
+func (store *FollowersStore) FollowRequest(followerUsername string, followedUsername string) (string, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeWrite,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		result, err := tx.Run(
+			"MERGE (followed:User {username: $followedUsername}) "+
+				"ON CREATE SET followed.username = $followedUsername "+
+				"MERGE (follower:User {username: $followerUsername}) "+
+				"ON CREATE SET follower.username = $followerUsername "+
+				"MERGE (followed) <- [:REQUESTING_FOLLOW] - (follower)",
+			map[string]interface{}{"followedUsername": followedUsername, "followerUsername": followerUsername})
+		if err != nil {
+			return nil, err
+		}
+		return result.Consume()
+	})
+	if err != nil {
+		return "Failed to create follow request: " + followerUsername + " -> " + followedUsername, err
+	}
+	return session.LastBookmark(), nil
+}
+
 func unsafeClose(closeable io.Closer) {
 	if err := closeable.Close(); err != nil {
 		log.Fatal(fmt.Errorf("could not close resource: %w", err))
