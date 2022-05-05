@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option go_package = "github.com/stojic19/XWS-TIM15/common/proto/followers";
+
+package followers;
+
+import "google/api/annotations.proto";
+
+service FollowersService{
+  rpc Follow(FollowRequest) returns(FollowResponse){
+    option(google.api.http) = {
+      put: "/followers/follow"
+      body: "*"
+    };
+  }
+  rpc ConfirmFollow(ConfirmFollowRequest) returns(ConfirmFollowResponse){
+    option(google.api.http) = {
+      put: "/followers/followRequest"
+      body: "*"
+    };
+  }
+  rpc GetFollowing(GetFollowingRequest) returns(GetFollowingResponse){
+    option(google.api.http) = {
+      get: "/followers/following/{username}"
+    };
+  }
+}
+
+message FollowRequest{
+  string followerUsername = 1;
+  string followedUsername = 2;
+}
+
+message FollowResponse{
+  string response = 1;
+}
+
+message ConfirmFollowRequest{
+  string followerUsername = 1;
+  string followedUsername = 2;
+}
+
+message ConfirmFollowResponse{
+  string response = 1;
+}
+
+message GetFollowingRequest{
+  string username = 1;
+}
+
+message GetFollowingResponse{
+  repeated Follower followers = 1;
+}
+
+message Follower{
+  string username = 1;
+}
+
+ //   protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./proto/followers_microservice/followers_microservice.proto
+//protoc -I ./proto --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./proto/followers_microservice/followers_microservice.proto
+//protoc -I ./proto --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative --grpc-gateway_out=./proto --grpc-gateway_opt=paths=source_relative ./proto/followers/followers.proto
