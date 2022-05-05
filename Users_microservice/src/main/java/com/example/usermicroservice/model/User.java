@@ -5,7 +5,9 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,8 +24,11 @@ public class User {
     private Gender gender;
     private Date dateOfBirth;
     private String biography;
+    private boolean isPrivate;
+    private List<Education> education;
+    private List<WorkExperience> workExperience;
 
-    public User(String id, String username, String password, String name, String email, String telephoneNo, Gender gender, Date dateOfBirth, String biography) {
+    public User(String id, String username, String password, String name, String email, String telephoneNo, Gender gender, Date dateOfBirth, String biography, boolean isPrivate, List<Education> education, List<WorkExperience> workExperience) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -33,6 +38,9 @@ public class User {
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.biography = biography;
+        this.isPrivate = isPrivate;
+        this.education = education;
+        this.workExperience = workExperience;
     }
 
     public String getId() {
@@ -105,5 +113,29 @@ public class User {
 
     public void setBiography(String biography) {
         this.biography = biography;
+    }
+
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+
+    public List<Education> getEducation() {
+        return education;
+    }
+
+    public void setEducation(List<Education> education) {
+        this.education = education;
+    }
+
+    public List<WorkExperience> getWorkExperience() {
+        return workExperience;
+    }
+
+    public void setWorkExperience(List<WorkExperience> workExperience) {
+        this.workExperience = workExperience;
     }
 }

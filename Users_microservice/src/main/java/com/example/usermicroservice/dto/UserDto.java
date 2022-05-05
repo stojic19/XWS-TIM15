@@ -1,10 +1,14 @@
 package com.example.usermicroservice.dto;
 
+import com.example.usermicroservice.model.Education;
 import com.example.usermicroservice.model.Gender;
+import com.example.usermicroservice.model.WorkExperience;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class UserDto {
 
@@ -25,8 +29,13 @@ public class UserDto {
     private Date dateOfBirth;
     @NotEmpty(message = "Biography cannot be null or empty!")
     private String biography;
+    private boolean isPrivate;
+    private List<Education> educationList;
+    private List<WorkExperience> workExperienceList;
 
-    public UserDto(String id, String username, String password, String name, String email, String telephoneNo, Gender gender, Date dateOfBirth, String biography) {
+    public UserDto(String id, String username, String password, String name,
+                   String email, String telephoneNo, Gender gender, Date dateOfBirth,
+                   String biography) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -36,6 +45,10 @@ public class UserDto {
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.biography = biography;
+        this.isPrivate = false;
+        this.educationList = new ArrayList<Education>();
+        this.workExperienceList = new ArrayList<WorkExperience>();
+
     }
 
     public String getId() {
@@ -108,5 +121,30 @@ public class UserDto {
 
     public void setBiography(String biography) {
         this.biography = biography;
+
+    }
+
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+
+    public List<Education> getEducationList() {
+        return educationList;
+    }
+
+    public void setEducationList(List<Education> educationList) {
+        this.educationList = educationList;
+    }
+
+    public List<WorkExperience> getWorkExperienceList() {
+        return workExperienceList;
+    }
+
+    public void setWorkExperienceList(List<WorkExperience> workExperienceList) {
+        this.workExperienceList = workExperienceList;
     }
 }
