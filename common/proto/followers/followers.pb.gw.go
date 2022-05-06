@@ -99,8 +99,8 @@ func local_request_FollowersService_ConfirmFollow_0(ctx context.Context, marshal
 
 }
 
-func request_FollowersService_GetFollowing_0(ctx context.Context, marshaler runtime.Marshaler, client FollowersServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetFollowingRequest
+func request_FollowersService_GetFollows_0(ctx context.Context, marshaler runtime.Marshaler, client FollowersServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetFollowsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -120,13 +120,13 @@ func request_FollowersService_GetFollowing_0(ctx context.Context, marshaler runt
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "username", err)
 	}
 
-	msg, err := client.GetFollowing(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.GetFollows(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_FollowersService_GetFollowing_0(ctx context.Context, marshaler runtime.Marshaler, server FollowersServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq GetFollowingRequest
+func local_request_FollowersService_GetFollows_0(ctx context.Context, marshaler runtime.Marshaler, server FollowersServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetFollowsRequest
 	var metadata runtime.ServerMetadata
 
 	var (
@@ -146,7 +146,59 @@ func local_request_FollowersService_GetFollowing_0(ctx context.Context, marshale
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "username", err)
 	}
 
-	msg, err := server.GetFollowing(ctx, &protoReq)
+	msg, err := server.GetFollows(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
+func request_FollowersService_GetFollowers_0(ctx context.Context, marshaler runtime.Marshaler, client FollowersServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetFollowersRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["username"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "username")
+	}
+
+	protoReq.Username, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "username", err)
+	}
+
+	msg, err := client.GetFollowers(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_FollowersService_GetFollowers_0(ctx context.Context, marshaler runtime.Marshaler, server FollowersServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq GetFollowersRequest
+	var metadata runtime.ServerMetadata
+
+	var (
+		val string
+		ok  bool
+		err error
+		_   = err
+	)
+
+	val, ok = pathParams["username"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "username")
+	}
+
+	protoReq.Username, err = runtime.String(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "username", err)
+	}
+
+	msg, err := server.GetFollowers(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -205,19 +257,19 @@ func RegisterFollowersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_FollowersService_GetFollowing_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_FollowersService_GetFollows_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/followers.FollowersService/GetFollowing", runtime.WithHTTPPathPattern("/followers/following/{username}"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/followers.FollowersService/GetFollows", runtime.WithHTTPPathPattern("/followers/follows/{username}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_FollowersService_GetFollowing_0(ctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_FollowersService_GetFollows_0(ctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -225,7 +277,31 @@ func RegisterFollowersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 			return
 		}
 
-		forward_FollowersService_GetFollowing_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FollowersService_GetFollows_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_FollowersService_GetFollowers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/followers.FollowersService/GetFollowers", runtime.WithHTTPPathPattern("/followers/followers/{username}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_FollowersService_GetFollowers_0(ctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_FollowersService_GetFollowers_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -312,24 +388,45 @@ func RegisterFollowersServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("GET", pattern_FollowersService_GetFollowing_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("GET", pattern_FollowersService_GetFollows_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/followers.FollowersService/GetFollowing", runtime.WithHTTPPathPattern("/followers/following/{username}"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/followers.FollowersService/GetFollows", runtime.WithHTTPPathPattern("/followers/follows/{username}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_FollowersService_GetFollowing_0(ctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_FollowersService_GetFollows_0(ctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_FollowersService_GetFollowing_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_FollowersService_GetFollows_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_FollowersService_GetFollowers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		var err error
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/followers.FollowersService/GetFollowers", runtime.WithHTTPPathPattern("/followers/followers/{username}"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_FollowersService_GetFollowers_0(ctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_FollowersService_GetFollowers_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -341,7 +438,9 @@ var (
 
 	pattern_FollowersService_ConfirmFollow_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"followers", "followRequest"}, ""))
 
-	pattern_FollowersService_GetFollowing_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"followers", "following", "username"}, ""))
+	pattern_FollowersService_GetFollows_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"followers", "follows", "username"}, ""))
+
+	pattern_FollowersService_GetFollowers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 0, 1, 0, 4, 1, 5, 1}, []string{"followers", "username"}, ""))
 )
 
 var (
@@ -349,5 +448,7 @@ var (
 
 	forward_FollowersService_ConfirmFollow_0 = runtime.ForwardResponseMessage
 
-	forward_FollowersService_GetFollowing_0 = runtime.ForwardResponseMessage
+	forward_FollowersService_GetFollows_0 = runtime.ForwardResponseMessage
+
+	forward_FollowersService_GetFollowers_0 = runtime.ForwardResponseMessage
 )

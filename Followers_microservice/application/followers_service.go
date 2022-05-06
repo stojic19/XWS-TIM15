@@ -14,8 +14,11 @@ func NewFollowersService(store domain.FollowersStore) *FollowersService {
 		store: store,
 	}
 }
-func (service *FollowersService) GetFollowing(username string) ([]*domain.User, error) {
-	return service.store.GetFollowing(username)
+func (service *FollowersService) GetFollows(username string) ([]*domain.User, error) {
+	return service.store.GetFollows(username)
+}
+func (service *FollowersService) GetFollowers(username string) ([]*domain.User, error) {
+	return service.store.GetFollowers(username)
 }
 func (service *FollowersService) Follow(followerUsername string, followedUsername string) (string, error) {
 	//kad se napravi profile service, ovde se pita da li je profil privatan
@@ -23,4 +26,7 @@ func (service *FollowersService) Follow(followerUsername string, followedUsernam
 		return service.store.FollowRequest(followerUsername, followedUsername)
 	}
 	return service.store.Follow(followerUsername, followedUsername)
+}
+func (service *FollowersService) ConfirmFollow(followerUsername string, followedUsername string) (string, error) {
+	return service.store.ConfirmFollow(followerUsername, followedUsername)
 }

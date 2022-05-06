@@ -24,7 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type FollowersServiceClient interface {
 	Follow(ctx context.Context, in *FollowRequest, opts ...grpc.CallOption) (*FollowResponse, error)
 	ConfirmFollow(ctx context.Context, in *ConfirmFollowRequest, opts ...grpc.CallOption) (*ConfirmFollowResponse, error)
-	GetFollowing(ctx context.Context, in *GetFollowingRequest, opts ...grpc.CallOption) (*GetFollowingResponse, error)
+	GetFollows(ctx context.Context, in *GetFollowsRequest, opts ...grpc.CallOption) (*GetFollowsResponse, error)
+	GetFollowers(ctx context.Context, in *GetFollowersRequest, opts ...grpc.CallOption) (*GetFollowersResponse, error)
 }
 
 type followersServiceClient struct {
@@ -53,9 +54,18 @@ func (c *followersServiceClient) ConfirmFollow(ctx context.Context, in *ConfirmF
 	return out, nil
 }
 
-func (c *followersServiceClient) GetFollowing(ctx context.Context, in *GetFollowingRequest, opts ...grpc.CallOption) (*GetFollowingResponse, error) {
-	out := new(GetFollowingResponse)
-	err := c.cc.Invoke(ctx, "/followers.FollowersService/GetFollowing", in, out, opts...)
+func (c *followersServiceClient) GetFollows(ctx context.Context, in *GetFollowsRequest, opts ...grpc.CallOption) (*GetFollowsResponse, error) {
+	out := new(GetFollowsResponse)
+	err := c.cc.Invoke(ctx, "/followers.FollowersService/GetFollows", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *followersServiceClient) GetFollowers(ctx context.Context, in *GetFollowersRequest, opts ...grpc.CallOption) (*GetFollowersResponse, error) {
+	out := new(GetFollowersResponse)
+	err := c.cc.Invoke(ctx, "/followers.FollowersService/GetFollowers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +78,8 @@ func (c *followersServiceClient) GetFollowing(ctx context.Context, in *GetFollow
 type FollowersServiceServer interface {
 	Follow(context.Context, *FollowRequest) (*FollowResponse, error)
 	ConfirmFollow(context.Context, *ConfirmFollowRequest) (*ConfirmFollowResponse, error)
-	GetFollowing(context.Context, *GetFollowingRequest) (*GetFollowingResponse, error)
+	GetFollows(context.Context, *GetFollowsRequest) (*GetFollowsResponse, error)
+	GetFollowers(context.Context, *GetFollowersRequest) (*GetFollowersResponse, error)
 	mustEmbedUnimplementedFollowersServiceServer()
 }
 
@@ -82,8 +93,11 @@ func (UnimplementedFollowersServiceServer) Follow(context.Context, *FollowReques
 func (UnimplementedFollowersServiceServer) ConfirmFollow(context.Context, *ConfirmFollowRequest) (*ConfirmFollowResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfirmFollow not implemented")
 }
-func (UnimplementedFollowersServiceServer) GetFollowing(context.Context, *GetFollowingRequest) (*GetFollowingResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetFollowing not implemented")
+func (UnimplementedFollowersServiceServer) GetFollows(context.Context, *GetFollowsRequest) (*GetFollowsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFollows not implemented")
+}
+func (UnimplementedFollowersServiceServer) GetFollowers(context.Context, *GetFollowersRequest) (*GetFollowersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFollowers not implemented")
 }
 func (UnimplementedFollowersServiceServer) mustEmbedUnimplementedFollowersServiceServer() {}
 
@@ -134,20 +148,38 @@ func _FollowersService_ConfirmFollow_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _FollowersService_GetFollowing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetFollowingRequest)
+func _FollowersService_GetFollows_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFollowsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(FollowersServiceServer).GetFollowing(ctx, in)
+		return srv.(FollowersServiceServer).GetFollows(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/followers.FollowersService/GetFollowing",
+		FullMethod: "/followers.FollowersService/GetFollows",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FollowersServiceServer).GetFollowing(ctx, req.(*GetFollowingRequest))
+		return srv.(FollowersServiceServer).GetFollows(ctx, req.(*GetFollowsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FollowersService_GetFollowers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFollowersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FollowersServiceServer).GetFollowers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/followers.FollowersService/GetFollowers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FollowersServiceServer).GetFollowers(ctx, req.(*GetFollowersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -168,8 +200,12 @@ var FollowersService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FollowersService_ConfirmFollow_Handler,
 		},
 		{
-			MethodName: "GetFollowing",
-			Handler:    _FollowersService_GetFollowing_Handler,
+			MethodName: "GetFollows",
+			Handler:    _FollowersService_GetFollows_Handler,
+		},
+		{
+			MethodName: "GetFollowers",
+			Handler:    _FollowersService_GetFollowers_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

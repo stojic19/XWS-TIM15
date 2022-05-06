@@ -17,13 +17,26 @@ func NewFollowersHandler(service *application.FollowersService) *FollowersHandle
 	}
 }
 
-func (handler *FollowersHandler) GetFollowing(ctx context.Context, request *followers.GetFollowingRequest) (*followers.GetFollowingResponse, error) {
+func (handler *FollowersHandler) GetFollows(ctx context.Context, request *followers.GetFollowsRequest) (*followers.GetFollowsResponse, error) {
 	username := request.Username
-	response, err := handler.service.GetFollowing(username)
+	response, err := handler.service.GetFollows(username)
 	if err != nil {
 		return nil, err
 	}
-	responsePb := &followers.GetFollowingResponse{Followers: []*followers.Follower{}}
+	responsePb := &followers.GetFollowsResponse{Followers: []*followers.Follower{}}
+	for _, user := range response {
+		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Username: user.Username})
+	}
+	return responsePb, nil
+}
+
+func (handler *FollowersHandler) GetFollowers(ctx context.Context, request *followers.GetFollowersRequest) (*followers.GetFollowersResponse, error) {
+	username := request.Username
+	response, err := handler.service.GetFollowers(username)
+	if err != nil {
+		return nil, err
+	}
+	responsePb := &followers.GetFollowersResponse{Followers: []*followers.Follower{}}
 	for _, user := range response {
 		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Username: user.Username})
 	}
@@ -31,7 +44,14 @@ func (handler *FollowersHandler) GetFollowing(ctx context.Context, request *foll
 }
 
 func (handler *FollowersHandler) ConfirmFollow(ctx context.Context, request *followers.ConfirmFollowRequest) (*followers.ConfirmFollowResponse, error) {
-	return nil, nil
+	followerUsername := request.FollowerUsername
+	followedUsername := request.FollowedUsername
+	response, err := handler.service.ConfirmFollow(followerUsername, followedUsername)
+	if err != nil {
+		return nil, err
+	}
+	responsePb := &followers.ConfirmFollowResponse{Response: response}
+	return responsePb, nil
 }
 
 func (handler *FollowersHandler) Follow(ctx context.Context, request *followers.FollowRequest) (*followers.FollowResponse, error) {

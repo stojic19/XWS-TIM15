@@ -19,9 +19,14 @@ service FollowersService{
       body: "*"
     };
   }
-  rpc GetFollowing(GetFollowingRequest) returns(GetFollowingResponse){
+  rpc GetFollows(GetFollowsRequest) returns(GetFollowsResponse){
     option(google.api.http) = {
-      get: "/followers/following/{username}"
+      get: "/followers/follows/{username}"
+    };
+  }
+  rpc GetFollowers(GetFollowersRequest) returns(GetFollowersResponse){
+    option(google.api.http) = {
+      get: "/followers/followers/{username}"
     };
   }
 }
@@ -44,11 +49,19 @@ message ConfirmFollowResponse{
   string response = 1;
 }
 
-message GetFollowingRequest{
+message GetFollowsRequest{
   string username = 1;
 }
 
-message GetFollowingResponse{
+message GetFollowsResponse{
+  repeated Follower followers = 1;
+}
+
+message GetFollowersRequest{
+  string username = 1;
+}
+
+message GetFollowersResponse{
   repeated Follower followers = 1;
 }
 
