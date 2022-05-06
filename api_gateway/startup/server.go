@@ -6,6 +6,7 @@ import (
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/stojic19/XWS-TIM15/api_gateway/startup/config"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
+	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"log"
@@ -30,6 +31,12 @@ func (server *Server) initHandlers() {
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	followersEndpoint := fmt.Sprintf("%s:%s", server.config.FollowersHost, server.config.FollowersPort)
 	err := followers.RegisterFollowersServiceHandlerFromEndpoint(context.TODO(), server.mux, followersEndpoint, opts)
+	if err != nil {
+		panic(err)
+	}
+
+	usersEndpoint := fmt.Sprintf("%s:%s", server.config.UsersHost, server.config.UsersPort)
+	err = users.RegisterUsersServiceHandlerFromEndpoint(context.TODO(), server.mux, usersEndpoint, opts)
 	if err != nil {
 		panic(err)
 	}
