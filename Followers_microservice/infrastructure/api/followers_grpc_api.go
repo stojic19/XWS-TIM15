@@ -43,6 +43,32 @@ func (handler *FollowersHandler) GetFollowers(ctx context.Context, request *foll
 	return responsePb, nil
 }
 
+func (handler *FollowersHandler) GetFollowRequests(ctx context.Context, request *followers.GetFollowRequestsRequest) (*followers.GetFollowRequestsResponse, error) {
+	username := request.Username
+	response, err := handler.service.GetFollowRequests(username)
+	if err != nil {
+		return nil, err
+	}
+	responsePb := &followers.GetFollowRequestsResponse{Followers: []*followers.Follower{}}
+	for _, user := range response {
+		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Username: user.Username})
+	}
+	return responsePb, nil
+}
+
+func (handler *FollowersHandler) GetFollowerRequests(ctx context.Context, request *followers.GetFollowerRequestsRequest) (*followers.GetFollowerRequestsResponse, error) {
+	username := request.Username
+	response, err := handler.service.GetFollowerRequests(username)
+	if err != nil {
+		return nil, err
+	}
+	responsePb := &followers.GetFollowerRequestsResponse{Followers: []*followers.Follower{}}
+	for _, user := range response {
+		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Username: user.Username})
+	}
+	return responsePb, nil
+}
+
 func (handler *FollowersHandler) ConfirmFollow(ctx context.Context, request *followers.ConfirmFollowRequest) (*followers.ConfirmFollowResponse, error) {
 	followerUsername := request.FollowerUsername
 	followedUsername := request.FollowedUsername
@@ -62,5 +88,27 @@ func (handler *FollowersHandler) Follow(ctx context.Context, request *followers.
 		return nil, err
 	}
 	responsePb := &followers.FollowResponse{Response: response}
+	return responsePb, nil
+}
+
+func (handler *FollowersHandler) Unfollow(ctx context.Context, request *followers.UnfollowRequest) (*followers.UnfollowResponse, error) {
+	followerUsername := request.FollowerUsername
+	followedUsername := request.FollowedUsername
+	response, err := handler.service.Unfollow(followerUsername, followedUsername)
+	if err != nil {
+		return nil, err
+	}
+	responsePb := &followers.UnfollowResponse{Response: response}
+	return responsePb, nil
+}
+
+func (handler *FollowersHandler) RemoveFollowRequest(ctx context.Context, request *followers.RemoveFollowRequestRequest) (*followers.RemoveFollowRequestResponse, error) {
+	followerUsername := request.FollowerUsername
+	followedUsername := request.FollowedUsername
+	response, err := handler.service.RemoveFollowRequest(followerUsername, followedUsername)
+	if err != nil {
+		return nil, err
+	}
+	responsePb := &followers.RemoveFollowRequestResponse{Response: response}
 	return responsePb, nil
 }
