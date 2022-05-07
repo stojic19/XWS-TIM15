@@ -1,13 +1,13 @@
 package domain
 
 type FollowersStore interface {
-	GetFollows(username string) ([]*User, error)
-	GetFollowers(username string) ([]*User, error)
-	GetFollowRequests(username string) ([]*User, error)
-	GetFollowerRequests(username string) ([]*User, error)
-	Follow(followerUsername string, followedUsername string) (string, error)
-	FollowRequest(followerUsername string, followedUsername string) (string, error)
-	ConfirmFollow(followerUsername string, followedUsername string) (string, error)
-	Unfollow(followerUsername string, followedUsername string) (string, error)
-	RemoveFollowRequest(followerUsername string, followedUsername string) (string, error)
+	GetFollows(id string) ([]*User, error)
+	GetFollowers(id string) ([]*User, error)
+	GetFollowRequests(id string) ([]*User, error)
+	GetFollowerRequests(id string) ([]*User, error)
+	Follow(followerId string, followedId string) (string, error)
+	FollowRequest(followerId string, followedId string) (string, error)
+	ConfirmFollow(followerId string, followedId string) (string, error)
+	Unfollow(followerId string, followedId string) (string, error)
+	RemoveFollowRequest(followerId string, followedId string) (string, error)
 }

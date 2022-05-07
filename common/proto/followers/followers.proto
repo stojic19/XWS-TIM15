@@ -33,29 +33,29 @@ service FollowersService{
   }
   rpc GetFollows(GetFollowsRequest) returns(GetFollowsResponse){
     option(google.api.http) = {
-      get: "/followers/follows/{username}"
+      get: "/followers/follows/{id}"
     };
   }
   rpc GetFollowers(GetFollowersRequest) returns(GetFollowersResponse){
     option(google.api.http) = {
-      get: "/followers/followers/{username}"
+      get: "/followers/followers/{id}"
     };
   }
   rpc GetFollowRequests(GetFollowRequestsRequest) returns(GetFollowRequestsResponse){
     option(google.api.http) = {
-      get: "/followers/followRequests/{username}"
+      get: "/followers/followRequests/{id}"
     };
   }
   rpc GetFollowerRequests(GetFollowerRequestsRequest) returns(GetFollowerRequestsResponse){
     option(google.api.http) = {
-      get: "/followers/followerRequests/{username}"
+      get: "/followers/followerRequests/{id}"
     };
   }
 }
 
 message FollowRequest{
-  string followerUsername = 1;
-  string followedUsername = 2;
+  string followerId = 1;
+  string followedId = 2;
 }
 
 message FollowResponse{
@@ -63,8 +63,8 @@ message FollowResponse{
 }
 
 message ConfirmFollowRequest{
-  string followerUsername = 1;
-  string followedUsername = 2;
+  string followerId = 1;
+  string followedId = 2;
 }
 
 message ConfirmFollowResponse{
@@ -72,8 +72,8 @@ message ConfirmFollowResponse{
 }
 
 message UnfollowRequest{
-  string followerUsername = 1;
-  string followedUsername = 2;
+  string followerId = 1;
+  string followedId = 2;
 }
 
 message UnfollowResponse{
@@ -81,8 +81,8 @@ message UnfollowResponse{
 }
 
 message RemoveFollowRequestRequest{
-  string followerUsername = 1;
-  string followedUsername = 2;
+  string followerId = 1;
+  string followedId = 2;
 }
 
 message RemoveFollowRequestResponse{
@@ -90,7 +90,7 @@ message RemoveFollowRequestResponse{
 }
 
 message GetFollowsRequest{
-  string username = 1;
+  string id = 1;
 }
 
 message GetFollowsResponse{
@@ -98,7 +98,7 @@ message GetFollowsResponse{
 }
 
 message GetFollowersRequest{
-  string username = 1;
+  string id = 1;
 }
 
 message GetFollowersResponse{
@@ -106,7 +106,7 @@ message GetFollowersResponse{
 }
 
 message GetFollowRequestsRequest{
-  string username = 1;
+  string id = 1;
 }
 
 message GetFollowRequestsResponse{
@@ -114,7 +114,7 @@ message GetFollowRequestsResponse{
 }
 
 message GetFollowerRequestsRequest{
-  string username = 1;
+  string id = 1;
 }
 
 message GetFollowerRequestsResponse{
@@ -122,9 +122,9 @@ message GetFollowerRequestsResponse{
 }
 
 message Follower{
-  string username = 1;
+  string id = 1;
 }
 
  //   protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./proto/followers_microservice/followers_microservice.proto
 //protoc -I ./proto --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./proto/followers_microservice/followers_microservice.proto
-//protoc -I ./proto --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative --grpc-gateway_out=allow_delete_body=true:. --grpc-gateway_opt=paths=source_relative ./proto/followers/followers.proto
+//protoc -I ./proto --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative --grpc-gateway_out=allow_delete_body=true:./proto --grpc-gateway_opt=paths=source_relative ./proto/followers/followers.proto

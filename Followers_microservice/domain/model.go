@@ -1,7 +1,7 @@
 package domain
 
 type User struct {
-	Username         string
+	Id               string
 	Following        []User
 	Followers        []User
 	FollowRequests   []User
