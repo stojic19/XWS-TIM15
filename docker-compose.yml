@@ -31,6 +31,29 @@ services:
       - 7687:7687
     networks:
       - network
+
+  posts_service:
+    image: posts_service
+    container_name: posts_service
+    build:
+      context: .
+      dockerfile: ./Posts_microservice/Dockerfile
+    restart: on-failure
+    environment:
+      POSTS_SERVICE_PORT: ${POSTS_SERVICE_PORT}
+      POSTS_DB_HOST: ${POSTS_DB_HOST}
+      POSTS_DB_PORT: ${POSTS_DB_PORT}
+    depends_on:
+      - posts_db
+    networks:
+      - network
+
+  posts_db:
+    image: mongo
+    container_name: posts_db
+    restart: on-failure
+    networks:
+      - network
             
   api_gateway:
     image: api_gateway
@@ -45,6 +68,8 @@ services:
       GATEWAY_PORT: ${GATEWAY_PORT}
       FOLLOWERS_SERVICE_HOST: ${FOLLOWERS_SERVICE_HOST}
       FOLLOWERS_SERVICE_PORT: ${FOLLOWERS_SERVICE_PORT}
+      POSTS_SERVICE_HOST: ${POSTS_SERVICE_HOST}
+      POSTS_SERVICE_PORT: ${POSTS_SERVICE_PORT}
     networks:
       - network
 
