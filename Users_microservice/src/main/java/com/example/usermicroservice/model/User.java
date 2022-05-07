@@ -27,8 +27,10 @@ public class User {
     private boolean isPrivate;
     private List<Education> education;
     private List<WorkExperience> workExperience;
+    private List<String> interests;
+    private List<String> skills;
 
-    public User(String id, String username, String password, String name, String email, String telephoneNo, Gender gender, Date dateOfBirth, String biography, boolean isPrivate, List<Education> education, List<WorkExperience> workExperience) {
+    public User(String id, String username, String password, String name, String email, String telephoneNo, Gender gender, Date dateOfBirth, String biography, boolean isPrivate, List<Education> education, List<WorkExperience> workExperience, List<String> interests, List<String> skills) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -41,6 +43,24 @@ public class User {
         this.isPrivate = isPrivate;
         this.education = education;
         this.workExperience = workExperience;
+        this.interests = interests;
+        this.skills = skills;
+    }
+
+    public List<String> getInterests() {
+        return interests;
+    }
+
+    public void setInterests(List<String> interests) {
+        this.interests = interests;
+    }
+
+    public List<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<String> skills) {
+        this.skills = skills;
     }
 
     public String getId() {
