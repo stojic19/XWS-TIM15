@@ -13,3 +13,7 @@ NEO4J_VERSION=4
 
 Ko koristi docker desktop...postoji neki problem pri menjanju vrednosti varijabli u .env fajlu, 
 nisam jos pronasao resenje osim da se vrednosti hardkoduju u docker-compose
+
+Za generisanje protoc fajlova, uci u cmd, pozicionirati se na common folder i kucati 
+ protoc -I ./proto --java_out=. --java_opt=paths=source_relative --java-grpc_out=. --java-grpc_opt=paths=source_relative ./proto/followers/followers.proto
+Samo zameniti putanju (npr ./proto/followers/followers.proto u ./proto/users/users.proto
