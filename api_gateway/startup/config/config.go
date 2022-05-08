@@ -8,6 +8,8 @@ type Config struct {
 	FollowersPort string
 	PostsHost     string
 	PostsPort     string
+	UsersHost     string
+	UsersPort     string
 }
 
 func NewConfig() *Config {
@@ -17,5 +19,15 @@ func NewConfig() *Config {
 		FollowersPort: os.Getenv("FOLLOWERS_SERVICE_PORT"),
 		PostsHost:     os.Getenv("POSTS_SERVICE_HOST"),
 		PostsPort:     os.Getenv("POSTS_SERVICE_PORT"),
+		UsersHost:     os.Getenv("USERS_SERVICE_HOST"),
+		UsersPort:     os.Getenv("USERS_PORT"),
+	}
+}
+
+func LookupEnvOrGetDefault(key string, defaultValue string) string {
+	if env, found := os.LookupEnv(key); !found {
+		return defaultValue
+	} else {
+		return env
 	}
 }
