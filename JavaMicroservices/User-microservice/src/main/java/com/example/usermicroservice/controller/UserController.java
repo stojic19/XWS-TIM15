@@ -1,34 +1,34 @@
 package com.example.usermicroservice.controller;
 
-import com.example.usermicroservice.dto.UpdateUserDto;
-import com.example.usermicroservice.dto.UserDto;
+import com.example.usermicroservice.dto.*;
 import com.example.usermicroservice.mapper.UserMapper;
 import com.example.usermicroservice.model.User;
 import com.example.usermicroservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//@RestController
-//@RequestMapping("/users")
+@RestController
+@RequestMapping("/users")
 public class UserController {
-    /*@Autowired
+    @Autowired
     private UserService userService;
 
     final private UserMapper userMapper = new UserMapper();
 
-    @PostMapping("/addUser")
-    public String saveUser(@RequestBody UserDto userDto){
+    @PostMapping()
+    public String saveUser(@RequestBody AddUserDto userDto){
         if(isNullOrEmpty(userDto.getUsername(), userDto.getPassword(), userDto.getName(), userDto.getEmail(), userDto.getTelephoneNo(), userDto.getGender().toString(), userDto.getDateOfBirth().toString(), userDto.getBiography()))
             return "None of fields cannot be empty!";
         if(userService.usernameExists(userDto.getUsername()))
             return "Username already exists!";
-        return "Added user with id " + userService.addUser(userMapper.UserDtoToUser(userDto)).getId();
+        return "Added user with id " + userService.addUser(userMapper.AddUserDtoToUser(userDto)).getId();
     }
 
-    @PostMapping("/updateUser")
+    @PutMapping()
     public String updateUser(@RequestBody UpdateUserDto userDto){
         if(isNullOrEmpty(userDto.getId(), userDto.getUsername(), userDto.getPassword(), userDto.getName(), userDto.getEmail(), userDto.getTelephoneNo(), userDto.getGender().toString(), userDto.getDateOfBirth().toString(), userDto.getBiography()))
             return "None of fields cannot be empty!";
@@ -63,10 +63,42 @@ public class UserController {
         return user.map(userMapper::UserToUserDto).orElse(null);
     }
 
+    @GetMapping("/username/{username}")
+    public UserDto getOneByUsername(@PathVariable String username){
+        return userMapper.UserToUserDto(userService.findByUsername(username));
+    }
+
+    @GetMapping("/searchPublicUsers/{searchTerm}")
+    public List<UserDto> searchPublicUsers(@PathVariable String searchTerm){
+        List<UserDto> userDtoList = new ArrayList<>();
+        for(User user : userService.searchPublicUsers(searchTerm))
+            userDtoList.add(userMapper.UserToUserDto(user));
+        return userDtoList;
+    }
+
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable String id){
         userService.deleteById(id);
         return "User deleted with id " + id;
     }
-    */
+
+    @PutMapping("/interests")
+    public String updateInterests(@RequestBody UpdateInterestsDto updateInterestsDto){
+        return "Updated user with id " + userService.updateInterests(updateInterestsDto).getId();
+    }
+
+    @PutMapping("/skills")
+    public String updateSkills(@RequestBody UpdateSkillsDto updateSkillsDto){
+        return "Updated user with id " + userService.updateSkills(updateSkillsDto).getId();
+    }
+
+    @PutMapping("/education")
+    public String updateEducation(@RequestBody UpdateEducationDto updateEducationDto){
+        return "Updated user with id " + userService.updateEducation(updateEducationDto).getId();
+    }
+
+    @PutMapping("/workExperience")
+    public String updateWorkExperience(@RequestBody UpdateWorkExperienceDto updateWorkExperienceDto){
+        return "Updated work experience for user with id " + userService.updateWorkExperience(updateWorkExperienceDto).getId();
+    }
 }

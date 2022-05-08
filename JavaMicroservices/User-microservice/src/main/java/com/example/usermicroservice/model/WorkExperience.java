@@ -9,6 +9,13 @@ public class WorkExperience {
     private Date startDate;
     private Date endDate;
 
+    public WorkExperience(String companyName, String jobTitle, Date startDate, Date endDate) {
+        this.companyName = companyName;
+        this.jobTitle = jobTitle;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public String getCompanyName() {
         return companyName;
     }

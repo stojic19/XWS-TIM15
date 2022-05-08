@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.20.1
-// source: proto/users/users.proto
+// source: users/users.proto
 
 package users
 
@@ -28,6 +28,15 @@ type UsersServiceClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	GetUserByUsername(ctx context.Context, in *GetUserByUsernameRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	DeleteUserById(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*StringResponse, error)
+	SearchPublicUsers(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
+	UpdateInterests(ctx context.Context, in *UpdateInterestsRequest, opts ...grpc.CallOption) (*StringResponse, error)
+	UpdateSkills(ctx context.Context, in *UpdateSkillsRequest, opts ...grpc.CallOption) (*StringResponse, error)
+	UpdateWorkExperience(ctx context.Context, in *UpdateWorkExperienceRequest, opts ...grpc.CallOption) (*StringResponse, error)
+	UpdateEducation(ctx context.Context, in *UpdateEducationRequest, opts ...grpc.CallOption) (*StringResponse, error)
+	GetInterests(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetInterestsResponse, error)
+	GetSkills(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetSkillsResponse, error)
+	GetWorkExperience(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetWorkExperienceResponse, error)
+	GetEducation(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetEducationResponse, error)
 }
 
 type usersServiceClient struct {
@@ -92,6 +101,87 @@ func (c *usersServiceClient) DeleteUserById(ctx context.Context, in *GetUserRequ
 	return out, nil
 }
 
+func (c *usersServiceClient) SearchPublicUsers(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*GetUsersResponse, error) {
+	out := new(GetUsersResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/SearchPublicUsers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersServiceClient) UpdateInterests(ctx context.Context, in *UpdateInterestsRequest, opts ...grpc.CallOption) (*StringResponse, error) {
+	out := new(StringResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/UpdateInterests", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersServiceClient) UpdateSkills(ctx context.Context, in *UpdateSkillsRequest, opts ...grpc.CallOption) (*StringResponse, error) {
+	out := new(StringResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/UpdateSkills", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersServiceClient) UpdateWorkExperience(ctx context.Context, in *UpdateWorkExperienceRequest, opts ...grpc.CallOption) (*StringResponse, error) {
+	out := new(StringResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/UpdateWorkExperience", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersServiceClient) UpdateEducation(ctx context.Context, in *UpdateEducationRequest, opts ...grpc.CallOption) (*StringResponse, error) {
+	out := new(StringResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/UpdateEducation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersServiceClient) GetInterests(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetInterestsResponse, error) {
+	out := new(GetInterestsResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/GetInterests", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersServiceClient) GetSkills(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetSkillsResponse, error) {
+	out := new(GetSkillsResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/GetSkills", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersServiceClient) GetWorkExperience(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetWorkExperienceResponse, error) {
+	out := new(GetWorkExperienceResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/GetWorkExperience", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersServiceClient) GetEducation(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetEducationResponse, error) {
+	out := new(GetEducationResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/GetEducation", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UsersServiceServer is the server API for UsersService service.
 // All implementations must embed UnimplementedUsersServiceServer
 // for forward compatibility
@@ -102,6 +192,15 @@ type UsersServiceServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	GetUserByUsername(context.Context, *GetUserByUsernameRequest) (*GetUserResponse, error)
 	DeleteUserById(context.Context, *GetUserRequest) (*StringResponse, error)
+	SearchPublicUsers(context.Context, *SearchRequest) (*GetUsersResponse, error)
+	UpdateInterests(context.Context, *UpdateInterestsRequest) (*StringResponse, error)
+	UpdateSkills(context.Context, *UpdateSkillsRequest) (*StringResponse, error)
+	UpdateWorkExperience(context.Context, *UpdateWorkExperienceRequest) (*StringResponse, error)
+	UpdateEducation(context.Context, *UpdateEducationRequest) (*StringResponse, error)
+	GetInterests(context.Context, *GetUserRequest) (*GetInterestsResponse, error)
+	GetSkills(context.Context, *GetUserRequest) (*GetSkillsResponse, error)
+	GetWorkExperience(context.Context, *GetUserRequest) (*GetWorkExperienceResponse, error)
+	GetEducation(context.Context, *GetUserRequest) (*GetEducationResponse, error)
 	mustEmbedUnimplementedUsersServiceServer()
 }
 
@@ -126,6 +225,33 @@ func (UnimplementedUsersServiceServer) GetUserByUsername(context.Context, *GetUs
 }
 func (UnimplementedUsersServiceServer) DeleteUserById(context.Context, *GetUserRequest) (*StringResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUserById not implemented")
+}
+func (UnimplementedUsersServiceServer) SearchPublicUsers(context.Context, *SearchRequest) (*GetUsersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SearchPublicUsers not implemented")
+}
+func (UnimplementedUsersServiceServer) UpdateInterests(context.Context, *UpdateInterestsRequest) (*StringResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateInterests not implemented")
+}
+func (UnimplementedUsersServiceServer) UpdateSkills(context.Context, *UpdateSkillsRequest) (*StringResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateSkills not implemented")
+}
+func (UnimplementedUsersServiceServer) UpdateWorkExperience(context.Context, *UpdateWorkExperienceRequest) (*StringResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateWorkExperience not implemented")
+}
+func (UnimplementedUsersServiceServer) UpdateEducation(context.Context, *UpdateEducationRequest) (*StringResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateEducation not implemented")
+}
+func (UnimplementedUsersServiceServer) GetInterests(context.Context, *GetUserRequest) (*GetInterestsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetInterests not implemented")
+}
+func (UnimplementedUsersServiceServer) GetSkills(context.Context, *GetUserRequest) (*GetSkillsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSkills not implemented")
+}
+func (UnimplementedUsersServiceServer) GetWorkExperience(context.Context, *GetUserRequest) (*GetWorkExperienceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWorkExperience not implemented")
+}
+func (UnimplementedUsersServiceServer) GetEducation(context.Context, *GetUserRequest) (*GetEducationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEducation not implemented")
 }
 func (UnimplementedUsersServiceServer) mustEmbedUnimplementedUsersServiceServer() {}
 
@@ -248,6 +374,168 @@ func _UsersService_DeleteUserById_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UsersService_SearchPublicUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).SearchPublicUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/SearchPublicUsers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).SearchPublicUsers(ctx, req.(*SearchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UsersService_UpdateInterests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateInterestsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).UpdateInterests(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/UpdateInterests",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).UpdateInterests(ctx, req.(*UpdateInterestsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UsersService_UpdateSkills_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateSkillsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).UpdateSkills(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/UpdateSkills",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).UpdateSkills(ctx, req.(*UpdateSkillsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UsersService_UpdateWorkExperience_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateWorkExperienceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).UpdateWorkExperience(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/UpdateWorkExperience",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).UpdateWorkExperience(ctx, req.(*UpdateWorkExperienceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UsersService_UpdateEducation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateEducationRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).UpdateEducation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/UpdateEducation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).UpdateEducation(ctx, req.(*UpdateEducationRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UsersService_GetInterests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).GetInterests(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/GetInterests",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).GetInterests(ctx, req.(*GetUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UsersService_GetSkills_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).GetSkills(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/GetSkills",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).GetSkills(ctx, req.(*GetUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UsersService_GetWorkExperience_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).GetWorkExperience(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/GetWorkExperience",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).GetWorkExperience(ctx, req.(*GetUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UsersService_GetEducation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).GetEducation(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/GetEducation",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).GetEducation(ctx, req.(*GetUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UsersService_ServiceDesc is the grpc.ServiceDesc for UsersService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -279,7 +567,43 @@ var UsersService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "DeleteUserById",
 			Handler:    _UsersService_DeleteUserById_Handler,
 		},
+		{
+			MethodName: "SearchPublicUsers",
+			Handler:    _UsersService_SearchPublicUsers_Handler,
+		},
+		{
+			MethodName: "UpdateInterests",
+			Handler:    _UsersService_UpdateInterests_Handler,
+		},
+		{
+			MethodName: "UpdateSkills",
+			Handler:    _UsersService_UpdateSkills_Handler,
+		},
+		{
+			MethodName: "UpdateWorkExperience",
+			Handler:    _UsersService_UpdateWorkExperience_Handler,
+		},
+		{
+			MethodName: "UpdateEducation",
+			Handler:    _UsersService_UpdateEducation_Handler,
+		},
+		{
+			MethodName: "GetInterests",
+			Handler:    _UsersService_GetInterests_Handler,
+		},
+		{
+			MethodName: "GetSkills",
+			Handler:    _UsersService_GetSkills_Handler,
+		},
+		{
+			MethodName: "GetWorkExperience",
+			Handler:    _UsersService_GetWorkExperience_Handler,
+		},
+		{
+			MethodName: "GetEducation",
+			Handler:    _UsersService_GetEducation_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/users/users.proto",
+	Metadata: "users/users.proto",
 }

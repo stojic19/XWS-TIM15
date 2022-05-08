@@ -11,6 +11,15 @@ public class Education {
     private Date startDate;
     private Date endDate;
 
+    public Education(String institutionType, String institutionName, String title, double gpa, Date startDate, Date endDate) {
+        this.institutionType = institutionType;
+        this.institutionName = institutionName;
+        this.title = title;
+        this.gpa = gpa;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public String getInstitutionType() {
         return institutionType;
     }

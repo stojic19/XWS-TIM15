@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package com.example.usermicroservice;
+package users;
 
 option java_multiple_files = true;
 option java_package = "com.example.usermicroservice";
@@ -20,6 +20,24 @@ service UsersService{
   }
   rpc DeleteUserById(GetUserRequest) returns(StringResponse){
   }
+  rpc SearchPublicUsers(SearchRequest) returns(GetUsersResponse){
+  }
+  rpc UpdateInterests(UpdateInterestsRequest) returns(StringResponse){
+  }
+  rpc UpdateSkills(UpdateSkillsRequest) returns(StringResponse){
+  }
+  rpc UpdateWorkExperience(UpdateWorkExperienceRequest) returns(StringResponse){
+  }
+  rpc UpdateEducation(UpdateEducationRequest) returns(StringResponse){
+  }
+  rpc GetInterests(GetUserRequest) returns(GetInterestsResponse){
+  }
+  rpc GetSkills(GetUserRequest) returns(GetSkillsResponse){
+  }
+  rpc GetWorkExperience(GetUserRequest) returns(GetWorkExperienceResponse){
+  }
+  rpc GetEducation(GetUserRequest) returns(GetEducationResponse){
+  }
 }
 message AddUserRequest{
   string username = 1;
@@ -30,6 +48,7 @@ message AddUserRequest{
   string gender = 6;
   string dateOfBirth = 7;
   string biography = 8;
+  bool isPrivate = 9;
 }
 message AddUserResponse{
   string response = 1;
@@ -45,6 +64,7 @@ message UpdateUserRequest{
   string dateOfBirth = 7;
   string biography = 8;
   string newUsername = 9;
+  bool isPrivate = 10;
 }
 message UpdateUserResponse{
   string response = 1;
@@ -72,6 +92,7 @@ message User{
   string gender = 7;
   string dateOfBirth = 8;
   string biography = 9;
+  bool isPrivate = 10;
 }
 
 message GetUserByUsernameRequest{
@@ -81,6 +102,48 @@ message StringResponse{
   string response = 1;
 }
 
-//protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./proto/users.proto
-//protoc -I ./proto --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./proto/users.proto
-//protoc -I ./proto --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative --grpc-gateway_out=./proto --grpc-gateway_opt=paths=source_relative ./proto/users.proto
+message SearchRequest{
+  string searchTerm = 1;
+}
+message WorkExperience{
+  string companyName = 1;
+  string jobTitle = 2;
+  string startDate = 3;
+  string endDate = 4;
+}
+message Education{
+  string institutionType = 1;
+  string institutionName = 2;
+  string title = 3;
+  double gpa = 4;
+  string startDate = 5;
+  string endDate = 6;
+}
+message UpdateWorkExperienceRequest{
+  string userId = 1;
+  repeated WorkExperience workExperiences = 2;
+}
+message UpdateEducationRequest{
+  string userId = 1;
+  repeated Education education = 2;
+}
+message UpdateInterestsRequest{
+  string userId = 1;
+  repeated string interests = 2;
+}
+message UpdateSkillsRequest{
+  string userId = 1;
+  repeated string skills = 2;
+}
+message GetWorkExperienceResponse{
+  repeated WorkExperience workExperience = 1;
+}
+message GetEducationResponse{
+  repeated Education education = 1;
+}
+message GetInterestsResponse{
+  repeated string interests = 1;
+}
+message GetSkillsResponse{
+  repeated string skills = 1;
+}
