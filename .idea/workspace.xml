@@ -4,7 +4,27 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa3f74b9-be4b-4973-94b2-f1b3f2d0a37f" name="Changes" comment="" />
+    <list default="true" id="fa3f74b9-be4b-4973-94b2-f1b3f2d0a37f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/dto/UpdateUserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/dto/UpdateUserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/dto/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/service/Impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/service/Impl/UserGrpcServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/JavaMicroservices/common/src/main/proto/users.proto" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/common/src/main/proto/users.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Users_microservice/src/main/java/com/example/usermicroservice/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Users_microservice/src/main/java/com/example/usermicroservice/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/users/users.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/users/users.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/users/users.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/users/users.pb.gw.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/users/users.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/users/users.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/users/users_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/users/users_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lokalno_pokretanje.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lokalno_pokretanje.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,6 +41,9 @@
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="28q6layNpDTTvz2fsD6OVp7JRvA" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -37,7 +60,8 @@
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "C:/Users/Anja/Downloads/xwsDislinkt-development/project"
+    "last_opened_file_path": "C:/Users/Anja/Downloads/xwsDislinkt-development/project",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
   <component name="RunManager">

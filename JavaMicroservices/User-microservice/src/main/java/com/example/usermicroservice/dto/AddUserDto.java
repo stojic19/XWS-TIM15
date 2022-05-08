@@ -23,7 +23,7 @@ public class AddUserDto {
     @NotEmpty(message = "Telephone number cannot be null or empty!")
     private String telephoneNo;
     @NotEmpty(message = "Gender cannot be null or empty!")
-    private Gender gender;
+    private String gender;
     @NotEmpty(message = "Date of birth cannot be null or empty!")
     private Date dateOfBirth;
     @NotEmpty(message = "Biography cannot be null or empty!")
@@ -34,7 +34,7 @@ public class AddUserDto {
     private List<String> interests;
     private List<String> skills;
 
-    public AddUserDto(String id, String username, String password, String name, String email, String telephoneNo, Gender gender, Date dateOfBirth, String biography, boolean isPrivate, List<Education> educationList, List<WorkExperience> workExperienceList, List<String> interests, List<String> skills) {
+    public AddUserDto(String id, String username, String password, String name, String email, String telephoneNo, String gender, Date dateOfBirth, String biography, boolean isPrivate, List<Education> educationList, List<WorkExperience> workExperienceList, List<String> interests, List<String> skills) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -115,11 +115,11 @@ public class AddUserDto {
         this.telephoneNo = telephoneNo;
     }
 
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
