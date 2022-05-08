@@ -6,15 +6,16 @@ import com.example.usermicroservice.model.WorkExperience;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class UserDto {
+public class AddUserDto {
 
     private String id;
     @NotEmpty(message = "Username cannot be null or empty!")
     private String username;
+    @NotEmpty(message = "Password cannot be null or empty!")
+    private String password;
     @NotEmpty(message = "Name cannot be null or empty!")
     private String name;
     @Email (message = "Email should be valid!")
@@ -33,9 +34,10 @@ public class UserDto {
     private List<String> interests;
     private List<String> skills;
 
-    public UserDto(String id, String username, String name, String email, String telephoneNo, Gender gender, Date dateOfBirth, String biography, boolean isPrivate, List<Education> educationList, List<WorkExperience> workExperienceList, List<String> interests, List<String> skills) {
+    public AddUserDto(String id, String username, String password, String name, String email, String telephoneNo, Gender gender, Date dateOfBirth, String biography, boolean isPrivate, List<Education> educationList, List<WorkExperience> workExperienceList, List<String> interests, List<String> skills) {
         this.id = id;
         this.username = username;
+        this.password = password;
         this.name = name;
         this.email = email;
         this.telephoneNo = telephoneNo;
@@ -79,6 +81,14 @@ public class UserDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
