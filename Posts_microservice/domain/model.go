@@ -21,8 +21,7 @@ type Post struct {
 }
 
 type Comment struct {
-	Id       primitive.ObjectID
-	Owner    User
-	Content  string
-	Comments []Comment
+	Id      primitive.ObjectID
+	Owner   User
+	Content string
 }

@@ -11,3 +11,11 @@ func NewPostsService(store domain.PostsStore) *PostsService {
 		store: store,
 	}
 }
+
+func (service *PostsService) GetAll() ([]*domain.Post, error) {
+	return service.store.GetAll()
+}
+
+func (service *PostsService) CreatePost(post *domain.Post) error {
+	return service.store.Create(post)
+}
