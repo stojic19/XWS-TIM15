@@ -52,6 +52,8 @@ services:
     image: mongo
     container_name: posts_db
     restart: on-failure
+    ports:
+      - 27017:27017
     networks:
       - network
             

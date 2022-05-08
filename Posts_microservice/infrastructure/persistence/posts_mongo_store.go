@@ -29,8 +29,17 @@ func (store *PostsMongoStore) GetAll() ([]*domain.Post, error) {
 	return store.filter(filter)
 }
 
+func (store *PostsMongoStore) Get(id primitive.ObjectID) (*domain.Post, error) {
+	filter := bson.M{"id": id}
+	return store.filterOne(filter)
+}
+
+func (store *PostsMongoStore) GetFromUser(id string) ([]*domain.Post, error) {
+	filter := bson.M{"owner.id": id}
+	return store.filter(filter)
+}
+
 func (store *PostsMongoStore) Create(post *domain.Post) error {
-	post.Id = primitive.NewObjectID()
 	result, err := store.posts.InsertOne(context.TODO(), post)
 	if err != nil {
 		return err
@@ -49,20 +58,20 @@ func (store *PostsMongoStore) filter(filter interface{}) ([]*domain.Post, error)
 	return decode(cursor)
 }
 
-func (store *PostsMongoStore) filterOne(filter interface{}) (product *domain.Post, err error) {
+func (store *PostsMongoStore) filterOne(filter interface{}) (post *domain.Post, err error) {
 	result := store.posts.FindOne(context.TODO(), filter)
-	err = result.Decode(&product)
+	err = result.Decode(&post)
 	return
 }
 
-func decode(cursor *mongo.Cursor) (products []*domain.Post, err error) {
+func decode(cursor *mongo.Cursor) (posts []*domain.Post, err error) {
 	for cursor.Next(context.TODO()) {
-		var product domain.Post
-		err = cursor.Decode(&product)
+		var post domain.Post
+		err = cursor.Decode(&post)
 		if err != nil {
 			return
 		}
-		products = append(products, &product)
+		posts = append(posts, &post)
 	}
 	err = cursor.Err()
 	return

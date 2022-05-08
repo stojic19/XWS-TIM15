@@ -5,6 +5,7 @@ import (
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/application"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/domain"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 )
@@ -21,15 +22,48 @@ func NewPostsHandler(service *application.PostsService) *PostsHandler {
 }
 
 func (handler *PostsHandler) GetAll(ctx context.Context, request *posts.GetAllRequest) (*posts.GetAllResponse, error) {
-	products, err := handler.service.GetAll()
+	returnPosts, err := handler.service.GetAll()
 	if err != nil {
 		return nil, err
 	}
 	response := &posts.GetAllResponse{
 		Posts: []*posts.Post{},
 	}
-	for _, product := range products {
-		current := mapProduct(product)
+	for _, post := range returnPosts {
+		current := mapPost(post)
+		response.Posts = append(response.Posts, current)
+	}
+	return response, nil
+}
+
+func (handler *PostsHandler) Get(ctx context.Context, request *posts.GetRequest) (*posts.GetResponse, error) {
+	id := request.Id
+	postId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+	post, err := handler.service.Get(postId)
+	if err != nil {
+		return nil, err
+	}
+	postPb := mapPost(post)
+	response := &posts.GetResponse{
+		Post: postPb,
+	}
+	return response, nil
+}
+
+func (handler *PostsHandler) GetFromUser(ctx context.Context, request *posts.GetFromUserRequest) (*posts.GetFromUserResponse, error) {
+	id := request.Id
+	returnPosts, err := handler.service.GetFromUser(id)
+	if err != nil {
+		return nil, err
+	}
+	response := &posts.GetFromUserResponse{
+		Posts: []*posts.Post{},
+	}
+	for _, post := range returnPosts {
+		current := mapPost(post)
 		response.Posts = append(response.Posts, current)
 	}
 	return response, nil
@@ -46,7 +80,7 @@ func (handler *PostsHandler) PutPost(ctx context.Context, request *posts.PutPost
 	}, nil
 }
 
-func mapProduct(post *domain.Post) *posts.Post {
+func mapPost(post *domain.Post) *posts.Post {
 	ownerPb := &posts.User{
 		Id: post.Owner.Id,
 	}

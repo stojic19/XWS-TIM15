@@ -13,9 +13,42 @@ service PostsService{
       get: "/posts/posts"
     };
   }
+  rpc Get(GetRequest) returns(GetResponse){
+    option(google.api.http) = {
+      get: "/posts/posts/{id}"
+    };
+  }
+  rpc GetFromUser(GetFromUserRequest) returns(GetFromUserResponse){
+    option(google.api.http) = {
+      get: "/posts/postsFromUser/{id}"
+    };
+  }
+  rpc GetFromFollowed(GetFollowedRequest) returns(GetFollowedResponse){
+    option(google.api.http) = {
+      get: "/posts/postsFollowed/{id}"
+    };
+  }
   rpc PutPost(PutPostRequest) returns(PutPostResponse){
     option(google.api.http) = {
       put: "/posts/posts"
+      body: "*"
+    };
+  }
+  rpc LikePost(LikePostRequest) returns(LikePostResponse){
+    option(google.api.http) = {
+      put: "/posts/like"
+      body: "*"
+    };
+  }
+  rpc DislikePost(DislikePostRequest) returns(DislikePostResponse){
+    option(google.api.http) = {
+      put: "/posts/dislike"
+      body: "*"
+    };
+  }
+  rpc CommentPost(CommentPostRequest) returns(CommentPostResponse){
+    option(google.api.http) = {
+      post: "/posts/comment"
       body: "*"
     };
   }
@@ -29,11 +62,63 @@ message GetAllResponse{
   repeated Post posts = 1;
 }
 
+message GetRequest{
+  string id = 1;
+}
+
+message GetResponse{
+  Post post = 1;
+}
+
+message GetFromUserRequest{
+  string id = 1;
+}
+
+message GetFromUserResponse{
+  repeated Post posts = 1;
+}
+
+message GetFollowedRequest{
+  string id = 1;
+}
+
+message GetFollowedResponse{
+  repeated Post posts = 1;
+}
+
 message PutPostRequest{
   NewPost newPost = 1;
 }
 
 message PutPostResponse{
+  string message = 1;
+}
+
+message LikePostRequest{
+  string postId = 1;
+  string userId = 2;
+}
+
+message LikePostResponse{
+  string message = 1;
+}
+
+message DislikePostRequest{
+  string postId = 1;
+  string userId = 2;
+}
+
+message DislikePostResponse{
+  string message = 1;
+}
+
+message CommentPostRequest{
+  string postId = 1;
+  string userId = 2;
+  string content = 3;
+}
+
+message CommentPostResponse{
   string message = 1;
 }
 

@@ -10,14 +10,14 @@ type User struct {
 }
 
 type Post struct {
-	Id         primitive.ObjectID
-	Title      string
-	Content    string
-	CreateTime time.Time
-	Owner      User
-	Comments   []Comment
-	Likes      []User
-	Dislikes   []User
+	Id         primitive.ObjectID `bson:"_id"`
+	Title      string             `bson:"title"`
+	Content    string             `bson:"content"`
+	CreateTime time.Time          `bson:"createTime"`
+	Owner      User               `bson:"owner"`
+	Comments   []Comment          `bson:"comments"`
+	Likes      []User             `bson:"likes"`
+	Dislikes   []User             `bson:"dislikes"`
 }
 
 type Comment struct {

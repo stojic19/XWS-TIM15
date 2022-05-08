@@ -23,7 +23,13 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostsServiceClient interface {
 	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
+	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	GetFromUser(ctx context.Context, in *GetFromUserRequest, opts ...grpc.CallOption) (*GetFromUserResponse, error)
+	GetFromFollowed(ctx context.Context, in *GetFollowedRequest, opts ...grpc.CallOption) (*GetFollowedResponse, error)
 	PutPost(ctx context.Context, in *PutPostRequest, opts ...grpc.CallOption) (*PutPostResponse, error)
+	LikePost(ctx context.Context, in *LikePostRequest, opts ...grpc.CallOption) (*LikePostResponse, error)
+	DislikePost(ctx context.Context, in *DislikePostRequest, opts ...grpc.CallOption) (*DislikePostResponse, error)
+	CommentPost(ctx context.Context, in *CommentPostRequest, opts ...grpc.CallOption) (*CommentPostResponse, error)
 }
 
 type postsServiceClient struct {
@@ -43,9 +49,63 @@ func (c *postsServiceClient) GetAll(ctx context.Context, in *GetAllRequest, opts
 	return out, nil
 }
 
+func (c *postsServiceClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
+	out := new(GetResponse)
+	err := c.cc.Invoke(ctx, "/posts.PostsService/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postsServiceClient) GetFromUser(ctx context.Context, in *GetFromUserRequest, opts ...grpc.CallOption) (*GetFromUserResponse, error) {
+	out := new(GetFromUserResponse)
+	err := c.cc.Invoke(ctx, "/posts.PostsService/GetFromUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postsServiceClient) GetFromFollowed(ctx context.Context, in *GetFollowedRequest, opts ...grpc.CallOption) (*GetFollowedResponse, error) {
+	out := new(GetFollowedResponse)
+	err := c.cc.Invoke(ctx, "/posts.PostsService/GetFromFollowed", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *postsServiceClient) PutPost(ctx context.Context, in *PutPostRequest, opts ...grpc.CallOption) (*PutPostResponse, error) {
 	out := new(PutPostResponse)
 	err := c.cc.Invoke(ctx, "/posts.PostsService/PutPost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postsServiceClient) LikePost(ctx context.Context, in *LikePostRequest, opts ...grpc.CallOption) (*LikePostResponse, error) {
+	out := new(LikePostResponse)
+	err := c.cc.Invoke(ctx, "/posts.PostsService/LikePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postsServiceClient) DislikePost(ctx context.Context, in *DislikePostRequest, opts ...grpc.CallOption) (*DislikePostResponse, error) {
+	out := new(DislikePostResponse)
+	err := c.cc.Invoke(ctx, "/posts.PostsService/DislikePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postsServiceClient) CommentPost(ctx context.Context, in *CommentPostRequest, opts ...grpc.CallOption) (*CommentPostResponse, error) {
+	out := new(CommentPostResponse)
+	err := c.cc.Invoke(ctx, "/posts.PostsService/CommentPost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +117,13 @@ func (c *postsServiceClient) PutPost(ctx context.Context, in *PutPostRequest, op
 // for forward compatibility
 type PostsServiceServer interface {
 	GetAll(context.Context, *GetAllRequest) (*GetAllResponse, error)
+	Get(context.Context, *GetRequest) (*GetResponse, error)
+	GetFromUser(context.Context, *GetFromUserRequest) (*GetFromUserResponse, error)
+	GetFromFollowed(context.Context, *GetFollowedRequest) (*GetFollowedResponse, error)
 	PutPost(context.Context, *PutPostRequest) (*PutPostResponse, error)
+	LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error)
+	DislikePost(context.Context, *DislikePostRequest) (*DislikePostResponse, error)
+	CommentPost(context.Context, *CommentPostRequest) (*CommentPostResponse, error)
 	mustEmbedUnimplementedPostsServiceServer()
 }
 
@@ -68,8 +134,26 @@ type UnimplementedPostsServiceServer struct {
 func (UnimplementedPostsServiceServer) GetAll(context.Context, *GetAllRequest) (*GetAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
 }
+func (UnimplementedPostsServiceServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedPostsServiceServer) GetFromUser(context.Context, *GetFromUserRequest) (*GetFromUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFromUser not implemented")
+}
+func (UnimplementedPostsServiceServer) GetFromFollowed(context.Context, *GetFollowedRequest) (*GetFollowedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFromFollowed not implemented")
+}
 func (UnimplementedPostsServiceServer) PutPost(context.Context, *PutPostRequest) (*PutPostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PutPost not implemented")
+}
+func (UnimplementedPostsServiceServer) LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LikePost not implemented")
+}
+func (UnimplementedPostsServiceServer) DislikePost(context.Context, *DislikePostRequest) (*DislikePostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DislikePost not implemented")
+}
+func (UnimplementedPostsServiceServer) CommentPost(context.Context, *CommentPostRequest) (*CommentPostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CommentPost not implemented")
 }
 func (UnimplementedPostsServiceServer) mustEmbedUnimplementedPostsServiceServer() {}
 
@@ -102,6 +186,60 @@ func _PostsService_GetAll_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostsService_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostsServiceServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/posts.PostsService/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostsServiceServer).Get(ctx, req.(*GetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostsService_GetFromUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFromUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostsServiceServer).GetFromUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/posts.PostsService/GetFromUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostsServiceServer).GetFromUser(ctx, req.(*GetFromUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostsService_GetFromFollowed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFollowedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostsServiceServer).GetFromFollowed(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/posts.PostsService/GetFromFollowed",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostsServiceServer).GetFromFollowed(ctx, req.(*GetFollowedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PostsService_PutPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(PutPostRequest)
 	if err := dec(in); err != nil {
@@ -120,6 +258,60 @@ func _PostsService_PutPost_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostsService_LikePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LikePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostsServiceServer).LikePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/posts.PostsService/LikePost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostsServiceServer).LikePost(ctx, req.(*LikePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostsService_DislikePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DislikePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostsServiceServer).DislikePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/posts.PostsService/DislikePost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostsServiceServer).DislikePost(ctx, req.(*DislikePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostsService_CommentPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CommentPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostsServiceServer).CommentPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/posts.PostsService/CommentPost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostsServiceServer).CommentPost(ctx, req.(*CommentPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PostsService_ServiceDesc is the grpc.ServiceDesc for PostsService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -132,8 +324,32 @@ var PostsService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PostsService_GetAll_Handler,
 		},
 		{
+			MethodName: "Get",
+			Handler:    _PostsService_Get_Handler,
+		},
+		{
+			MethodName: "GetFromUser",
+			Handler:    _PostsService_GetFromUser_Handler,
+		},
+		{
+			MethodName: "GetFromFollowed",
+			Handler:    _PostsService_GetFromFollowed_Handler,
+		},
+		{
 			MethodName: "PutPost",
 			Handler:    _PostsService_PutPost_Handler,
+		},
+		{
+			MethodName: "LikePost",
+			Handler:    _PostsService_LikePost_Handler,
+		},
+		{
+			MethodName: "DislikePost",
+			Handler:    _PostsService_DislikePost_Handler,
+		},
+		{
+			MethodName: "CommentPost",
+			Handler:    _PostsService_CommentPost_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
