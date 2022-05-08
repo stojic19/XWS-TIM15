@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package com.example.usermicroservice;
+
+option java_multiple_files = true;
+option java_package = "com.example.usermicroservice";
+
+option go_package = "github.com/stojic19/XWS-TIM15/JavaMicroservices/common/src/main/proto";
+
+service UsersService{
+  rpc AddUser(AddUserRequest) returns(AddUserResponse){
+  }
+  rpc UpdateUser(UpdateUserRequest) returns(UpdateUserResponse){
+  }
+  rpc GetUsers(GetUsersRequest) returns(GetUsersResponse){
+  }
+  rpc GetUser(GetUserRequest) returns(GetUserResponse){
+  }
+  rpc GetUserByUsername(GetUserByUsernameRequest) returns(GetUserResponse){
+  }
+  rpc DeleteUserById(GetUserRequest) returns(StringResponse){
+  }
+}
+message AddUserRequest{
+  string username = 1;
+  string password = 2;
+  string name = 3;
+  string email = 4;
+  string telephoneNo = 5;
+  string gender = 6;
+  string dateOfBirth = 7;
+  string biography = 8;
+}
+message AddUserResponse{
+  string response = 1;
+}
+
+message UpdateUserRequest{
+  string username = 1;
+  string password = 2;
+  string name = 3;
+  string email = 4;
+  string telephoneNo = 5;
+  string gender = 6;
+  string dateOfBirth = 7;
+  string biography = 8;
+  string newUsername = 9;
+}
+message UpdateUserResponse{
+  string response = 1;
+}
+
+message GetUsersRequest{}
+message GetUsersResponse{
+  repeated User users = 1;
+}
+
+message GetUserRequest{
+  string id = 1;
+}
+message GetUserResponse{
+  User user = 1;
+}
+
+message User{
+  string id = 1;
+  string username = 2;
+  string password = 3;
+  string name = 4;
+  string email = 5;
+  string telephoneNo = 6;
+  string gender = 7;
+  string dateOfBirth = 8;
+  string biography = 9;
+}
+
+message GetUserByUsernameRequest{
+  string username = 1;
+}
+message StringResponse{
+  string response = 1;
+}
+
+//protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./proto/users.proto
+//protoc -I ./proto --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative ./proto/users.proto
+//protoc -I ./proto --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative --grpc-gateway_out=./proto --grpc-gateway_opt=paths=source_relative ./proto/users.proto
