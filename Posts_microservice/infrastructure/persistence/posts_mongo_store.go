@@ -17,8 +17,11 @@ type PostsMongoStore struct {
 	posts *mongo.Collection
 }
 
-func NewPostsStore() *PostsMongoStore {
-	return &PostsMongoStore{}
+func NewPostsStore(client *mongo.Client) domain.PostsStore {
+	posts := client.Database(DATABASE).Collection(COLLECTION)
+	return &PostsMongoStore{
+		posts: posts,
+	}
 }
 
 func (store *PostsMongoStore) GetAll() ([]*domain.Post, error) {

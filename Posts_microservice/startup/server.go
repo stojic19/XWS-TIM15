@@ -8,6 +8,7 @@ import (
 	"github.com/stojic19/XWS-TIM15/posts_microservice/infrastructure/api"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/infrastructure/persistence"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/startup/config"
+	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -23,15 +24,24 @@ func NewServer(config *config.Config) *Server {
 	}
 }
 
+func (server *Server) initMongoClient() *mongo.Client {
+	client, err := persistence.GetClient(server.config.PostsDbHost, server.config.PostsDbPort)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return client
+}
+
 func (server *Server) Start() {
-	postsStore := server.initPostsStore()
+	mongoClient := server.initMongoClient()
+	postsStore := server.initPostsStore(mongoClient)
 	postsService := server.initPostsService(postsStore)
 	postsHandler := server.initPostsHandler(postsService)
 	server.startGrpcServer(postsHandler)
 }
 
-func (server *Server) initPostsStore() domain.PostsStore {
-	return persistence.NewPostsStore()
+func (server *Server) initPostsStore(client *mongo.Client) domain.PostsStore {
+	return persistence.NewPostsStore(client)
 }
 
 func (server *Server) initPostsService(store domain.PostsStore) *application.PostsService {
