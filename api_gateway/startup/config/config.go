@@ -16,7 +16,7 @@ func NewConfig() *Config {
 		FollowersHost: os.Getenv("FOLLOWERS_SERVICE_HOST"),
 		FollowersPort: os.Getenv("FOLLOWERS_SERVICE_PORT"),
 		UsersHost:     os.Getenv("USERS_SERVICE_HOST"),
-		UsersPort:     os.Getenv("USERS_SERVICE_PORT"),
+		UsersPort:     os.Getenv("USERS_PORT"),
 	}
 }
 

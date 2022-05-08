@@ -69,6 +69,7 @@ public class UserServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void getUser(GetUserRequest request, StreamObserver<GetUserResponse> responseObserver) {
+        System.out.println("GET USER REQUEST");
         GetUserResponse response;
         Optional<User> user = userRepository.findById(request.getId());
         if(user.isPresent()){

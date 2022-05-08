@@ -34,7 +34,7 @@ func (server *Server) initHandlers() {
 	if err != nil {
 		panic(err)
 	}
-
+	fmt.Printf("%s:%s\n", server.config.UsersHost, server.config.UsersPort)
 	usersEndpoint := fmt.Sprintf("%s:%s", server.config.UsersHost, server.config.UsersPort)
 	err = users.RegisterUsersServiceHandlerFromEndpoint(context.TODO(), server.mux, usersEndpoint, opts)
 	if err != nil {

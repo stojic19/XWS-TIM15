@@ -6,14 +6,13 @@ import com.example.usermicroservice.mapper.UserMapper;
 import com.example.usermicroservice.model.User;
 import com.example.usermicroservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/users")
+//@RestController
+//@RequestMapping("/users")
 public class UserController {
     /*@Autowired
     private UserService userService;
