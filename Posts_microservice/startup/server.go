@@ -2,6 +2,7 @@ package startup
 
 import (
 	"fmt"
+	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/application"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/domain"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/infrastructure/api"
@@ -47,7 +48,7 @@ func (server *Server) startGrpcServer(postsHandler *api.PostsHandler) {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	grpcServer := grpc.NewServer()
-	//posts.RegisterPostsServiceServer(grpcServer, postsHandler)
+	posts.RegisterPostsServiceServer(grpcServer, postsHandler)
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %s", err)
 	}
