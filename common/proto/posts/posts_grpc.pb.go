@@ -28,7 +28,9 @@ type PostsServiceClient interface {
 	GetFromFollowed(ctx context.Context, in *GetFollowedRequest, opts ...grpc.CallOption) (*GetFollowedResponse, error)
 	PutPost(ctx context.Context, in *PutPostRequest, opts ...grpc.CallOption) (*PutPostResponse, error)
 	LikePost(ctx context.Context, in *LikePostRequest, opts ...grpc.CallOption) (*LikePostResponse, error)
+	RemoveLike(ctx context.Context, in *RemoveLikeRequest, opts ...grpc.CallOption) (*RemoveLikeResponse, error)
 	DislikePost(ctx context.Context, in *DislikePostRequest, opts ...grpc.CallOption) (*DislikePostResponse, error)
+	RemoveDislike(ctx context.Context, in *RemoveDislikeRequest, opts ...grpc.CallOption) (*RemoveDislikeResponse, error)
 	CommentPost(ctx context.Context, in *CommentPostRequest, opts ...grpc.CallOption) (*CommentPostResponse, error)
 }
 
@@ -94,9 +96,27 @@ func (c *postsServiceClient) LikePost(ctx context.Context, in *LikePostRequest, 
 	return out, nil
 }
 
+func (c *postsServiceClient) RemoveLike(ctx context.Context, in *RemoveLikeRequest, opts ...grpc.CallOption) (*RemoveLikeResponse, error) {
+	out := new(RemoveLikeResponse)
+	err := c.cc.Invoke(ctx, "/posts.PostsService/RemoveLike", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *postsServiceClient) DislikePost(ctx context.Context, in *DislikePostRequest, opts ...grpc.CallOption) (*DislikePostResponse, error) {
 	out := new(DislikePostResponse)
 	err := c.cc.Invoke(ctx, "/posts.PostsService/DislikePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postsServiceClient) RemoveDislike(ctx context.Context, in *RemoveDislikeRequest, opts ...grpc.CallOption) (*RemoveDislikeResponse, error) {
+	out := new(RemoveDislikeResponse)
+	err := c.cc.Invoke(ctx, "/posts.PostsService/RemoveDislike", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,7 +142,9 @@ type PostsServiceServer interface {
 	GetFromFollowed(context.Context, *GetFollowedRequest) (*GetFollowedResponse, error)
 	PutPost(context.Context, *PutPostRequest) (*PutPostResponse, error)
 	LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error)
+	RemoveLike(context.Context, *RemoveLikeRequest) (*RemoveLikeResponse, error)
 	DislikePost(context.Context, *DislikePostRequest) (*DislikePostResponse, error)
+	RemoveDislike(context.Context, *RemoveDislikeRequest) (*RemoveDislikeResponse, error)
 	CommentPost(context.Context, *CommentPostRequest) (*CommentPostResponse, error)
 	mustEmbedUnimplementedPostsServiceServer()
 }
@@ -149,8 +171,14 @@ func (UnimplementedPostsServiceServer) PutPost(context.Context, *PutPostRequest)
 func (UnimplementedPostsServiceServer) LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LikePost not implemented")
 }
+func (UnimplementedPostsServiceServer) RemoveLike(context.Context, *RemoveLikeRequest) (*RemoveLikeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveLike not implemented")
+}
 func (UnimplementedPostsServiceServer) DislikePost(context.Context, *DislikePostRequest) (*DislikePostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DislikePost not implemented")
+}
+func (UnimplementedPostsServiceServer) RemoveDislike(context.Context, *RemoveDislikeRequest) (*RemoveDislikeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RemoveDislike not implemented")
 }
 func (UnimplementedPostsServiceServer) CommentPost(context.Context, *CommentPostRequest) (*CommentPostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CommentPost not implemented")
@@ -276,6 +304,24 @@ func _PostsService_LikePost_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostsService_RemoveLike_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveLikeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostsServiceServer).RemoveLike(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/posts.PostsService/RemoveLike",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostsServiceServer).RemoveLike(ctx, req.(*RemoveLikeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PostsService_DislikePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DislikePostRequest)
 	if err := dec(in); err != nil {
@@ -290,6 +336,24 @@ func _PostsService_DislikePost_Handler(srv interface{}, ctx context.Context, dec
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostsServiceServer).DislikePost(ctx, req.(*DislikePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostsService_RemoveDislike_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RemoveDislikeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostsServiceServer).RemoveDislike(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/posts.PostsService/RemoveDislike",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostsServiceServer).RemoveDislike(ctx, req.(*RemoveDislikeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -344,8 +408,16 @@ var PostsService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PostsService_LikePost_Handler,
 		},
 		{
+			MethodName: "RemoveLike",
+			Handler:    _PostsService_RemoveLike_Handler,
+		},
+		{
 			MethodName: "DislikePost",
 			Handler:    _PostsService_DislikePost_Handler,
+		},
+		{
+			MethodName: "RemoveDislike",
+			Handler:    _PostsService_RemoveDislike_Handler,
 		},
 		{
 			MethodName: "CommentPost",

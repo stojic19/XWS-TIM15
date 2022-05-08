@@ -21,7 +21,7 @@ type Post struct {
 }
 
 type Comment struct {
-	Id      primitive.ObjectID
-	Owner   User
-	Content string
+	Owner      User      `bson:"owner"`
+	Content    string    `bson:"content"`
+	CreateTime time.Time `bson:"createTime"`
 }

@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"context"
+	"errors"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/domain"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -45,6 +46,91 @@ func (store *PostsMongoStore) Create(post *domain.Post) error {
 		return err
 	}
 	post.Id = result.InsertedID.(primitive.ObjectID)
+	return nil
+}
+
+func (store *PostsMongoStore) LikePost(postId primitive.ObjectID, user *domain.User) error {
+	result, err := store.posts.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": postId},
+		bson.D{
+			{"$addToSet", bson.D{{"likes", user}}},
+		},
+	)
+	if err != nil {
+		return err
+	}
+	if result.MatchedCount > 1 {
+		return errors.New("one document should've been updated")
+	}
+	return nil
+}
+
+func (store *PostsMongoStore) DislikePost(postId primitive.ObjectID, user *domain.User) error {
+	result, err := store.posts.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": postId},
+		bson.D{
+			{"$addToSet", bson.D{{"dislikes", user}}},
+		},
+	)
+	if err != nil {
+		return err
+	}
+	if result.MatchedCount > 1 {
+		return errors.New("one document should've been updated")
+	}
+	return nil
+}
+
+func (store *PostsMongoStore) RemoveLike(postId primitive.ObjectID, user *domain.User) error {
+	result, err := store.posts.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": postId},
+		bson.D{
+			{"$pull", bson.D{{"likes", user}}},
+		},
+	)
+	if err != nil {
+		return err
+	}
+	if result.MatchedCount > 1 {
+		return errors.New("one document should've been updated")
+	}
+	return nil
+}
+
+func (store *PostsMongoStore) RemoveDislike(postId primitive.ObjectID, user *domain.User) error {
+	result, err := store.posts.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": postId},
+		bson.D{
+			{"$pull", bson.D{{"dislikes", user}}},
+		},
+	)
+	if err != nil {
+		return err
+	}
+	if result.MatchedCount > 1 {
+		return errors.New("one document should've been updated")
+	}
+	return nil
+}
+
+func (store *PostsMongoStore) CreateComment(postId primitive.ObjectID, comment *domain.Comment) error {
+	result, err := store.posts.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": postId},
+		bson.D{
+			{"$push", bson.D{{"comments", comment}}},
+		},
+	)
+	if err != nil {
+		return err
+	}
+	if result.MatchedCount != 1 {
+		return errors.New("one document should've been updated")
+	}
 	return nil
 }
 

@@ -30,3 +30,31 @@ func (service *PostsService) GetFromUser(id string) ([]*domain.Post, error) {
 func (service *PostsService) CreatePost(post *domain.Post) error {
 	return service.store.Create(post)
 }
+
+func (service *PostsService) LikePost(postId primitive.ObjectID, user *domain.User) error {
+	err := service.store.RemoveDislike(postId, user)
+	if err != nil {
+		return err
+	}
+	return service.store.LikePost(postId, user)
+}
+
+func (service *PostsService) RemoveLike(postId primitive.ObjectID, user *domain.User) error {
+	return service.store.RemoveLike(postId, user)
+}
+
+func (service *PostsService) DislikePost(postId primitive.ObjectID, user *domain.User) error {
+	err := service.store.RemoveLike(postId, user)
+	if err != nil {
+		return err
+	}
+	return service.store.DislikePost(postId, user)
+}
+
+func (service *PostsService) RemoveDislike(postId primitive.ObjectID, user *domain.User) error {
+	return service.store.RemoveDislike(postId, user)
+}
+
+func (service *PostsService) CreateComment(postId primitive.ObjectID, comment *domain.Comment) error {
+	return service.store.CreateComment(postId, comment)
+}

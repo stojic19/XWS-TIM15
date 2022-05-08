@@ -80,6 +80,81 @@ func (handler *PostsHandler) PutPost(ctx context.Context, request *posts.PutPost
 	}, nil
 }
 
+func (handler *PostsHandler) LikePost(ctx context.Context, request *posts.LikePostRequest) (*posts.LikePostResponse, error) {
+	postId, err := primitive.ObjectIDFromHex(request.PostId)
+	if err != nil {
+		return nil, err
+	}
+	userId := mapNewUser(request.UserId)
+	err = handler.service.LikePost(postId, userId)
+	if err != nil {
+		return nil, err
+	}
+	return &posts.LikePostResponse{
+		Message: "Like successful",
+	}, nil
+}
+
+func (handler *PostsHandler) RemoveLike(ctx context.Context, request *posts.RemoveLikeRequest) (*posts.RemoveLikeResponse, error) {
+	postId, err := primitive.ObjectIDFromHex(request.PostId)
+	if err != nil {
+		return nil, err
+	}
+	userId := mapNewUser(request.UserId)
+	err = handler.service.RemoveLike(postId, userId)
+	if err != nil {
+		return nil, err
+	}
+	return &posts.RemoveLikeResponse{
+		Message: "Like removed successfully",
+	}, nil
+}
+
+func (handler *PostsHandler) DislikePost(ctx context.Context, request *posts.DislikePostRequest) (*posts.DislikePostResponse, error) {
+	postId, err := primitive.ObjectIDFromHex(request.PostId)
+	if err != nil {
+		return nil, err
+	}
+	userId := mapNewUser(request.UserId)
+	err = handler.service.DislikePost(postId, userId)
+	if err != nil {
+		return nil, err
+	}
+	return &posts.DislikePostResponse{
+		Message: "Dislike successful",
+	}, nil
+}
+
+func (handler *PostsHandler) RemoveDislike(ctx context.Context, request *posts.RemoveDislikeRequest) (*posts.RemoveDislikeResponse, error) {
+	postId, err := primitive.ObjectIDFromHex(request.PostId)
+	if err != nil {
+		return nil, err
+	}
+	userId := mapNewUser(request.UserId)
+	err = handler.service.RemoveLike(postId, userId)
+	if err != nil {
+		return nil, err
+	}
+	return &posts.RemoveDislikeResponse{
+		Message: "Dislike removed successfully",
+	}, nil
+}
+
+func (handler *PostsHandler) CommentPost(ctx context.Context, request *posts.CommentPostRequest) (*posts.CommentPostResponse, error) {
+	postId, err := primitive.ObjectIDFromHex(request.PostId)
+	if err != nil {
+		return nil, err
+	}
+	comment := mapNewComment(request.UserId, request.Content)
+	err = handler.service.CreateComment(postId, comment)
+	if err != nil {
+		return nil, err
+	}
+	return &posts.CommentPostResponse{
+		Message: "Comment created successfully",
+	}, nil
+}
+
 func mapPost(post *domain.Post) *posts.Post {
 	ownerPb := &posts.User{
 		Id: post.Owner.Id,
@@ -96,7 +171,7 @@ func mapPost(post *domain.Post) *posts.Post {
 			Id: comment.Owner.Id,
 		}
 		currentCommentPb := &posts.Comment{
-			Id:      comment.Id.String(),
+			//Id:      comment.Id.String(),
 			Owner:   commentOwnerPb,
 			Content: comment.Content,
 		}
@@ -132,4 +207,20 @@ func mapNewPost(post *posts.NewPost) *domain.Post {
 		Dislikes:   []domain.User{},
 	}
 	return newPost
+}
+
+func mapNewUser(id string) *domain.User {
+	user := &domain.User{
+		Id: id,
+	}
+	return user
+}
+
+func mapNewComment(userId string, content string) *domain.Comment {
+	comment := &domain.Comment{
+		Owner:      *mapNewUser(userId),
+		Content:    content,
+		CreateTime: time.Now(),
+	}
+	return comment
 }

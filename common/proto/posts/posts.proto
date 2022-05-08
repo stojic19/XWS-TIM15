@@ -40,9 +40,21 @@ service PostsService{
       body: "*"
     };
   }
+  rpc RemoveLike(RemoveLikeRequest) returns(RemoveLikeResponse){
+    option(google.api.http) = {
+      delete: "/posts/like"
+      body: "*"
+    };
+  }
   rpc DislikePost(DislikePostRequest) returns(DislikePostResponse){
     option(google.api.http) = {
       put: "/posts/dislike"
+      body: "*"
+    };
+  }
+  rpc RemoveDislike(RemoveDislikeRequest) returns(RemoveDislikeResponse){
+    option(google.api.http) = {
+      delete: "/posts/dislike"
       body: "*"
     };
   }
@@ -103,12 +115,30 @@ message LikePostResponse{
   string message = 1;
 }
 
+message RemoveLikeRequest{
+  string postId = 1;
+  string userId = 2;
+}
+
+message RemoveLikeResponse{
+  string message = 1;
+}
+
 message DislikePostRequest{
   string postId = 1;
   string userId = 2;
 }
 
 message DislikePostResponse{
+  string message = 1;
+}
+
+message RemoveDislikeRequest{
+  string postId = 1;
+  string userId = 2;
+}
+
+message RemoveDislikeResponse{
   string message = 1;
 }
 
@@ -149,4 +179,4 @@ message Comment{
   string content = 3;
 }
 
-//protoc -I ./proto --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative --grpc-gateway_out=./proto --grpc-gateway_opt=paths=source_relative ./proto/posts/posts.proto
+//protoc -I ./proto --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative --grpc-gateway_out=allow_delete_body=true:./proto --grpc-gateway_opt=paths=source_relative ./proto/posts/posts.proto
