@@ -38,6 +38,10 @@ service UsersService{
   }
   rpc GetEducation(GetUserRequest) returns(GetEducationResponse){
   }
+  rpc Login(LoginRequest) returns(LoginResponse){
+  }
+  rpc Validate(ValidateRequest) returns (ValidateResponse) {
+  }
 }
 message AddUserRequest{
   string username = 1;
@@ -146,4 +150,24 @@ message GetInterestsResponse{
 }
 message GetSkillsResponse{
   repeated string skills = 1;
+}
+
+// Login
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+message LoginResponse {
+  int64 status = 1;
+  string error = 2;
+  string token = 3;
+}
+// Validate
+message ValidateRequest {
+  string token = 1;
+  string username = 2;
+}
+message ValidateResponse {
+  int64 status = 1;
+  string error = 2;
 }
