@@ -69,6 +69,23 @@ func (handler *PostsHandler) GetFromUser(ctx context.Context, request *posts.Get
 	return response, nil
 }
 
+func (handler *PostsHandler) GetFollowed(ctx context.Context, request *posts.GetFollowedRequest) (*posts.GetFollowedResponse, error) {
+	id := request.Id
+	// treba promeniti na one koje user prati
+	returnPosts, err := handler.service.GetFromUser(id)
+	if err != nil {
+		return nil, err
+	}
+	response := &posts.GetFollowedResponse{
+		Posts: []*posts.Post{},
+	}
+	for _, post := range returnPosts {
+		current := mapPost(post)
+		response.Posts = append(response.Posts, current)
+	}
+	return response, nil
+}
+
 func (handler *PostsHandler) PutPost(ctx context.Context, request *posts.PutPostRequest) (*posts.PutPostResponse, error) {
 	post := mapNewPost(request.NewPost)
 	err := handler.service.CreatePost(post)
