@@ -5,6 +5,7 @@ import com.example.usermicroservice.model.User;
 import com.example.usermicroservice.model.WorkExperience;
 import com.example.usermicroservice.repository.UserRepository;
 import com.example.usermicroservice.service.UserService;
+import com.example.usermicroservice.token.JwtTokenUtil;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
     private UserRepository userRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Override
     public void addUser(AddUserRequest request, StreamObserver<AddUserResponse> responseObserver) {
@@ -310,6 +313,38 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
                         .build());
             response = GetEducationResponse.newBuilder().addAllEducation(educationList).build();
         }
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void login(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
+        LoginResponse response;
+        if(userRepository.findUserByUsername(request.getUsername()) == null)
+            response = LoginResponse.newBuilder().setError("Invalid username/password!").build();
+        else{
+            User user = userRepository.findUserByUsername(request.getUsername());
+            if(user.getPassword().equals(request.getPassword())){
+                response = LoginResponse.newBuilder().setStatus(200).setToken(jwtTokenUtil.generateToken(user.getUsername())).build();
+            }else{
+                response = LoginResponse.newBuilder().setError("Invalid username/password!").build();
+            }
+        }
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void validate(ValidateRequest request, StreamObserver<ValidateResponse> responseObserver) {
+        ValidateResponse response;
+        if(!jwtTokenUtil.checkIfClaimsAreExtractableFromToken(request.getToken()))
+            response = ValidateResponse.newBuilder().setStatus(401).setError("Invalid token!").build();
+        else if(request.getUsername().isEmpty()||request.getToken().isEmpty())
+            response = ValidateResponse.newBuilder().setStatus(401).setError("Username/token cannot be empty!").build();
+        else if(jwtTokenUtil.validateToken(request.getToken(), request.getUsername()))
+            response = ValidateResponse.newBuilder().setStatus(200).build();
+        else
+            response = ValidateResponse.newBuilder().setStatus(401).setError("Token authentication failed or token expired!").build();
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }

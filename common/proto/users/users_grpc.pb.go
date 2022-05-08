@@ -37,6 +37,8 @@ type UsersServiceClient interface {
 	GetSkills(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetSkillsResponse, error)
 	GetWorkExperience(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetWorkExperienceResponse, error)
 	GetEducation(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetEducationResponse, error)
+	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	Validate(ctx context.Context, in *ValidateRequest, opts ...grpc.CallOption) (*ValidateResponse, error)
 }
 
 type usersServiceClient struct {
@@ -182,6 +184,24 @@ func (c *usersServiceClient) GetEducation(ctx context.Context, in *GetUserReques
 	return out, nil
 }
 
+func (c *usersServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/Login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *usersServiceClient) Validate(ctx context.Context, in *ValidateRequest, opts ...grpc.CallOption) (*ValidateResponse, error) {
+	out := new(ValidateResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/Validate", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UsersServiceServer is the server API for UsersService service.
 // All implementations must embed UnimplementedUsersServiceServer
 // for forward compatibility
@@ -201,6 +221,8 @@ type UsersServiceServer interface {
 	GetSkills(context.Context, *GetUserRequest) (*GetSkillsResponse, error)
 	GetWorkExperience(context.Context, *GetUserRequest) (*GetWorkExperienceResponse, error)
 	GetEducation(context.Context, *GetUserRequest) (*GetEducationResponse, error)
+	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	Validate(context.Context, *ValidateRequest) (*ValidateResponse, error)
 	mustEmbedUnimplementedUsersServiceServer()
 }
 
@@ -252,6 +274,12 @@ func (UnimplementedUsersServiceServer) GetWorkExperience(context.Context, *GetUs
 }
 func (UnimplementedUsersServiceServer) GetEducation(context.Context, *GetUserRequest) (*GetEducationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEducation not implemented")
+}
+func (UnimplementedUsersServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedUsersServiceServer) Validate(context.Context, *ValidateRequest) (*ValidateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Validate not implemented")
 }
 func (UnimplementedUsersServiceServer) mustEmbedUnimplementedUsersServiceServer() {}
 
@@ -536,6 +564,42 @@ func _UsersService_GetEducation_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UsersService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).Login(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/Login",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).Login(ctx, req.(*LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UsersService_Validate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ValidateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).Validate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/Validate",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).Validate(ctx, req.(*ValidateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UsersService_ServiceDesc is the grpc.ServiceDesc for UsersService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -602,6 +666,14 @@ var UsersService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetEducation",
 			Handler:    _UsersService_GetEducation_Handler,
+		},
+		{
+			MethodName: "Login",
+			Handler:    _UsersService_Login_Handler,
+		},
+		{
+			MethodName: "Validate",
+			Handler:    _UsersService_Validate_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
