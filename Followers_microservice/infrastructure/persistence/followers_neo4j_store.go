@@ -154,7 +154,7 @@ func (store *FollowersStore) Follow(followerId string, followedId string) (strin
 	defer unsafeClose(session)
 
 	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		currentTime := time.Now()
+		currentTime := neo4j.LocalDateTime(time.Now())
 		result, err := tx.Run(
 			"MERGE (followed:User {userId: $followedId}) "+
 				"ON CREATE SET followed.userId = $followedId "+
@@ -183,7 +183,7 @@ func (store *FollowersStore) FollowRequest(followerId string, followedId string)
 	defer unsafeClose(session)
 
 	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		currentTime := time.Now()
+		currentTime := neo4j.LocalDateTime(time.Now())
 		result, err := tx.Run(
 			"MERGE (followed:User {userId: $followedId}) "+
 				"ON CREATE SET followed.userId = $followedId "+
@@ -212,7 +212,7 @@ func (store *FollowersStore) ConfirmFollow(followerId string, followedId string)
 	defer unsafeClose(session)
 
 	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		currentTime := time.Now()
+		currentTime := neo4j.LocalDateTime(time.Now())
 		result, err := tx.Run(
 			"MATCH (followed:User {userId: $followedId}) "+
 				"MATCH (follower:User {userId: $followerId}) "+
