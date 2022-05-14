@@ -6,21 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="fa3f74b9-be4b-4973-94b2-f1b3f2d0a37f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/service/Impl/UserGrpcServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/java/com/example/usermicroservice/service/Impl/UserGrpcServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/User-microservice/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaMicroservices/common/src/main/proto/users.proto" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/common/src/main/proto/users.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/users/users.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/users/users.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/users/users.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/users/users.pb.gw.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/users/users.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/users/users.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/users/users_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/users/users_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.pb.gw.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers_grpc.pb.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../../Program Files/Go" />
+  <component name="GOROOT" url="file://D:/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -86,5 +83,16 @@
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/Followers_microservice/main.go</url>
+          <line>11</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -23,9 +23,9 @@ func (handler *FollowersHandler) GetFollows(ctx context.Context, request *follow
 	if err != nil {
 		return nil, err
 	}
-	responsePb := &followers.GetFollowsResponse{Followers: []*followers.Follower{}}
+	responsePb := &followers.GetFollowsResponse{Follows: []*followers.Follower{}}
 	for _, user := range response {
-		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Id: user.Id})
+		responsePb.Follows = append(responsePb.Follows, &followers.Follower{Id: user.Id})
 	}
 	return responsePb, nil
 }
@@ -49,9 +49,9 @@ func (handler *FollowersHandler) GetFollowRequests(ctx context.Context, request 
 	if err != nil {
 		return nil, err
 	}
-	responsePb := &followers.GetFollowRequestsResponse{Followers: []*followers.Follower{}}
+	responsePb := &followers.GetFollowRequestsResponse{FollowRequests: []*followers.Follower{}}
 	for _, user := range response {
-		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Id: user.Id})
+		responsePb.FollowRequests = append(responsePb.FollowRequests, &followers.Follower{Id: user.Id})
 	}
 	return responsePb, nil
 }
@@ -62,9 +62,9 @@ func (handler *FollowersHandler) GetFollowerRequests(ctx context.Context, reques
 	if err != nil {
 		return nil, err
 	}
-	responsePb := &followers.GetFollowerRequestsResponse{Followers: []*followers.Follower{}}
+	responsePb := &followers.GetFollowerRequestsResponse{FollowerRequests: []*followers.Follower{}}
 	for _, user := range response {
-		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Id: user.Id})
+		responsePb.FollowerRequests = append(responsePb.FollowerRequests, &followers.Follower{Id: user.Id})
 	}
 	return responsePb, nil
 }
