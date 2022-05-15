@@ -5,6 +5,7 @@ option go_package = "github.com/stojic19/XWS-TIM15/common/proto/followers";
 package followers;
 
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 
 service FollowersService{
   rpc Follow(FollowRequest) returns(FollowResponse){
@@ -123,6 +124,7 @@ message GetFollowerRequestsResponse{
 
 message Follower{
   string id = 1;
+  google.protobuf.Timestamp time = 2;
 }
 
 //protoc -I ./proto --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative --grpc-gateway_out=allow_delete_body=true:./proto --grpc-gateway_opt=paths=source_relative ./proto/followers/followers.proto

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/application"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type FollowersHandler struct {
@@ -25,7 +26,7 @@ func (handler *FollowersHandler) GetFollows(ctx context.Context, request *follow
 	}
 	responsePb := &followers.GetFollowsResponse{Follows: []*followers.Follower{}}
 	for _, user := range response {
-		responsePb.Follows = append(responsePb.Follows, &followers.Follower{Id: user.Id})
+		responsePb.Follows = append(responsePb.Follows, &followers.Follower{Id: user.Id, Time: timestamppb.New(user.TimeOfFollow)})
 	}
 	return responsePb, nil
 }
@@ -38,7 +39,7 @@ func (handler *FollowersHandler) GetFollowers(ctx context.Context, request *foll
 	}
 	responsePb := &followers.GetFollowersResponse{Followers: []*followers.Follower{}}
 	for _, user := range response {
-		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Id: user.Id})
+		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Id: user.Id, Time: timestamppb.New(user.TimeOfFollow)})
 	}
 	return responsePb, nil
 }
@@ -51,7 +52,7 @@ func (handler *FollowersHandler) GetFollowRequests(ctx context.Context, request 
 	}
 	responsePb := &followers.GetFollowRequestsResponse{FollowRequests: []*followers.Follower{}}
 	for _, user := range response {
-		responsePb.FollowRequests = append(responsePb.FollowRequests, &followers.Follower{Id: user.Id})
+		responsePb.FollowRequests = append(responsePb.FollowRequests, &followers.Follower{Id: user.Id, Time: timestamppb.New(user.TimeOfFollow)})
 	}
 	return responsePb, nil
 }
@@ -64,7 +65,7 @@ func (handler *FollowersHandler) GetFollowerRequests(ctx context.Context, reques
 	}
 	responsePb := &followers.GetFollowerRequestsResponse{FollowerRequests: []*followers.Follower{}}
 	for _, user := range response {
-		responsePb.FollowerRequests = append(responsePb.FollowerRequests, &followers.Follower{Id: user.Id})
+		responsePb.FollowerRequests = append(responsePb.FollowerRequests, &followers.Follower{Id: user.Id, Time: timestamppb.New(user.TimeOfFollow)})
 	}
 	return responsePb, nil
 }

@@ -1,9 +1,8 @@
 package domain
 
+import "time"
+
 type User struct {
-	Id               string
-	Following        []User
-	Followers        []User
-	FollowRequests   []User
-	FollowerRequests []User
+	Id           string
+	TimeOfFollow time.Time
 }
