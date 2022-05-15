@@ -5,12 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa3f74b9-be4b-4973-94b2-f1b3f2d0a37f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/infrastructure/api/posts_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/infrastructure/api/posts_grpc_api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/posts/posts.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/posts/posts.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/posts/posts.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/posts/posts.pb.gw.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/posts/posts.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/posts/posts.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/posts/posts_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/posts/posts_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
