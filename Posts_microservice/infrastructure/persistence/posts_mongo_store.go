@@ -41,6 +41,7 @@ func (store *PostsMongoStore) GetFromUser(id string) ([]*domain.Post, error) {
 }
 
 func (store *PostsMongoStore) Create(post *domain.Post) error {
+	post.Id = primitive.NewObjectID()
 	result, err := store.posts.InsertOne(context.TODO(), post)
 	if err != nil {
 		return err
