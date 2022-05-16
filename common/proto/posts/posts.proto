@@ -28,9 +28,9 @@ service PostsService{
       get: "/posts/postsFollowed/{id}"
     };
   }
-  rpc PutPost(PutPostRequest) returns(PutPostResponse){
+  rpc CreatePost(CreatePostRequest) returns(CreatePostResponse){
     option(google.api.http) = {
-      put: "/posts/posts"
+      post: "/posts/posts"
       body: "*"
     };
   }
@@ -98,11 +98,11 @@ message GetFollowedResponse{
   repeated Post posts = 1;
 }
 
-message PutPostRequest{
+message CreatePostRequest{
   NewPost newPost = 1;
 }
 
-message PutPostResponse{
+message CreatePostResponse{
   string message = 1;
 }
 

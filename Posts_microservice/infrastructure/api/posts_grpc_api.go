@@ -86,13 +86,13 @@ func (handler *PostsHandler) GetFollowed(ctx context.Context, request *posts.Get
 	return response, nil
 }
 
-func (handler *PostsHandler) PutPost(ctx context.Context, request *posts.PutPostRequest) (*posts.PutPostResponse, error) {
+func (handler *PostsHandler) CreatePost(ctx context.Context, request *posts.CreatePostRequest) (*posts.CreatePostResponse, error) {
 	post := mapNewPost(request.NewPost)
 	err := handler.service.CreatePost(post)
 	if err != nil {
 		return nil, err
 	}
-	return &posts.PutPostResponse{
+	return &posts.CreatePostResponse{
 		Message: "Post created successfully",
 	}, nil
 }

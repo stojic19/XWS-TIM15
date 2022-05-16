@@ -26,7 +26,7 @@ type PostsServiceClient interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	GetFromUser(ctx context.Context, in *GetFromUserRequest, opts ...grpc.CallOption) (*GetFromUserResponse, error)
 	GetFromFollowed(ctx context.Context, in *GetFollowedRequest, opts ...grpc.CallOption) (*GetFollowedResponse, error)
-	PutPost(ctx context.Context, in *PutPostRequest, opts ...grpc.CallOption) (*PutPostResponse, error)
+	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*CreatePostResponse, error)
 	LikePost(ctx context.Context, in *LikePostRequest, opts ...grpc.CallOption) (*LikePostResponse, error)
 	RemoveLike(ctx context.Context, in *RemoveLikeRequest, opts ...grpc.CallOption) (*RemoveLikeResponse, error)
 	DislikePost(ctx context.Context, in *DislikePostRequest, opts ...grpc.CallOption) (*DislikePostResponse, error)
@@ -78,9 +78,9 @@ func (c *postsServiceClient) GetFromFollowed(ctx context.Context, in *GetFollowe
 	return out, nil
 }
 
-func (c *postsServiceClient) PutPost(ctx context.Context, in *PutPostRequest, opts ...grpc.CallOption) (*PutPostResponse, error) {
-	out := new(PutPostResponse)
-	err := c.cc.Invoke(ctx, "/posts.PostsService/PutPost", in, out, opts...)
+func (c *postsServiceClient) CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*CreatePostResponse, error) {
+	out := new(CreatePostResponse)
+	err := c.cc.Invoke(ctx, "/posts.PostsService/CreatePost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -140,7 +140,7 @@ type PostsServiceServer interface {
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	GetFromUser(context.Context, *GetFromUserRequest) (*GetFromUserResponse, error)
 	GetFromFollowed(context.Context, *GetFollowedRequest) (*GetFollowedResponse, error)
-	PutPost(context.Context, *PutPostRequest) (*PutPostResponse, error)
+	CreatePost(context.Context, *CreatePostRequest) (*CreatePostResponse, error)
 	LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error)
 	RemoveLike(context.Context, *RemoveLikeRequest) (*RemoveLikeResponse, error)
 	DislikePost(context.Context, *DislikePostRequest) (*DislikePostResponse, error)
@@ -165,8 +165,8 @@ func (UnimplementedPostsServiceServer) GetFromUser(context.Context, *GetFromUser
 func (UnimplementedPostsServiceServer) GetFromFollowed(context.Context, *GetFollowedRequest) (*GetFollowedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFromFollowed not implemented")
 }
-func (UnimplementedPostsServiceServer) PutPost(context.Context, *PutPostRequest) (*PutPostResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method PutPost not implemented")
+func (UnimplementedPostsServiceServer) CreatePost(context.Context, *CreatePostRequest) (*CreatePostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
 }
 func (UnimplementedPostsServiceServer) LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LikePost not implemented")
@@ -268,20 +268,20 @@ func _PostsService_GetFromFollowed_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PostsService_PutPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PutPostRequest)
+func _PostsService_CreatePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePostRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PostsServiceServer).PutPost(ctx, in)
+		return srv.(PostsServiceServer).CreatePost(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/posts.PostsService/PutPost",
+		FullMethod: "/posts.PostsService/CreatePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PostsServiceServer).PutPost(ctx, req.(*PutPostRequest))
+		return srv.(PostsServiceServer).CreatePost(ctx, req.(*CreatePostRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -400,8 +400,8 @@ var PostsService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PostsService_GetFromFollowed_Handler,
 		},
 		{
-			MethodName: "PutPost",
-			Handler:    _PostsService_PutPost_Handler,
+			MethodName: "CreatePost",
+			Handler:    _PostsService_CreatePost_Handler,
 		},
 		{
 			MethodName: "LikePost",

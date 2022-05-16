@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/application"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type FollowersHandler struct {
@@ -23,9 +24,9 @@ func (handler *FollowersHandler) GetFollows(ctx context.Context, request *follow
 	if err != nil {
 		return nil, err
 	}
-	responsePb := &followers.GetFollowsResponse{Followers: []*followers.Follower{}}
+	responsePb := &followers.GetFollowsResponse{Follows: []*followers.Follower{}}
 	for _, user := range response {
-		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Id: user.Id})
+		responsePb.Follows = append(responsePb.Follows, &followers.Follower{Id: user.Id, Time: timestamppb.New(user.TimeOfFollow)})
 	}
 	return responsePb, nil
 }
@@ -38,7 +39,7 @@ func (handler *FollowersHandler) GetFollowers(ctx context.Context, request *foll
 	}
 	responsePb := &followers.GetFollowersResponse{Followers: []*followers.Follower{}}
 	for _, user := range response {
-		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Id: user.Id})
+		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Id: user.Id, Time: timestamppb.New(user.TimeOfFollow)})
 	}
 	return responsePb, nil
 }
@@ -49,9 +50,9 @@ func (handler *FollowersHandler) GetFollowRequests(ctx context.Context, request 
 	if err != nil {
 		return nil, err
 	}
-	responsePb := &followers.GetFollowRequestsResponse{Followers: []*followers.Follower{}}
+	responsePb := &followers.GetFollowRequestsResponse{FollowRequests: []*followers.Follower{}}
 	for _, user := range response {
-		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Id: user.Id})
+		responsePb.FollowRequests = append(responsePb.FollowRequests, &followers.Follower{Id: user.Id, Time: timestamppb.New(user.TimeOfFollow)})
 	}
 	return responsePb, nil
 }
@@ -62,9 +63,9 @@ func (handler *FollowersHandler) GetFollowerRequests(ctx context.Context, reques
 	if err != nil {
 		return nil, err
 	}
-	responsePb := &followers.GetFollowerRequestsResponse{Followers: []*followers.Follower{}}
+	responsePb := &followers.GetFollowerRequestsResponse{FollowerRequests: []*followers.Follower{}}
 	for _, user := range response {
-		responsePb.Followers = append(responsePb.Followers, &followers.Follower{Id: user.Id})
+		responsePb.FollowerRequests = append(responsePb.FollowerRequests, &followers.Follower{Id: user.Id, Time: timestamppb.New(user.TimeOfFollow)})
 	}
 	return responsePb, nil
 }

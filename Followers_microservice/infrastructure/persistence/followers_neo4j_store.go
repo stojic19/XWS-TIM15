@@ -31,7 +31,7 @@ func (store *FollowersStore) GetFollows(id string) ([]*domain.User, error) {
 
 	followers, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		records, err := tx.Run(
-			"MATCH (:User {id:$id})-[:FOLLOWING]->(followed:User) RETURN followed",
+			"MATCH (:User {userId:$id})-[follow:FOLLOWING]->(followed:User) RETURN followed, follow",
 			map[string]interface{}{"id": id})
 		if err != nil {
 			return nil, err
@@ -40,8 +40,10 @@ func (store *FollowersStore) GetFollows(id string) ([]*domain.User, error) {
 		for records.Next() {
 			record := records.Record()
 			id, _ := record.Get("followed")
+			relationship, _ := record.Get("follow")
 			user := domain.User{
-				Id: id.(dbtype.Node).Props["id"].(string),
+				Id:           id.(dbtype.Node).Props["userId"].(string),
+				TimeOfFollow: time.Time(relationship.(dbtype.Relationship).Props["timeStarted"].(dbtype.LocalDateTime)),
 			}
 			results = append(results, &user)
 		}
@@ -62,7 +64,7 @@ func (store *FollowersStore) GetFollowers(id string) ([]*domain.User, error) {
 
 	followers, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		records, err := tx.Run(
-			"MATCH (:User {id:$id})<-[:FOLLOWING]-(follower:User) RETURN follower",
+			"MATCH (:User {userId:$id})<-[follow:FOLLOWING]-(follower:User) RETURN follower, follow",
 			map[string]interface{}{"id": id})
 		if err != nil {
 			return nil, err
@@ -71,8 +73,10 @@ func (store *FollowersStore) GetFollowers(id string) ([]*domain.User, error) {
 		for records.Next() {
 			record := records.Record()
 			id, _ := record.Get("follower")
+			relationship, _ := record.Get("follow")
 			user := domain.User{
-				Id: id.(dbtype.Node).Props["id"].(string),
+				Id:           id.(dbtype.Node).Props["userId"].(string),
+				TimeOfFollow: time.Time(relationship.(dbtype.Relationship).Props["timeStarted"].(dbtype.LocalDateTime)),
 			}
 			results = append(results, &user)
 		}
@@ -93,7 +97,7 @@ func (store *FollowersStore) GetFollowRequests(id string) ([]*domain.User, error
 
 	followers, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		records, err := tx.Run(
-			"MATCH (:User {id:$id})-[:REQUESTING_FOLLOW]->(followed:User) RETURN followed",
+			"MATCH (:User {userId:$id})-[follow:REQUESTING_FOLLOW]->(followed:User) RETURN followed, follow",
 			map[string]interface{}{"id": id})
 		if err != nil {
 			return nil, err
@@ -102,8 +106,10 @@ func (store *FollowersStore) GetFollowRequests(id string) ([]*domain.User, error
 		for records.Next() {
 			record := records.Record()
 			id, _ := record.Get("followed")
+			relationship, _ := record.Get("follow")
 			user := domain.User{
-				Id: id.(dbtype.Node).Props["id"].(string),
+				Id:           id.(dbtype.Node).Props["userId"].(string),
+				TimeOfFollow: time.Time(relationship.(dbtype.Relationship).Props["timeSent"].(dbtype.LocalDateTime)),
 			}
 			results = append(results, &user)
 		}
@@ -124,7 +130,7 @@ func (store *FollowersStore) GetFollowerRequests(id string) ([]*domain.User, err
 
 	followers, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		records, err := tx.Run(
-			"MATCH (:User {id:$id})<-[:REQUESTING_FOLLOW]-(follower:User) RETURN follower",
+			"MATCH (:User {userId:$id})<-[follow:REQUESTING_FOLLOW]-(follower:User) RETURN follower, follow",
 			map[string]interface{}{"id": id})
 		if err != nil {
 			return nil, err
@@ -133,8 +139,10 @@ func (store *FollowersStore) GetFollowerRequests(id string) ([]*domain.User, err
 		for records.Next() {
 			record := records.Record()
 			id, _ := record.Get("follower")
+			relationship, _ := record.Get("follow")
 			user := domain.User{
-				Id: id.(dbtype.Node).Props["id"].(string),
+				Id:           id.(dbtype.Node).Props["userId"].(string),
+				TimeOfFollow: time.Time(relationship.(dbtype.Relationship).Props["timeSent"].(dbtype.LocalDateTime)),
 			}
 			results = append(results, &user)
 		}
@@ -154,12 +162,12 @@ func (store *FollowersStore) Follow(followerId string, followedId string) (strin
 	defer unsafeClose(session)
 
 	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		currentTime := time.Now()
+		currentTime := neo4j.LocalDateTime(time.Now())
 		result, err := tx.Run(
-			"MERGE (followed:User {username: $followedId}) "+
-				"ON CREATE SET followed.username = $followedId "+
-				"MERGE (follower:User {username: $followerId}) "+
-				"ON CREATE SET follower.username = $followerId "+
+			"MERGE (followed:User {userId: $followedId}) "+
+				"ON CREATE SET followed.userId = $followedId "+
+				"MERGE (follower:User {userId: $followerId}) "+
+				"ON CREATE SET follower.userId = $followerId "+
 				"MERGE (followed) <- [fol:FOLLOWING] - (follower) "+
 				"ON CREATE SET fol.timeStarted = $timeStarted",
 			map[string]interface{}{"followedId": followedId, "followerId": followerId,
@@ -183,12 +191,12 @@ func (store *FollowersStore) FollowRequest(followerId string, followedId string)
 	defer unsafeClose(session)
 
 	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		currentTime := time.Now()
+		currentTime := neo4j.LocalDateTime(time.Now())
 		result, err := tx.Run(
-			"MERGE (followed:User {username: $followedId}) "+
-				"ON CREATE SET followed.username = $followedId "+
-				"MERGE (follower:User {username: $followerId}) "+
-				"ON CREATE SET follower.username = $followerId "+
+			"MERGE (followed:User {userId: $followedId}) "+
+				"ON CREATE SET followed.userId = $followedId "+
+				"MERGE (follower:User {userId: $followerId}) "+
+				"ON CREATE SET follower.userId = $followerId "+
 				"MERGE (followed) <- [req:REQUESTING_FOLLOW] - (follower) "+
 				"ON CREATE SET req.timeSent = $timeSent",
 			map[string]interface{}{"followedId": followedId, "followerId": followerId,
@@ -212,10 +220,10 @@ func (store *FollowersStore) ConfirmFollow(followerId string, followedId string)
 	defer unsafeClose(session)
 
 	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
-		currentTime := time.Now()
+		currentTime := neo4j.LocalDateTime(time.Now())
 		result, err := tx.Run(
-			"MATCH (followed:User {username: $followedId}) "+
-				"MATCH (follower:User {username: $followerId}) "+
+			"MATCH (followed:User {userId: $followedId}) "+
+				"MATCH (follower:User {userId: $followerId}) "+
 				"MATCH (followed) <- [followRequest:REQUESTING_FOLLOW] - (follower) "+
 				"MERGE (followed) <- [fol:FOLLOWING] - (follower) "+
 				"ON CREATE SET fol.timeStarted = $timeStarted "+
@@ -242,8 +250,8 @@ func (store *FollowersStore) Unfollow(followerId string, followedId string) (str
 
 	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		result, err := tx.Run(
-			"MATCH (followed:User {username: $followedId}) "+
-				"MATCH (follower:User {username: $followerId}) "+
+			"MATCH (followed:User {userId: $followedId}) "+
+				"MATCH (follower:User {userId: $followerId}) "+
 				"MATCH (followed) <- [follow:FOLLOWING] - (follower) "+
 				"DELETE follow",
 			map[string]interface{}{"followedId": followedId, "followerId": followerId})
@@ -267,8 +275,8 @@ func (store *FollowersStore) RemoveFollowRequest(followerId string, followedId s
 
 	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		result, err := tx.Run(
-			"MATCH (followed:User {username: $followedId}) "+
-				"MATCH (follower:User {username: $followerId}) "+
+			"MATCH (followed:User {userId: $followedId}) "+
+				"MATCH (follower:User {userId: $followerId}) "+
 				"MATCH (followed) <- [followRequest:REQUESTING_FOLLOW] - (follower) "+
 				"DELETE followRequest",
 			map[string]interface{}{"followedId": followedId, "followerId": followerId})
