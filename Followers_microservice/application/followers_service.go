@@ -26,6 +26,9 @@ func (service *FollowersService) GetFollowRequests(id string) ([]*domain.User, e
 func (service *FollowersService) GetFollowerRequests(id string) ([]*domain.User, error) {
 	return service.store.GetFollowerRequests(id)
 }
+func (service *FollowersService) GetRelationship(followerId string, followedId string) (string, error) {
+	return service.store.GetRelationship(followerId, followedId)
+}
 func (service *FollowersService) Follow(followerId string, followedId string) (string, error) {
 	//kad se napravi profile service, ovde se pita da li je profil privatan
 	if strings.HasPrefix(followedId, "p") {

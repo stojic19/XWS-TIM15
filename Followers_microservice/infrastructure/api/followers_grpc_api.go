@@ -70,6 +70,18 @@ func (handler *FollowersHandler) GetFollowerRequests(ctx context.Context, reques
 	return responsePb, nil
 }
 
+func (handler *FollowersHandler) GetRelationship(ctx context.Context, request *followers.GetRelationshipRequest) (*followers.GetRelationshipResponse, error) {
+	followerId := request.FollowerId
+	followedId := request.FollowedId
+	response, err := handler.service.GetRelationship(followerId, followedId)
+	if err != nil {
+		return nil, err
+	}
+	responsePb := &followers.GetRelationshipResponse{}
+	responsePb.Relationship = response
+	return responsePb, nil
+}
+
 func (handler *FollowersHandler) ConfirmFollow(ctx context.Context, request *followers.ConfirmFollowRequest) (*followers.ConfirmFollowResponse, error) {
 	followerId := request.FollowerId
 	followedId := request.FollowedId

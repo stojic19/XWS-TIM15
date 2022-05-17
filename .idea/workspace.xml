@@ -5,15 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa3f74b9-be4b-4973-94b2-f1b3f2d0a37f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api_gateway/domain/model.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api_gateway/infrastructure/api/follower_handler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api_gateway/infrastructure/api/handler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api_gateway/infrastructure/services/client.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/application/followers_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/application/followers_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/domain/followers_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/domain/followers_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/infrastructure/persistence/followers_neo4j_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/infrastructure/persistence/followers_neo4j_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.pb.gw.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers_grpc.pb.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,9 +89,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build github.com/stojic19/XWS-TIM15/api_gateway" />
         <item itemvalue="Go Build.go build github.com/stojic19/XWS-TIM15/posts_microservice" />
-        <item itemvalue="Go Build.go build main.go" />
       </list>
     </recent_temporary>
   </component>

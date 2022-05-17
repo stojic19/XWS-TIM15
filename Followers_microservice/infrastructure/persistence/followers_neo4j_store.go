@@ -153,6 +153,33 @@ func (store *FollowersStore) GetFollowerRequests(id string) ([]*domain.User, err
 	}
 	return followers.([]*domain.User), nil
 }
+func (store *FollowersStore) GetRelationship(followerId string, followedId string) (string, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeRead,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	relationship, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		records, err := tx.Run(
+			"MATCH (:User {userId:$followedId})<-[relationship]-(:User {userId:$followerId}) RETURN type(relationship)",
+			map[string]interface{}{"followedId": followedId, "followerId": followerId})
+		if err != nil {
+			return nil, err
+		}
+		for records.Next() {
+			record := records.Record()
+			relationship := record.Values[0]
+			results := relationship
+			return results, nil
+		}
+		return "NO RELATIONSHIP", nil
+	})
+	if err != nil {
+		return "", err
+	}
+	return relationship.(string), nil
+}
 
 func (store *FollowersStore) Follow(followerId string, followedId string) (string, error) {
 	session := store.driver.NewSession(neo4j.SessionConfig{
