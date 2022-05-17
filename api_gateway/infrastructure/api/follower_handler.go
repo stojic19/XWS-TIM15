@@ -43,7 +43,7 @@ func (handler *FollowersHandler) Init(mux *runtime.ServeMux) {
 }
 
 func (handler *FollowersHandler) GetFollowersDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
-	userId, followersInfo, error := initialize(w, pathParams)
+	userId, followersInfo, error := initializeFollowers(w, pathParams)
 	if error {
 		return
 	}
@@ -58,11 +58,11 @@ func (handler *FollowersHandler) GetFollowersDetails(w http.ResponseWriter, r *h
 		handler.addFollowedRelationship(followerInfo, userId)
 	}
 
-	finish(w, err, followersInfo)
+	finishFollowers(w, err, followersInfo)
 }
 
 func (handler *FollowersHandler) GetFollowsDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
-	userId, followersInfo, error := initialize(w, pathParams)
+	userId, followersInfo, error := initializeFollowers(w, pathParams)
 	if error {
 		return
 	}
@@ -77,11 +77,11 @@ func (handler *FollowersHandler) GetFollowsDetails(w http.ResponseWriter, r *htt
 		handler.addFollowerRelationship(followerInfo, userId)
 	}
 
-	finish(w, err, followersInfo)
+	finishFollowers(w, err, followersInfo)
 }
 
 func (handler *FollowersHandler) GetFollowerRequestsDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
-	userId, followersInfo, error := initialize(w, pathParams)
+	userId, followersInfo, error := initializeFollowers(w, pathParams)
 	if error {
 		return
 	}
@@ -96,11 +96,11 @@ func (handler *FollowersHandler) GetFollowerRequestsDetails(w http.ResponseWrite
 		handler.addFollowedRelationship(followerInfo, userId)
 	}
 
-	finish(w, err, followersInfo)
+	finishFollowers(w, err, followersInfo)
 }
 
 func (handler *FollowersHandler) GetFollowRequestsDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
-	userId, followersInfo, error := initialize(w, pathParams)
+	userId, followersInfo, error := initializeFollowers(w, pathParams)
 	if error {
 		return
 	}
@@ -115,7 +115,7 @@ func (handler *FollowersHandler) GetFollowRequestsDetails(w http.ResponseWriter,
 		handler.addFollowerRelationship(followerInfo, userId)
 	}
 
-	finish(w, err, followersInfo)
+	finishFollowers(w, err, followersInfo)
 }
 
 func (handler *FollowersHandler) addFollowerInfo(followersInfo *domain.UserFollowerInfoList, id string) error {
@@ -211,7 +211,7 @@ func (handler *FollowersHandler) addFollowedRelationship(followedInfo *domain.Us
 	followedInfo.ReverseRelationship = relationship.Relationship
 }
 
-func initialize(w http.ResponseWriter, pathParams map[string]string) (string, *domain.UserFollowerInfoList, bool) {
+func initializeFollowers(w http.ResponseWriter, pathParams map[string]string) (string, *domain.UserFollowerInfoList, bool) {
 	id := pathParams["userId"]
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)
@@ -222,7 +222,7 @@ func initialize(w http.ResponseWriter, pathParams map[string]string) (string, *d
 	return id, followersInfo, false
 }
 
-func finish(w http.ResponseWriter, err error, followersInfo *domain.UserFollowerInfoList) {
+func finishFollowers(w http.ResponseWriter, err error, followersInfo *domain.UserFollowerInfoList) {
 	response, err := json.Marshal(followersInfo)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
