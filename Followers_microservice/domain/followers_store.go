@@ -5,6 +5,7 @@ type FollowersStore interface {
 	GetFollowers(id string) ([]*User, error)
 	GetFollowRequests(id string) ([]*User, error)
 	GetFollowerRequests(id string) ([]*User, error)
+	GetRelationship(followerId string, followedId string) (string, error)
 	Follow(followerId string, followedId string) (string, error)
 	FollowRequest(followerId string, followedId string) (string, error)
 	ConfirmFollow(followerId string, followedId string) (string, error)

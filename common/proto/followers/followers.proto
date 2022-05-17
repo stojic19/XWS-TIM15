@@ -52,6 +52,11 @@ service FollowersService{
       get: "/followers/followerRequests/{id}"
     };
   }
+  rpc GetRelationship(GetRelationshipRequest) returns(GetRelationshipResponse){
+    option(google.api.http) = {
+      get: "/followers/relationship/{followedId}/{followerId}"
+    };
+  }
 }
 
 message FollowRequest{
@@ -120,6 +125,15 @@ message GetFollowerRequestsRequest{
 
 message GetFollowerRequestsResponse{
   repeated Follower followerRequests = 1;
+}
+
+message GetRelationshipRequest{
+  string followerId = 1;
+  string followedId = 2;
+}
+
+message GetRelationshipResponse{
+  string relationship = 1;
 }
 
 message Follower{

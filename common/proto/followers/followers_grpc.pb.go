@@ -30,6 +30,7 @@ type FollowersServiceClient interface {
 	GetFollowers(ctx context.Context, in *GetFollowersRequest, opts ...grpc.CallOption) (*GetFollowersResponse, error)
 	GetFollowRequests(ctx context.Context, in *GetFollowRequestsRequest, opts ...grpc.CallOption) (*GetFollowRequestsResponse, error)
 	GetFollowerRequests(ctx context.Context, in *GetFollowerRequestsRequest, opts ...grpc.CallOption) (*GetFollowerRequestsResponse, error)
+	GetRelationship(ctx context.Context, in *GetRelationshipRequest, opts ...grpc.CallOption) (*GetRelationshipResponse, error)
 }
 
 type followersServiceClient struct {
@@ -112,6 +113,15 @@ func (c *followersServiceClient) GetFollowerRequests(ctx context.Context, in *Ge
 	return out, nil
 }
 
+func (c *followersServiceClient) GetRelationship(ctx context.Context, in *GetRelationshipRequest, opts ...grpc.CallOption) (*GetRelationshipResponse, error) {
+	out := new(GetRelationshipResponse)
+	err := c.cc.Invoke(ctx, "/followers.FollowersService/GetRelationship", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FollowersServiceServer is the server API for FollowersService service.
 // All implementations must embed UnimplementedFollowersServiceServer
 // for forward compatibility
@@ -124,6 +134,7 @@ type FollowersServiceServer interface {
 	GetFollowers(context.Context, *GetFollowersRequest) (*GetFollowersResponse, error)
 	GetFollowRequests(context.Context, *GetFollowRequestsRequest) (*GetFollowRequestsResponse, error)
 	GetFollowerRequests(context.Context, *GetFollowerRequestsRequest) (*GetFollowerRequestsResponse, error)
+	GetRelationship(context.Context, *GetRelationshipRequest) (*GetRelationshipResponse, error)
 	mustEmbedUnimplementedFollowersServiceServer()
 }
 
@@ -154,6 +165,9 @@ func (UnimplementedFollowersServiceServer) GetFollowRequests(context.Context, *G
 }
 func (UnimplementedFollowersServiceServer) GetFollowerRequests(context.Context, *GetFollowerRequestsRequest) (*GetFollowerRequestsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFollowerRequests not implemented")
+}
+func (UnimplementedFollowersServiceServer) GetRelationship(context.Context, *GetRelationshipRequest) (*GetRelationshipResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRelationship not implemented")
 }
 func (UnimplementedFollowersServiceServer) mustEmbedUnimplementedFollowersServiceServer() {}
 
@@ -312,6 +326,24 @@ func _FollowersService_GetFollowerRequests_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FollowersService_GetRelationship_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRelationshipRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FollowersServiceServer).GetRelationship(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/followers.FollowersService/GetRelationship",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FollowersServiceServer).GetRelationship(ctx, req.(*GetRelationshipRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FollowersService_ServiceDesc is the grpc.ServiceDesc for FollowersService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -350,6 +382,10 @@ var FollowersService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFollowerRequests",
 			Handler:    _FollowersService_GetFollowerRequests_Handler,
+		},
+		{
+			MethodName: "GetRelationship",
+			Handler:    _FollowersService_GetRelationship_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

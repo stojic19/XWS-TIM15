@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/stojic19/XWS-TIM15/api_gateway/infrastructure/api"
 	"github.com/stojic19/XWS-TIM15/api_gateway/startup/config"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
@@ -25,16 +26,19 @@ func NewServer(config *config.Config) *Server {
 		mux:    runtime.NewServeMux(),
 	}
 	server.initHandlers()
+	server.initCustomHandlers()
 	return server
 }
 
 func (server *Server) initHandlers() {
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
+	fmt.Printf("%s:%s\n", server.config.FollowersHost, server.config.FollowersPort)
 	followersEndpoint := fmt.Sprintf("%s:%s", server.config.FollowersHost, server.config.FollowersPort)
 	err := followers.RegisterFollowersServiceHandlerFromEndpoint(context.TODO(), server.mux, followersEndpoint, opts)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("%s:%s\n", server.config.PostsHost, server.config.PostsPort)
 	postsEndpoint := fmt.Sprintf("%s:%s", server.config.PostsHost, server.config.PostsPort)
 	err = posts.RegisterPostsServiceHandlerFromEndpoint(context.TODO(), server.mux, postsEndpoint, opts)
 	if err != nil {
@@ -46,6 +50,13 @@ func (server *Server) initHandlers() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func (server *Server) initCustomHandlers() {
+	followersEndpoint := fmt.Sprintf("%s:%s", server.config.FollowersHost, server.config.FollowersPort)
+	usersEndpoint := fmt.Sprintf("%s:%s", server.config.UsersHost, server.config.UsersPort)
+	followersHandler := api.NewFollowersHandler(followersEndpoint, usersEndpoint)
+	followersHandler.Init(server.mux)
 }
 
 func (server *Server) Start() {
