@@ -7,9 +7,10 @@ type UserFollowerInfoList struct {
 }
 
 type UserFollowerInfo struct {
-	Id        string
-	Username  string
-	Name      string
-	Gender    string
-	StartDate time.Time
+	Id                  string
+	Username            string
+	Name                string
+	Gender              string
+	StartDate           time.Time
+	ReverseRelationship string
 }

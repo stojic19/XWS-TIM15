@@ -55,6 +55,7 @@ func (handler *FollowersHandler) GetFollowersDetails(w http.ResponseWriter, r *h
 	}
 	for _, followerInfo := range followersInfo.Users {
 		handler.addUserInfo(followerInfo)
+		handler.addFollowedRelationship(followerInfo, userId)
 	}
 
 	finish(w, err, followersInfo)
@@ -73,6 +74,7 @@ func (handler *FollowersHandler) GetFollowsDetails(w http.ResponseWriter, r *htt
 	}
 	for _, followerInfo := range followersInfo.Users {
 		handler.addUserInfo(followerInfo)
+		handler.addFollowerRelationship(followerInfo, userId)
 	}
 
 	finish(w, err, followersInfo)
@@ -91,6 +93,7 @@ func (handler *FollowersHandler) GetFollowerRequestsDetails(w http.ResponseWrite
 	}
 	for _, followerInfo := range followersInfo.Users {
 		handler.addUserInfo(followerInfo)
+		handler.addFollowedRelationship(followerInfo, userId)
 	}
 
 	finish(w, err, followersInfo)
@@ -109,6 +112,7 @@ func (handler *FollowersHandler) GetFollowRequestsDetails(w http.ResponseWriter,
 	}
 	for _, followerInfo := range followersInfo.Users {
 		handler.addUserInfo(followerInfo)
+		handler.addFollowerRelationship(followerInfo, userId)
 	}
 
 	finish(w, err, followersInfo)
@@ -187,6 +191,24 @@ func (handler *FollowersHandler) addUserInfo(followerInfo *domain.UserFollowerIn
 	followerInfo.Username = userInfo.User.Username
 	followerInfo.Name = userInfo.User.Name
 	followerInfo.Gender = userInfo.User.Gender
+}
+
+func (handler *FollowersHandler) addFollowerRelationship(followerInfo *domain.UserFollowerInfo, mainId string) {
+	followersClient := services.NewFollowersClient(handler.followersClientAddress)
+	relationship, err := followersClient.GetRelationship(context.TODO(), &followers.GetRelationshipRequest{FollowedId: mainId, FollowerId: followerInfo.Id})
+	if err != nil {
+		return
+	}
+	followerInfo.ReverseRelationship = relationship.Relationship
+}
+
+func (handler *FollowersHandler) addFollowedRelationship(followedInfo *domain.UserFollowerInfo, mainId string) {
+	followersClient := services.NewFollowersClient(handler.followersClientAddress)
+	relationship, err := followersClient.GetRelationship(context.TODO(), &followers.GetRelationshipRequest{FollowedId: followedInfo.Id, FollowerId: mainId})
+	if err != nil {
+		return
+	}
+	followedInfo.ReverseRelationship = relationship.Relationship
 }
 
 func initialize(w http.ResponseWriter, pathParams map[string]string) (string, *domain.UserFollowerInfoList, bool) {
