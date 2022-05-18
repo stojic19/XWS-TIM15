@@ -55,8 +55,11 @@ func (server *Server) initHandlers() {
 func (server *Server) initCustomHandlers() {
 	followersEndpoint := fmt.Sprintf("%s:%s", server.config.FollowersHost, server.config.FollowersPort)
 	usersEndpoint := fmt.Sprintf("%s:%s", server.config.UsersHost, server.config.UsersPort)
+	postsEndpoint := fmt.Sprintf("%s:%s", server.config.PostsHost, server.config.PostsPort)
 	followersHandler := api.NewFollowersHandler(followersEndpoint, usersEndpoint)
 	followersHandler.Init(server.mux)
+	postsHandler := api.NewPostsHandler(postsEndpoint, followersEndpoint, usersEndpoint)
+	postsHandler.Init(server.mux)
 }
 
 func (server *Server) Start() {
