@@ -189,8 +189,9 @@ func mapPost(post *domain.Post) *posts.Post {
 		}
 		currentCommentPb := &posts.Comment{
 			//Id:      comment.Id.String(),
-			Owner:   commentOwnerPb,
-			Content: comment.Content,
+			Owner:      commentOwnerPb,
+			Content:    comment.Content,
+			CreateTime: timestamppb.New(comment.CreateTime),
 		}
 		postPb.Comments = append(postPb.Comments, currentCommentPb)
 	}
