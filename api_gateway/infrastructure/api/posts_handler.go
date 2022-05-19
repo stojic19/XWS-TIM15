@@ -157,7 +157,7 @@ func (handler *PostsHandler) addPostsFromFollows(postsInfo *domain.PostUsersInfo
 }
 
 func (handler *PostsHandler) addPost(postInfo *domain.PostUsersInfo, postId string) error {
-	postsClient := services.NewPostsClient(handler.usersClientAddress)
+	postsClient := services.NewPostsClient(handler.postsClientAddress)
 	postResponse, err := postsClient.Get(context.TODO(), &posts.GetRequest{Id: postId})
 	if err != nil {
 		return err
@@ -264,7 +264,7 @@ func initializePostsWithParam(w http.ResponseWriter, pathParams map[string]strin
 }
 
 func initializePost(w http.ResponseWriter, pathParams map[string]string) (string, *domain.PostUsersInfo, bool) {
-	id := pathParams["userId"]
+	id := pathParams["postId"]
 	if id == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		return "", nil, true

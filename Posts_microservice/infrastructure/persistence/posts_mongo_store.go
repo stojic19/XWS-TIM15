@@ -31,7 +31,7 @@ func (store *PostsMongoStore) GetAll() ([]*domain.Post, error) {
 }
 
 func (store *PostsMongoStore) Get(id primitive.ObjectID) (*domain.Post, error) {
-	filter := bson.M{"id": id}
+	filter := bson.M{"_id": id}
 	return store.filterOne(filter)
 }
 

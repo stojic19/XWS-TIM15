@@ -69,7 +69,7 @@ func (handler *PostsHandler) GetFromUser(ctx context.Context, request *posts.Get
 	return response, nil
 }
 
-func (handler *PostsHandler) GetFollowed(ctx context.Context, request *posts.GetFollowedRequest) (*posts.GetFollowedResponse, error) {
+func (handler *PostsHandler) GetFromFollowed(ctx context.Context, request *posts.GetFollowedRequest) (*posts.GetFollowedResponse, error) {
 	id := request.Id
 	// treba promeniti na one koje user prati
 	returnPosts, err := handler.service.GetFromUser(id)
