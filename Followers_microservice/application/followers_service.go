@@ -2,7 +2,6 @@ package application
 
 import (
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/domain"
-	"strings"
 )
 
 type FollowersService struct {
@@ -30,11 +29,10 @@ func (service *FollowersService) GetRelationship(followerId string, followedId s
 	return service.store.GetRelationship(followerId, followedId)
 }
 func (service *FollowersService) Follow(followerId string, followedId string) (string, error) {
-	//kad se napravi profile service, ovde se pita da li je profil privatan
-	if strings.HasPrefix(followedId, "p") {
-		return service.store.FollowRequest(followerId, followedId)
-	}
 	return service.store.Follow(followerId, followedId)
+}
+func (service *FollowersService) FollowRequest(followerId string, followedId string) (string, error) {
+	return service.store.FollowRequest(followerId, followedId)
 }
 func (service *FollowersService) ConfirmFollow(followerId string, followedId string) (string, error) {
 	return service.store.ConfirmFollow(followerId, followedId)
