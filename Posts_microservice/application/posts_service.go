@@ -27,6 +27,10 @@ func (service *PostsService) GetFromUser(id string) ([]*domain.Post, error) {
 	return service.store.GetFromUser(id)
 }
 
+func (service *PostsService) GetFromUsers(ids []string) ([]*domain.Post, error) {
+	return service.store.GetFromUsers(ids)
+}
+
 func (service *PostsService) CreatePost(post *domain.Post) error {
 	return service.store.Create(post)
 }
