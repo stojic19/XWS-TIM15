@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using AgentApplication.API.Dto;
 using AgentApplication.ClassLib.Database.Infrastructure;
 using AgentApplication.ClassLib.Database.Repository;
+using AgentApplication.ClassLib.Database.Repository.Enums;
 using AgentApplication.ClassLib.Model;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +35,7 @@ namespace AgentApplication.API.Controllers
         [HttpGet("{id:guid}")]
         public IActionResult GetById(Guid id)
         {
-            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetById(id));
+            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetById(id, FetchType.Eager));
         }
 
         [HttpPost]

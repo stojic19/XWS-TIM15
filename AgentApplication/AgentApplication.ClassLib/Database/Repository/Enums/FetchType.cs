@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AgentApplication.ClassLib.Model
+namespace AgentApplication.ClassLib.Database.Repository.Enums
 {
-    public class Company : PersistentEntity
+    public enum FetchType
     {
-        public string Name { get; set; }
+        Lazy,
+        Eager
     }
 }

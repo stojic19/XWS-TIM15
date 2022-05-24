@@ -14,6 +14,7 @@ namespace AgentApplication.ClassLib.Database.EfStructures
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+
         }
 
     }

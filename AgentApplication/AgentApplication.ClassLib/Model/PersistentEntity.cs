@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AgentApplication.ClassLib.Model
 {
-    public class Company : PersistentEntity
+    public abstract class PersistentEntity
     {
-        public string Name { get; set; }
+        public Guid Id { get; set; }
     }
 }

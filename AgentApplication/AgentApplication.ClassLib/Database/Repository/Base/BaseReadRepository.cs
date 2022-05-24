@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AgentApplication.ClassLib.Database.EfStructures;
+using AgentApplication.ClassLib.Database.Repository.Enums;
+using AgentApplication.ClassLib.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace AgentApplication.ClassLib.Database.Repository.Base
 {
-    public class BaseReadRepository<TKey, TEntity> : IBaseReadRepository<TKey, TEntity> where TEntity : class, new()
+    public class BaseReadRepository<TKey, TEntity> : IBaseReadRepository<TKey, TEntity> where TEntity : PersistentEntity, new()
     {
         private readonly AppDbContext _context;
 
@@ -17,9 +19,22 @@ namespace AgentApplication.ClassLib.Database.Repository.Base
             _context = context;
         }
 
-        public TEntity GetById(TKey id)
+        public TEntity GetById(TKey id, FetchType fetchType = FetchType.Lazy)
         {
-            return _context.Set<TEntity>().Find(id);
+            var set = GetAll();
+            IQueryable<TEntity> query = null;
+            if (fetchType == FetchType.Eager)
+            {
+                var properties = typeof(TEntity).GetProperties();
+                properties.ToList().ForEach(p =>
+                {
+                    if (p.PropertyType.BaseType.Equals(typeof(PersistentEntity)))
+                    {
+                        query = set.Include(p.Name);
+                    }
+                });
+            }
+            return set.Find(id);
         }
 
         public DbSet<TEntity> GetAll()

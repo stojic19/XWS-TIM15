@@ -12,17 +12,21 @@ namespace AgentApplication.ClassLib.Database.EfStructures
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            var connectionString = Environment.GetEnvironmentVariable("AGENT_APPLICATION_DB_CONNECTION_STRING");
-            optionsBuilder.UseNpgsql(connectionString);
+            var optionsBuilder = SetupOptions();
             return new AppDbContext(optionsBuilder.Options);
         }
         public static DbContextOptions<AppDbContext> GetOptions()
         {
+            var optionsBuilder = SetupOptions();
+            return optionsBuilder.Options;
+        }
+
+        private static DbContextOptionsBuilder<AppDbContext> SetupOptions()
+        {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             var connectionString = Environment.GetEnvironmentVariable("AGENT_APPLICATION_DB_CONNECTION_STRING");
             optionsBuilder.UseNpgsql(connectionString);
-            return optionsBuilder.Options;
+            return optionsBuilder;
         }
     }
 }

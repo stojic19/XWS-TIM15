@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AgentApplication.ClassLib.Database.EfStructures;
+using AgentApplication.ClassLib.Model;
 
 namespace AgentApplication.ClassLib.Database.Repository.Base
 {
-    public class BaseWriteRepository<TEntity> : IBaseWriteRepository<TEntity> where TEntity : class, new()
+    public class BaseWriteRepository<TEntity> : IBaseWriteRepository<TEntity> where TEntity : PersistentEntity, new()
     {
         private readonly AppDbContext _context;
 
