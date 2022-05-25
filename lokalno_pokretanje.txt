@@ -10,6 +10,7 @@ NEO4J_DATABASE=neo4j
 NEO4J_PASSWORD=password
 NEO4J_USER=neo4j
 NEO4J_VERSION=4
+AGENT_APPLICATION_DB_CONNECTION_STRING = Host=localhost;Database=AgentApplication;Username=postgres;Password=root
 
 Ko koristi docker desktop...postoji neki problem pri menjanju vrednosti varijabli u .env fajlu, 
 nisam jos pronasao resenje osim da se vrednosti hardkoduju u docker-compose

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32414.318
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgentApplication.API", "AgentApplication.API\AgentApplication.API.csproj", "{ABFE23EF-23A8-40FC-AA39-A8CE030310A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgentApplication.ClassLib", "AgentApplication.ClassLib\AgentApplication.ClassLib.csproj", "{7401BF3E-3496-4713-B079-BA6FFB5C7CCD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ABFE23EF-23A8-40FC-AA39-A8CE030310A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABFE23EF-23A8-40FC-AA39-A8CE030310A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABFE23EF-23A8-40FC-AA39-A8CE030310A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABFE23EF-23A8-40FC-AA39-A8CE030310A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7401BF3E-3496-4713-B079-BA6FFB5C7CCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7401BF3E-3496-4713-B079-BA6FFB5C7CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7401BF3E-3496-4713-B079-BA6FFB5C7CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7401BF3E-3496-4713-B079-BA6FFB5C7CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5E1D6710-FAA4-4020-B775-130BD216B27D}
+	EndGlobalSection
+EndGlobal
