@@ -3,18 +3,22 @@ package api
 import (
 	"context"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/application"
+	"github.com/stojic19/XWS-TIM15/Followers_microservice/infrastructure/services"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
+	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type FollowersHandler struct {
 	followers.UnimplementedFollowersServiceServer
-	service *application.FollowersService
+	service            *application.FollowersService
+	usersClientAddress string
 }
 
-func NewFollowersHandler(service *application.FollowersService) *FollowersHandler {
+func NewFollowersHandler(service *application.FollowersService, usersEndpoint string) *FollowersHandler {
 	return &FollowersHandler{
-		service: service,
+		service:            service,
+		usersClientAddress: usersEndpoint,
 	}
 }
 
@@ -96,6 +100,19 @@ func (handler *FollowersHandler) ConfirmFollow(ctx context.Context, request *fol
 func (handler *FollowersHandler) Follow(ctx context.Context, request *followers.FollowRequest) (*followers.FollowResponse, error) {
 	followerId := request.FollowerId
 	followedId := request.FollowedId
+	userClient := services.NewUsersClient(handler.usersClientAddress)
+	userResponse, err := userClient.GetUser(context.TODO(), &users.GetUserRequest{Id: followedId})
+	if err != nil {
+		return nil, err
+	}
+	if userResponse.User.IsPrivate {
+		response, err := handler.service.FollowRequest(followerId, followedId)
+		if err != nil {
+			return nil, err
+		}
+		responsePb := &followers.FollowResponse{Response: response}
+		return responsePb, nil
+	}
 	response, err := handler.service.Follow(followerId, followedId)
 	if err != nil {
 		return nil, err

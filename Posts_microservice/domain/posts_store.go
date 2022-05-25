@@ -7,6 +7,7 @@ import (
 type PostsStore interface {
 	GetAll() ([]*Post, error)
 	GetFromUser(string) ([]*Post, error)
+	GetFromUsers([]string) ([]*Post, error)
 	Get(primitive.ObjectID) (*Post, error)
 	Create(*Post) error
 	LikePost(primitive.ObjectID, *User) error

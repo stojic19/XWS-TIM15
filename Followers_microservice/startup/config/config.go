@@ -12,6 +12,8 @@ type Config struct {
 	DbDatabase     string
 	DbNeo4jVersion string
 	DbPort         string
+	UsersHost      string
+	UsersPort      string
 }
 
 func NewConfig() *Config {
@@ -23,6 +25,8 @@ func NewConfig() *Config {
 		DbDatabase:     LookupEnvOrGetDefault("NEO4J_DATABASE", "neo4j"),
 		DbPort:         LookupEnvOrGetDefault("FOLLOWERS_DB_PORT", "7687"),
 		DbNeo4jVersion: LookupEnvOrGetDefault("NEO4J_VERSION", "4"),
+		UsersHost:      LookupEnvOrGetDefault("USERS_SERVICE_HOST", "localhost"),
+		UsersPort:      LookupEnvOrGetDefault("USERS_PORT", "9090"),
 	}
 }
 

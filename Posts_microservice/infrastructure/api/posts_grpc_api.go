@@ -2,9 +2,11 @@ package api
 
 import (
 	"context"
+	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/application"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/domain"
+	"github.com/stojic19/XWS-TIM15/posts_microservice/infrastructure/services"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
@@ -12,12 +14,14 @@ import (
 
 type PostsHandler struct {
 	posts.UnimplementedPostsServiceServer
-	service *application.PostsService
+	service                *application.PostsService
+	followersClientAddress string
 }
 
-func NewPostsHandler(service *application.PostsService) *PostsHandler {
+func NewPostsHandler(service *application.PostsService, followersClientAddress string) *PostsHandler {
 	return &PostsHandler{
-		service: service,
+		service:                service,
+		followersClientAddress: followersClientAddress,
 	}
 }
 
@@ -71,8 +75,13 @@ func (handler *PostsHandler) GetFromUser(ctx context.Context, request *posts.Get
 
 func (handler *PostsHandler) GetFromFollowed(ctx context.Context, request *posts.GetFollowedRequest) (*posts.GetFollowedResponse, error) {
 	id := request.Id
-	// treba promeniti na one koje user prati
-	returnPosts, err := handler.service.GetFromUser(id)
+	followsClient := services.NewFollowersClient(handler.followersClientAddress)
+	followsResponse, err := followsClient.GetFollows(context.TODO(), &followers.GetFollowsRequest{Id: id})
+	var followIds []string
+	for _, follow := range followsResponse.Follows {
+		followIds = append(followIds, follow.Id)
+	}
+	returnPosts, err := handler.service.GetFromUsers(followIds)
 	if err != nil {
 		return nil, err
 	}

@@ -74,7 +74,8 @@ func (server *Server) initFollowersService(store domain.FollowersStore) *applica
 }
 
 func (server *Server) initFollowersHandler(followersService *application.FollowersService) *api.FollowersHandler {
-	return api.NewFollowersHandler(followersService)
+	usersEndpoint := fmt.Sprintf("%s:%s", server.config.UsersHost, server.config.UsersPort)
+	return api.NewFollowersHandler(followersService, usersEndpoint)
 }
 
 func (server *Server) startGrpcServer(followersHandler *api.FollowersHandler) {
