@@ -8,6 +8,7 @@ using AgentApplication.ClassLib.Database.Infrastructure;
 using AgentApplication.ClassLib.Database.Repository;
 using AgentApplication.ClassLib.Database.Repository.Enums;
 using AgentApplication.ClassLib.Model;
+using AgentApplication.ClassLib.Model.Enumerations;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,11 @@ namespace AgentApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompaniesController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        public CompaniesController(IUnitOfWork uow, IMapper mapper)
+        public UsersController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
             _mapper = mapper;
@@ -29,28 +30,28 @@ namespace AgentApplication.API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetAll());
+            return Ok(_uow.GetRepository<IUserReadRepository>().GetAll());
         }
 
         [HttpGet("{id:guid}")]
         public IActionResult GetById(Guid id)
         {
-            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetById(id, FetchType.Eager));
+            return Ok(_uow.GetRepository<IUserReadRepository>().GetById(id, FetchType.Eager));
         }
 
         [HttpPost]
-        public IActionResult PostCompany(PostCompanyDto dto)
+        public IActionResult PostUser(PostUserDto dto)
         {
-            Company company = _mapper.Map<Company>(dto);
-            company.Registered = false;
-            company.TimeOfCreation = DateTime.Now;
-            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Add(company));
+            User user = _mapper.Map<User>(dto);
+            user.TimeOfRegistration = DateTime.Now;
+            user.Role = Role.Regular;
+            return Ok(_uow.GetRepository<IUserWriteRepository>().Add(user));
         }
 
         [HttpPut]
-        public IActionResult UpdateCompany(PutCompanyDto dto)
+        public IActionResult UpdateUser(PutUserDto dto)
         {
-            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(_mapper.Map<Company>(dto)));
+            return Ok(_uow.GetRepository<IUserWriteRepository>().Update(_mapper.Map<User>(dto)));
         }
     }
 }

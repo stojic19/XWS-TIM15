@@ -16,11 +16,11 @@ namespace AgentApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompaniesController : ControllerBase
+    public class CommentsController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        public CompaniesController(IUnitOfWork uow, IMapper mapper)
+        public CommentsController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
             _mapper = mapper;
@@ -29,28 +29,27 @@ namespace AgentApplication.API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetAll());
+            return Ok(_uow.GetRepository<ICommentReadRepository>().GetAll());
         }
 
         [HttpGet("{id:guid}")]
         public IActionResult GetById(Guid id)
         {
-            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetById(id, FetchType.Eager));
+            return Ok(_uow.GetRepository<ICommentReadRepository>().GetById(id, FetchType.Eager));
         }
 
         [HttpPost]
-        public IActionResult PostCompany(PostCompanyDto dto)
+        public IActionResult PostComment(PostCompanyDto dto)
         {
-            Company company = _mapper.Map<Company>(dto);
-            company.Registered = false;
-            company.TimeOfCreation = DateTime.Now;
-            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Add(company));
+            Comment comment = _mapper.Map<Comment>(dto);
+            comment.TimeOfCreation = DateTime.Now;
+            return Ok(_uow.GetRepository<ICommentWriteRepository>().Add(comment));
         }
 
         [HttpPut]
-        public IActionResult UpdateCompany(PutCompanyDto dto)
+        public IActionResult UpdateComment(PutCompanyDto dto)
         {
-            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(_mapper.Map<Company>(dto)));
+            return Ok(_uow.GetRepository<ICommentWriteRepository>().Update(_mapper.Map<Comment>(dto)));
         }
     }
 }

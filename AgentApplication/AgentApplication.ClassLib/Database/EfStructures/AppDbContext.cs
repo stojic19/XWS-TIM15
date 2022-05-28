@@ -11,6 +11,10 @@ namespace AgentApplication.ClassLib.Database.EfStructures
     public class AppDbContext : DbContext
     {
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Grade> Grades { get; set; }
+        public DbSet<JobOffer> JobOffers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

@@ -16,11 +16,11 @@ namespace AgentApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompaniesController : ControllerBase
+    public class GradesController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        public CompaniesController(IUnitOfWork uow, IMapper mapper)
+        public GradesController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
             _mapper = mapper;
@@ -29,28 +29,27 @@ namespace AgentApplication.API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetAll());
+            return Ok(_uow.GetRepository<IGradeReadRepository>().GetAll());
         }
 
         [HttpGet("{id:guid}")]
         public IActionResult GetById(Guid id)
         {
-            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetById(id, FetchType.Eager));
+            return Ok(_uow.GetRepository<IGradeReadRepository>().GetById(id, FetchType.Eager));
         }
 
         [HttpPost]
-        public IActionResult PostCompany(PostCompanyDto dto)
+        public IActionResult PostGrade(PostGradeDto dto)
         {
-            Company company = _mapper.Map<Company>(dto);
-            company.Registered = false;
-            company.TimeOfCreation = DateTime.Now;
-            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Add(company));
+            Grade grade = _mapper.Map<Grade>(dto);
+            grade.TimeOfCreation = DateTime.Now;
+            return Ok(_uow.GetRepository<IGradeWriteRepository>().Add(grade));
         }
 
         [HttpPut]
-        public IActionResult UpdateCompany(PutCompanyDto dto)
+        public IActionResult UpdateGrade(PutGradeDto dto)
         {
-            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(_mapper.Map<Company>(dto)));
+            return Ok(_uow.GetRepository<IGradeWriteRepository>().Update(_mapper.Map<Grade>(dto)));
         }
     }
 }

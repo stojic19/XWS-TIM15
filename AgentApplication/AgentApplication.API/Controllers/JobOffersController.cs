@@ -16,11 +16,11 @@ namespace AgentApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompaniesController : ControllerBase
+    public class JobOffersController : ControllerBase
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        public CompaniesController(IUnitOfWork uow, IMapper mapper)
+        public JobOffersController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
             _mapper = mapper;
@@ -29,28 +29,28 @@ namespace AgentApplication.API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetAll());
+            return Ok(_uow.GetRepository<IJobOfferReadRepository>().GetAll());
         }
 
         [HttpGet("{id:guid}")]
         public IActionResult GetById(Guid id)
         {
-            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetById(id, FetchType.Eager));
+            return Ok(_uow.GetRepository<IJobOfferReadRepository>().GetById(id, FetchType.Eager));
         }
 
         [HttpPost]
-        public IActionResult PostCompany(PostCompanyDto dto)
+        public IActionResult PostJobOffer(PostJobOfferDto dto)
         {
-            Company company = _mapper.Map<Company>(dto);
-            company.Registered = false;
-            company.TimeOfCreation = DateTime.Now;
-            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Add(company));
+            JobOffer jobOffer = _mapper.Map<JobOffer>(dto);
+            jobOffer.TimeOfCreation = DateTime.Now;
+            jobOffer.IsActive = false;
+            return Ok(_uow.GetRepository<IJobOfferWriteRepository>().Add(jobOffer));
         }
 
         [HttpPut]
-        public IActionResult UpdateCompany(PutCompanyDto dto)
+        public IActionResult UpdateJobOffer(PutJobOfferDto dto)
         {
-            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(_mapper.Map<Company>(dto)));
+            return Ok(_uow.GetRepository<IJobOfferWriteRepository>().Update(_mapper.Map<JobOffer>(dto)));
         }
     }
 }

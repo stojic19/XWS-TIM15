@@ -4,12 +4,12 @@ using AutoMapper;
 
 namespace AgentApplication.API.AutoMapperProfiles
 {
-    public class CompanyProfile : Profile
+    public class UserProfile : Profile
     {
-        public CompanyProfile()
+        public UserProfile()
         {
-            CreateMap<PostCompanyDto, Company>();
-            CreateMap<PutCompanyDto, Company>();
+            CreateMap<PostUserDto, User>();
+            CreateMap<PutUserDto, User>();
         }
     }
 }
