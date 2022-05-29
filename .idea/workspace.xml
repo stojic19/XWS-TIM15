@@ -5,20 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa3f74b9-be4b-4973-94b2-f1b3f2d0a37f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Job_Offers_microservice/application/job_offers_service.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Job_Offers_microservice/domain/job_offers_store.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Job_Offers_microservice/domain/model.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/persistence/client.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/persistence/job_offers_mongo_store.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/services/client.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Job_Offers_microservice/startup/config/config.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Job_Offers_microservice/startup/server.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/application/posts_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/application/posts_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/domain/posts_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/domain/posts_store.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/infrastructure/api/posts_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/infrastructure/api/posts_grpc_api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/infrastructure/persistence/posts_mongo_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/infrastructure/persistence/posts_mongo_store.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/startup/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/startup/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/startup/server.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://D:/Go" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file://C:/Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -36,18 +46,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/User/Desktop/Milan/XWS/XWS-TIM15/Posts_microservice/infrastructure&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "C:/Users/Aleksandar"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\User\Desktop\Milan\XWS\XWS-TIM15\Posts_microservice\infrastructure" />
