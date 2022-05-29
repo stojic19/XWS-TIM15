@@ -4,10 +4,9 @@ using System;
 
 namespace AgentApplication.API.Dto
 {
-    public class PutUserDto
+    public class PutUserInfoDto
     {
         public string Id;
-        public string Username;
         public string FirstName;
         public string MiddleName;
         public string LastName;

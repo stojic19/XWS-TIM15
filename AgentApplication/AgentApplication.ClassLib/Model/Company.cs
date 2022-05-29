@@ -18,5 +18,8 @@ namespace AgentApplication.ClassLib.Model
         public bool Registered { get; set; }
         public DateTime TimeOfCreation { get; set; }
         public User Owner { get; set; }
+        public List<Comment> Comments { get; set; }
+        public List<Grade> Grades { get; set; }
+        public List<JobOffer> JobOffers { get; set; }
     }
 }

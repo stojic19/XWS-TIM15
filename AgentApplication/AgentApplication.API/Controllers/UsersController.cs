@@ -49,7 +49,7 @@ namespace AgentApplication.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateUser(PutUserDto dto)
+        public IActionResult UpdateUser(PutUsernameDto dto)
         {
             return Ok(_uow.GetRepository<IUserWriteRepository>().Update(_mapper.Map<User>(dto)));
         }

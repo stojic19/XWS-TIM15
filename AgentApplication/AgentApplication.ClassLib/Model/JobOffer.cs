@@ -8,7 +8,6 @@ namespace AgentApplication.ClassLib.Model
 {
     public class JobOffer : PersistentEntity
     {
-        public Company Company { get; set; }
         public DateTime TimeOfCreation { get; set; }
         public string Position { get; set; }
         public string Description { get; set; }
