@@ -44,6 +44,9 @@ namespace AgentApplication.API.Controllers
             Company company = _mapper.Map<Company>(dto);
             company.Registered = false;
             company.TimeOfCreation = DateTime.Now;
+            company.Comments = new List<Comment>();
+            company.Grades = new List<Grade>();
+            company.JobOffers = new List<JobOffer>();
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Add(company));
         }
 

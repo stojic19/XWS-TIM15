@@ -5,7 +5,8 @@ namespace AgentApplication.API.Dto
 {
     public class PutCommentDto
     {
-        public string Id;
+        public Guid Id;
+        public Guid CompanyId;
         public string Content;
     }
 }

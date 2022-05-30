@@ -49,9 +49,19 @@ namespace AgentApplication.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateUser(PutUsernameDto dto)
+        public IActionResult UpdateUsername(PutUsernameDto dto)
         {
-            return Ok(_uow.GetRepository<IUserWriteRepository>().Update(_mapper.Map<User>(dto)));
+            User user = _uow.GetRepository<IUserReadRepository>().GetById(dto.Id);
+            user.Username = dto.Username;
+            return Ok(_uow.GetRepository<IUserWriteRepository>().Update(user));
+        }
+
+        [HttpPut]
+        public IActionResult UpdateUserInfo(PutUserInfoDto dto)
+        {
+            User user = _uow.GetRepository<IUserReadRepository>().GetById(dto.Id);
+            user.PersonalInfo = _mapper.Map<UserPersonalInfo>(dto);
+            return Ok(_uow.GetRepository<IUserWriteRepository>().Update(user));
         }
     }
 }

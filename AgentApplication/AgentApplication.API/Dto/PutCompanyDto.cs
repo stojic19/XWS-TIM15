@@ -5,7 +5,7 @@ namespace AgentApplication.API.Dto
 {
     public class PutCompanyDto
     {
-        public string Id;
+        public Guid Id;
         public string Name;
         public string Address;
         public string Email;

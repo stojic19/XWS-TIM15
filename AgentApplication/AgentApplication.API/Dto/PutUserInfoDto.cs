@@ -6,7 +6,7 @@ namespace AgentApplication.API.Dto
 {
     public class PutUserInfoDto
     {
-        public string Id;
+        public Guid Id;
         public string FirstName;
         public string MiddleName;
         public string LastName;

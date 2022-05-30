@@ -23,7 +23,8 @@ namespace AgentApplication.ClassLib.Database.EfStructures
             modelBuilder.Entity<Company>().OwnsMany(t => t.Comments);
             modelBuilder.Entity<Company>().OwnsMany(t => t.Grades);
             modelBuilder.Entity<Company>().OwnsMany(t => t.JobOffers);
-            
+            modelBuilder.Entity<Company>().OwnsOne(t => t.CompanyInfo);
+
             modelBuilder.Entity<User>().OwnsOne(t => t.PersonalInfo);
             base.OnModelCreating(modelBuilder);
         }

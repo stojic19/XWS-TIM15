@@ -5,7 +5,8 @@ namespace AgentApplication.API.Dto
 {
     public class PutGradeDto
     {
-        public string Id;
+        public Guid Id;
+        public Guid CompanyId;
         public int Value;
     }
 }
