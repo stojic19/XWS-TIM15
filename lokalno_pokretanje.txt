@@ -14,6 +14,9 @@ NEO4J_PASSWORD=password
 NEO4J_USER=neo4j
 NEO4J_VERSION=4
 
+
+AGENT_APPLICATION_HOST=localhost ovo jos uvek ne koristimo
+AGENT_APPLICATION_PORT=9000 ovo jos uvek ne koristimo
 AGENT_APPLICATION_DB_CONNECTION_STRING = Host=localhost;Database=AgentApplication;Username=postgres;Password=root
 
 POSTS_SERVICE_HOST=localhost
