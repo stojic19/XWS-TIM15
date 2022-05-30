@@ -18,9 +18,22 @@ namespace AgentApplication.ClassLib.Database.Repository.Implementation
         {
         }
 
+        public override IQueryable<Company> GetAll(FetchType fetchType = FetchType.Lazy)
+        {
+            var set = GetSet();
+            if (fetchType == FetchType.Eager)
+            {
+                return set.Include(c => c.Grades).ThenInclude(c => c.User)
+                    .Include(c => c.Comments).ThenInclude(c => c.User)
+                    .Include(c => c.JobOffers)
+                    .Include(c => c.Owner);
+            }
+            return set;
+        }
+
         public override Company GetById(Guid id, FetchType fetchType = FetchType.Lazy)
         {
-            var set = GetAll();
+            var set = GetSet();
             if (fetchType == FetchType.Eager)
             {
                 return set.Include(c => c.Grades).ThenInclude(c => c.User)
@@ -30,6 +43,48 @@ namespace AgentApplication.ClassLib.Database.Repository.Implementation
                     .FirstOrDefault(c => c.Id == id);
             }
             return set.Find(id);
+        }
+
+        public IQueryable<Company> GetFromUser(Guid userId, FetchType fetchType = FetchType.Lazy)
+        {
+            var set = GetSet();
+            if (fetchType == FetchType.Eager)
+            {
+                return set.Include(c => c.Grades).ThenInclude(c => c.User)
+                    .Include(c => c.Comments).ThenInclude(c => c.User)
+                    .Include(c => c.JobOffers)
+                    .Include(c => c.Owner)
+                    .Where(c => c.OwnerId == userId);
+            }
+            return set.Where(c => c.OwnerId == userId);
+        }
+
+        public IQueryable<Company> GetRegistered(FetchType fetchType = FetchType.Lazy)
+        {
+            var set = GetSet();
+            if (fetchType == FetchType.Eager)
+            {
+                return set.Include(c => c.Grades).ThenInclude(c => c.User)
+                    .Include(c => c.Comments).ThenInclude(c => c.User)
+                    .Include(c => c.JobOffers)
+                    .Include(c => c.Owner)
+                    .Where(c => c.Registered == true);
+            }
+            return set.Where(c => c.Registered == true);
+        }
+
+        public IQueryable<Company> GetNotRegistered(FetchType fetchType = FetchType.Lazy)
+        {
+            var set = GetSet();
+            if (fetchType == FetchType.Eager)
+            {
+                return set.Include(c => c.Grades).ThenInclude(c => c.User)
+                    .Include(c => c.Comments).ThenInclude(c => c.User)
+                    .Include(c => c.JobOffers)
+                    .Include(c => c.Owner)
+                    .Where(c => c.Registered == false);
+            }
+            return set.Where(c => c.Registered == false);
         }
     }
 }

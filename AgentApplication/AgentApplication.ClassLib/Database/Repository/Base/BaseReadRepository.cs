@@ -37,7 +37,7 @@ namespace AgentApplication.ClassLib.Database.Repository.Base
             return set.Find(id);
         }
 
-        public virtual DbSet<TEntity> GetAll(FetchType fetchType = FetchType.Lazy)
+        public virtual IQueryable<TEntity> GetAll(FetchType fetchType = FetchType.Lazy)
         {
             return GetSet();
         }

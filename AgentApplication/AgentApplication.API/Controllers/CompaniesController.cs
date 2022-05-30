@@ -32,10 +32,34 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyReadRepository>().GetAll());
         }
 
+        [HttpGet]
+        public IActionResult GetAllDetails()
+        {
+            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetAll(FetchType.Eager));
+        }
+
         [HttpGet("{id:guid}")]
         public IActionResult GetById(Guid id)
         {
             return Ok(_uow.GetRepository<ICompanyReadRepository>().GetById(id, FetchType.Eager));
+        }
+
+        [HttpGet("{userId:guid}")]
+        public IActionResult GetFromUser(Guid userId)
+        {
+            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetFromUser(userId, FetchType.Eager));
+        }
+
+        [HttpGet]
+        public IActionResult GetRegistered()
+        {
+            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetRegistered(FetchType.Eager));
+        }
+
+        [HttpGet]
+        public IActionResult GetNotRegistered()
+        {
+            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetNotRegistered(FetchType.Eager));
         }
 
         [HttpPost]
