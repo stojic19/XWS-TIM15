@@ -8,6 +8,6 @@ namespace AgentApplication.API.Dto
         public string Position;
         public string Description;
         public string Requirements;
-        public Company Company;
+        public Guid CompanyId;
     }
 }

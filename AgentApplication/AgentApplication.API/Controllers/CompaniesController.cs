@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AgentApplication.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class CompaniesController : ControllerBase
     {
@@ -51,9 +51,65 @@ namespace AgentApplication.API.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateCompany(PutCompanyDto dto)
+        public IActionResult UpdateCompany(PutCompanyInfoDto dto)
         {
-            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(_mapper.Map<Company>(dto)));
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.Id);
+            company.CompanyInfo = _mapper.Map<CompanyInfo>(dto);
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPut]
+        public IActionResult RegisterCompany(Guid id)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(id);
+            company.Registered = true;
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPut]
+        public IActionResult AddGrade(PostGradeDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            if (company.Grades.FirstOrDefault(g => g.UserId == dto.UserId) != null)
+            {
+                Grade grade = company.Grades.FirstOrDefault(g => g.UserId == dto.UserId);
+                grade.Value = dto.Value;
+                grade.TimeOfCreation = DateTime.Now;
+                return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+            }
+            Grade newGrade = _mapper.Map<Grade>(dto);
+            newGrade.TimeOfCreation = DateTime.Now;
+            company.Grades.Add(newGrade);
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPost]
+        public IActionResult AddComment(PostCommentDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            Comment comment = _mapper.Map<Comment>(dto);
+            comment.TimeOfCreation = DateTime.Now;
+            company.Comments.Add(comment);
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPost]
+        public IActionResult AddJobOffer(PostJobOfferDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            JobOffer jobOffer = _mapper.Map<JobOffer>(dto);
+            jobOffer.TimeOfCreation = DateTime.Now;
+            company.JobOffers.Add(jobOffer);
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPut]
+        public IActionResult ActivateJobOffer(ActivateJobOfferDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            JobOffer jobOffer = company.JobOffers.FirstOrDefault(g => g.Id == dto.Id);
+            jobOffer.IsActive = true;
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
     }
 }

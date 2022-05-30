@@ -12,6 +12,7 @@ namespace AgentApplication.ClassLib.Model
         public CompanyInfo CompanyInfo { get; set; }
         public bool Registered { get; set; }
         public DateTime TimeOfCreation { get; set; }
+        public Guid OwnerId { get; set; }
         public User Owner { get; set; }
         public List<Comment> Comments { get; set; }
         public List<Grade> Grades { get; set; }

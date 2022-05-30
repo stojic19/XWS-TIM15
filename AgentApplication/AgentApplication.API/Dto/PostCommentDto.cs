@@ -6,7 +6,7 @@ namespace AgentApplication.API.Dto
     public class PostCommentDto
     {
         public string Content;
-        public Company Company;
-        public User Owner;
+        public Guid CompanyId;
+        public Guid UserId;
     }
 }

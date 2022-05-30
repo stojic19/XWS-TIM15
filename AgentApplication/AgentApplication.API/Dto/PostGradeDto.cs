@@ -6,7 +6,7 @@ namespace AgentApplication.API.Dto
     public class PostGradeDto
     {
         public int Value;
-        public Company Company;
-        public User Owner;
+        public Guid CompanyId;
+        public Guid UserId;
     }
 }

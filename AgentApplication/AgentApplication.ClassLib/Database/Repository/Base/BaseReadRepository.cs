@@ -19,9 +19,9 @@ namespace AgentApplication.ClassLib.Database.Repository.Base
             _context = context;
         }
 
-        public TEntity GetById(TKey id, FetchType fetchType = FetchType.Lazy)
+        public virtual TEntity GetById(TKey id, FetchType fetchType = FetchType.Lazy)
         {
-            var set = GetAll();
+            var set = GetSet();
             IQueryable<TEntity> query = null;
             if (fetchType == FetchType.Eager)
             {
@@ -37,7 +37,12 @@ namespace AgentApplication.ClassLib.Database.Repository.Base
             return set.Find(id);
         }
 
-        public DbSet<TEntity> GetAll()
+        public virtual DbSet<TEntity> GetAll(FetchType fetchType = FetchType.Lazy)
+        {
+            return GetSet();
+        }
+
+        protected DbSet<TEntity> GetSet()
         {
             return _context.Set<TEntity>();
         }

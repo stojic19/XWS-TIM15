@@ -9,6 +9,7 @@ namespace AgentApplication.API.AutoMapperProfiles
         public UserProfile()
         {
             CreateMap<PostUserDto, User>();
+            CreateMap<PostUserInfoDto, UserPersonalInfo>();
         }
     }
 }

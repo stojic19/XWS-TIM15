@@ -9,7 +9,6 @@ namespace AgentApplication.API.AutoMapperProfiles
         public GradeProfile()
         {
             CreateMap<PostGradeDto, Grade>();
-            CreateMap<PutGradeDto, Grade>();
         }
     }
 }

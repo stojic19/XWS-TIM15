@@ -3,7 +3,7 @@ using System;
 
 namespace AgentApplication.API.Dto
 {
-    public class PostCompanyDto
+    public class PostCompanyInfoDto
     {
         public string Name;
         public string Address;
@@ -11,6 +11,11 @@ namespace AgentApplication.API.Dto
         public string PhoneNumber;
         public string Description;
         public string Culture;
-        public User Owner;
+    }
+
+    public class PostCompanyDto
+    {
+        public Guid OwnerId;
+        public PostCompanyInfoDto CompanyInfo;
     }
 }

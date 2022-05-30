@@ -3,7 +3,7 @@ using System;
 
 namespace AgentApplication.API.Dto
 {
-    public class PutCompanyDto
+    public class PutCompanyInfoDto
     {
         public Guid Id;
         public string Name;

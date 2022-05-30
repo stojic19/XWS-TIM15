@@ -9,7 +9,6 @@ namespace AgentApplication.API.AutoMapperProfiles
         public JobOfferProfile()
         {
             CreateMap<PostJobOfferDto, JobOffer>();
-            CreateMap<PutJobOfferDto, JobOffer>();
         }
     }
 }

@@ -19,6 +19,6 @@ namespace AgentApplication.API.Dto
     {
         public string Username;
         public string Password;
-        private readonly PostUserInfoDto _postUserInfoDto = new PostUserInfoDto();
+        public PostUserInfoDto PersonalInfo;
     }
 }
