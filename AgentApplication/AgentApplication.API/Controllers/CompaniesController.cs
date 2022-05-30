@@ -117,6 +117,15 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
+        [HttpPut]
+        public IActionResult UpdateComment(PutCommentDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            Comment comment = company.Comments.Find(c => c.Id == dto.Id);
+            comment.Content = dto.Content;
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
         [HttpPost]
         public IActionResult AddJobOffer(PostJobOfferDto dto)
         {
@@ -133,6 +142,17 @@ namespace AgentApplication.API.Controllers
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
             JobOffer jobOffer = company.JobOffers.FirstOrDefault(g => g.Id == dto.Id);
             jobOffer.IsActive = true;
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPut]
+        public IActionResult UpdateJobOffer(PutJobOfferDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            JobOffer jobOffer = company.JobOffers.Find(c => c.Id == dto.Id);
+            jobOffer.Position = dto.Position;
+            jobOffer.Description = dto.Description;
+            jobOffer.Requirements = dto.Requirements;
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
     }
