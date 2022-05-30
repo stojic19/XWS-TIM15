@@ -24,5 +24,6 @@ func (service *JobOffersService) Get(id primitive.ObjectID) (*domain.JobOffer, e
 }
 
 func (service *JobOffersService) Create(offer *domain.JobOffer) error {
+	offer.IsActive = true
 	return service.store.Create(offer)
 }

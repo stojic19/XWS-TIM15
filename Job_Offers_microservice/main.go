@@ -1,4 +1,4 @@
-package Job_Offers_microservice
+package main
 
 import (
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/startup"

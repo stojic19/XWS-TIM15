@@ -10,6 +10,8 @@ type Config struct {
 	PostsPort     string
 	UsersHost     string
 	UsersPort     string
+	JobOffersHost string
+	JobOffersPort string
 }
 
 func NewConfig() *Config {
@@ -21,6 +23,8 @@ func NewConfig() *Config {
 		PostsPort:     os.Getenv("POSTS_SERVICE_PORT"),
 		UsersHost:     os.Getenv("USERS_SERVICE_HOST"),
 		UsersPort:     os.Getenv("USERS_PORT"),
+		JobOffersPort: LookupEnvOrGetDefault("JOB_OFFERS_SERVICE_PORT", "8003"),
+		JobOffersHost: LookupEnvOrGetDefault("JOB_OFFERS_SERVICE_HOST", "localhost"),
 	}
 }
 

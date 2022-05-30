@@ -2,6 +2,7 @@ package startup
 
 import (
 	"fmt"
+	"github.com/stojic19/XWS-TIM15/common/proto/job_offers"
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/application"
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/domain"
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/infrastructure/api"
@@ -57,7 +58,7 @@ func (server *Server) startGrpcServer(jobOffersHandler *api.JobOffersHandler) {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	grpcServer := grpc.NewServer()
-	//jobOffers.RegisterJobOffersServiceServer(grpcServer, jobOffersHandler)
+	job_offers.RegisterJobOffersServiceServer(grpcServer, jobOffersHandler)
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %s", err)
 	}

@@ -1,16 +1,35 @@
 Obezbediti da svaki mikroservis ima sopstveni port
 Lista varijabli (primer):
+
 FOLLOWERS_DB_HOST=localhost
 FOLLOWERS_DB_PORT=7687
 FOLLOWERS_SERVICE_HOST=localhost
 FOLLOWERS_SERVICE_PORT=8001
+
 GATEWAY_PORT=8000
 GATEWAY_HOST=localhost ali ovo nije bitno kolko se meni cini (trenutno)
+
 NEO4J_DATABASE=neo4j
 NEO4J_PASSWORD=password
 NEO4J_USER=neo4j
 NEO4J_VERSION=4
+
 AGENT_APPLICATION_DB_CONNECTION_STRING = Host=localhost;Database=AgentApplication;Username=postgres;Password=root
+
+POSTS_SERVICE_HOST=localhost
+POSTS_SERVICE_PORT=8002
+POSTS_DB_HOST=localhost
+POSTS_DB_PORT=27017
+
+USERS_SERVICE_HOST=localhost
+USERS_SERVICE_PORT=9090 ???
+USERS_SERVICE_DB_PORT????
+USERS_SERVICE_DB_HOST?????
+
+JOB_OFFERS_SERVICE_PORT=8003
+JOB_OFFERS_SERVICE_HOST=localhost
+JOB_OFFERS_DB_HOST=localhost
+JOB_OFFERS_DB_PORT=27017
 
 Ko koristi docker desktop...postoji neki problem pri menjanju vrednosti varijabli u .env fajlu, 
 nisam jos pronasao resenje osim da se vrednosti hardkoduju u docker-compose
