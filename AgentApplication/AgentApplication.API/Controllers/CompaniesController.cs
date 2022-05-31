@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using AgentApplication.API.Attributes;
 using AgentApplication.API.Dto;
 using AgentApplication.ClassLib.Database.Infrastructure;
 using AgentApplication.ClassLib.Database.Repository;
@@ -26,6 +27,7 @@ namespace AgentApplication.API.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(new []{"Regular"})]
         [HttpGet]
         public IActionResult GetAll()
         {

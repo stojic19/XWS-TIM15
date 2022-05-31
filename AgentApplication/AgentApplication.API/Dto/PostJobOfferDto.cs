@@ -5,9 +5,9 @@ namespace AgentApplication.API.Dto
 {
     public class PostJobOfferDto
     {
-        public string Position;
-        public string Description;
-        public string Requirements;
-        public Guid CompanyId;
+        public string Position { get; set; }
+        public string Description { get; set; }
+        public string Requirements { get; set; }
+        public Guid CompanyId { get; set; }
     }
 }
