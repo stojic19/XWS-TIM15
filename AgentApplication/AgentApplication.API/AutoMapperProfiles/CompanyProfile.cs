@@ -9,6 +9,7 @@ namespace AgentApplication.API.AutoMapperProfiles
         public CompanyProfile()
         {
             CreateMap<PostCompanyDto, Company>();
+            CreateMap<PostCompanyInfoDto, CompanyInfo>();
         }
     }
 }

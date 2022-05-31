@@ -12,6 +12,6 @@ namespace AgentApplication.ClassLib.Database.Repository.Base
     public interface IBaseReadRepository<TKey, TEntity> where TEntity : PersistentEntity
     {
         TEntity GetById(TKey id, FetchType type = FetchType.Lazy);
-        DbSet<TEntity> GetAll();
+        IQueryable<TEntity> GetAll(FetchType type = FetchType.Lazy);
     }
 }

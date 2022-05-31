@@ -32,16 +32,128 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyReadRepository>().GetAll());
         }
 
+        [HttpGet("Details")]
+        public IActionResult GetAllDetails()
+        {
+            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetAll(FetchType.Eager));
+        }
+
         [HttpGet("{id:guid}")]
         public IActionResult GetById(Guid id)
         {
             return Ok(_uow.GetRepository<ICompanyReadRepository>().GetById(id, FetchType.Eager));
         }
 
+        [HttpGet("User/{userId:guid}")]
+        public IActionResult GetFromUser(Guid userId)
+        {
+            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetFromUser(userId, FetchType.Eager));
+        }
+
+        [HttpGet("Registered")]
+        public IActionResult GetRegistered()
+        {
+            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetRegistered(FetchType.Eager));
+        }
+
+        [HttpGet("NotRegistered")]
+        public IActionResult GetNotRegistered()
+        {
+            return Ok(_uow.GetRepository<ICompanyReadRepository>().GetNotRegistered(FetchType.Eager));
+        }
+
         [HttpPost]
         public IActionResult PostCompany(PostCompanyDto dto)
         {
-            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Add(_mapper.Map<Company>(dto)));
+            Company company = _mapper.Map<Company>(dto);
+            company.Registered = false;
+            company.TimeOfCreation = DateTime.Now;
+            company.Comments = new List<Comment>();
+            company.Grades = new List<Grade>();
+            company.JobOffers = new List<JobOffer>();
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Add(company));
+        }
+
+        [HttpPut]
+        public IActionResult UpdateCompany(PutCompanyInfoDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.Id);
+            company.CompanyInfo = _mapper.Map<CompanyInfo>(dto);
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPut("{id:guid}/Register")]
+        public IActionResult RegisterCompany(Guid id)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(id);
+            company.Registered = true;
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPut("Grade")]
+        public IActionResult AddGrade(PostGradeDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            if (company.Grades.FirstOrDefault(g => g.UserId == dto.UserId) != null)
+            {
+                Grade grade = company.Grades.FirstOrDefault(g => g.UserId == dto.UserId);
+                grade.Value = dto.Value;
+                grade.TimeOfCreation = DateTime.Now;
+                return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+            }
+            Grade newGrade = _mapper.Map<Grade>(dto);
+            newGrade.TimeOfCreation = DateTime.Now;
+            company.Grades.Add(newGrade);
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPost("Comment")]
+        public IActionResult AddComment(PostCommentDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            Comment comment = _mapper.Map<Comment>(dto);
+            comment.TimeOfCreation = DateTime.Now;
+            company.Comments.Add(comment);
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPut("Comment")]
+        public IActionResult UpdateComment(PutCommentDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            Comment comment = company.Comments.Find(c => c.Id == dto.Id);
+            comment.Content = dto.Content;
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPost("JobOffer")]
+        public IActionResult AddJobOffer(PostJobOfferDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            JobOffer jobOffer = _mapper.Map<JobOffer>(dto);
+            jobOffer.TimeOfCreation = DateTime.Now;
+            company.JobOffers.Add(jobOffer);
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPut("JobOffer/Activate")]
+        public IActionResult ActivateJobOffer(ActivateJobOfferDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            JobOffer jobOffer = company.JobOffers.FirstOrDefault(g => g.Id == dto.Id);
+            jobOffer.IsActive = true;
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [HttpPut("JobOffer")]
+        public IActionResult UpdateJobOffer(PutJobOfferDto dto)
+        {
+            Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
+            JobOffer jobOffer = company.JobOffers.Find(c => c.Id == dto.Id);
+            jobOffer.Position = dto.Position;
+            jobOffer.Description = dto.Description;
+            jobOffer.Requirements = dto.Requirements;
+            return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
     }
 }

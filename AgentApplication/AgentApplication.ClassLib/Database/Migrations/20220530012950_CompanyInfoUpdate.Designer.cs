@@ -3,15 +3,17 @@ using System;
 using AgentApplication.ClassLib.Database.EfStructures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AgentApplication.ClassLib.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220530012950_CompanyInfoUpdate")]
+    partial class CompanyInfoUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,40 +21,13 @@ namespace AgentApplication.ClassLib.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("AgentApplication.ClassLib.Model.Comment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CompanyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("TimeOfCreation")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Comment");
-                });
-
             modelBuilder.Entity("AgentApplication.ClassLib.Model.Company", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("OwnerId")
+                    b.Property<Guid?>("OwnerId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("Registered")
@@ -66,64 +41,6 @@ namespace AgentApplication.ClassLib.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Companies");
-                });
-
-            modelBuilder.Entity("AgentApplication.ClassLib.Model.Grade", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CompanyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("TimeOfCreation")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Grade");
-                });
-
-            modelBuilder.Entity("AgentApplication.ClassLib.Model.JobOffer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CompanyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Position")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Requirements")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("TimeOfCreation")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CompanyId");
-
-                    b.ToTable("JobOffer");
                 });
 
             modelBuilder.Entity("AgentApplication.ClassLib.Model.User", b =>
@@ -149,28 +66,47 @@ namespace AgentApplication.ClassLib.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AgentApplication.ClassLib.Model.Comment", b =>
-                {
-                    b.HasOne("AgentApplication.ClassLib.Model.Company", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("AgentApplication.ClassLib.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("AgentApplication.ClassLib.Model.Company", b =>
                 {
                     b.HasOne("AgentApplication.ClassLib.Model.User", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OwnerId");
+
+                    b.OwnsMany("AgentApplication.ClassLib.Model.Comment", "Comments", b1 =>
+                        {
+                            b1.Property<Guid>("CompanyId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Content")
+                                .HasColumnType("text");
+
+                            b1.Property<DateTime>("TimeOfCreation")
+                                .HasColumnType("timestamp without time zone");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.HasKey("CompanyId", "Id");
+
+                            b1.HasIndex("UserId");
+
+                            b1.ToTable("Comment");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CompanyId");
+
+                            b1.HasOne("AgentApplication.ClassLib.Model.User", "User")
+                                .WithMany()
+                                .HasForeignKey("UserId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.Navigation("User");
+                        });
 
                     b.OwnsOne("AgentApplication.ClassLib.Model.CompanyInfo", "CompanyInfo", b1 =>
                         {
@@ -203,31 +139,83 @@ namespace AgentApplication.ClassLib.Migrations
                                 .HasForeignKey("CompanyId");
                         });
 
+                    b.OwnsMany("AgentApplication.ClassLib.Model.Grade", "Grades", b1 =>
+                        {
+                            b1.Property<Guid>("CompanyId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid");
+
+                            b1.Property<DateTime>("TimeOfCreation")
+                                .HasColumnType("timestamp without time zone");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("Value")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("CompanyId", "Id");
+
+                            b1.HasIndex("UserId");
+
+                            b1.ToTable("Grade");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CompanyId");
+
+                            b1.HasOne("AgentApplication.ClassLib.Model.User", "User")
+                                .WithMany()
+                                .HasForeignKey("UserId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.Navigation("User");
+                        });
+
+                    b.OwnsMany("AgentApplication.ClassLib.Model.JobOffer", "JobOffers", b1 =>
+                        {
+                            b1.Property<Guid>("CompanyId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Description")
+                                .HasColumnType("text");
+
+                            b1.Property<bool>("IsActive")
+                                .HasColumnType("boolean");
+
+                            b1.Property<string>("Position")
+                                .HasColumnType("text");
+
+                            b1.Property<string>("Requirements")
+                                .HasColumnType("text");
+
+                            b1.Property<DateTime>("TimeOfCreation")
+                                .HasColumnType("timestamp without time zone");
+
+                            b1.HasKey("CompanyId", "Id");
+
+                            b1.ToTable("JobOffer");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CompanyId");
+                        });
+
+                    b.Navigation("Comments");
+
                     b.Navigation("CompanyInfo");
 
+                    b.Navigation("Grades");
+
+                    b.Navigation("JobOffers");
+
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("AgentApplication.ClassLib.Model.Grade", b =>
-                {
-                    b.HasOne("AgentApplication.ClassLib.Model.Company", null)
-                        .WithMany("Grades")
-                        .HasForeignKey("CompanyId");
-
-                    b.HasOne("AgentApplication.ClassLib.Model.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("AgentApplication.ClassLib.Model.JobOffer", b =>
-                {
-                    b.HasOne("AgentApplication.ClassLib.Model.Company", null)
-                        .WithMany("JobOffers")
-                        .HasForeignKey("CompanyId");
                 });
 
             modelBuilder.Entity("AgentApplication.ClassLib.Model.User", b =>
@@ -267,15 +255,6 @@ namespace AgentApplication.ClassLib.Migrations
                         });
 
                     b.Navigation("PersonalInfo");
-                });
-
-            modelBuilder.Entity("AgentApplication.ClassLib.Model.Company", b =>
-                {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Grades");
-
-                    b.Navigation("JobOffers");
                 });
 #pragma warning restore 612, 618
         }
