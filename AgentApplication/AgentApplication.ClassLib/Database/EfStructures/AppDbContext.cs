@@ -20,9 +20,6 @@ namespace AgentApplication.ClassLib.Database.EfStructures
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Company>().OwnsMany(t => t.Comments);
-            modelBuilder.Entity<Company>().OwnsMany(t => t.Grades);
-            modelBuilder.Entity<Company>().OwnsMany(t => t.JobOffers);
             modelBuilder.Entity<Company>().OwnsOne(t => t.CompanyInfo);
 
             modelBuilder.Entity<User>().OwnsOne(t => t.PersonalInfo);
