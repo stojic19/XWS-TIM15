@@ -23,9 +23,10 @@ namespace AgentApplication.ClassLib.Service.Impl
         }
 
 
-        // Exceptions:
-        //   T:AgentApplication.ClassLib.Exceptions.RegistrationException:
-        //     username exists.
+        /// <Summary>
+        ///     Registers new users if there are no existing users with given username
+        /// </Summary>
+        /// <exception cref="AgentApplication.ClassLib.Exceptions.RegistrationException">User name exists</exception>
         public void Register(User user)
         {
             if (_uow.GetRepository<IUserReadRepository>().GetByUsername(user.Username) != null)

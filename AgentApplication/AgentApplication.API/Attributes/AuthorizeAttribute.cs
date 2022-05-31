@@ -17,6 +17,7 @@ namespace AgentApplication.API.Attributes
         }
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            if (_roles.Count == 0) return;
             Debug.WriteLine(context.HttpContext.Items["role"]);
             Debug.WriteLine(context.HttpContext.Items["id"]);
             Debug.WriteLine(context.HttpContext.Items["given_name"]);

@@ -9,10 +9,10 @@ namespace AgentApplication.ClassLib.Service
 {
     public interface IAuthenticationService
     {
-        // Summary:
-        // Exceptions:
-        //   T:AgentApplication.ClassLib.Exceptions.RegistrationException:
-        //     username already exists.
+        /// <Summary>
+        ///     Registers new users if there are no existing users with given username
+        /// </Summary>
+        /// <exception cref="AgentApplication.ClassLib.Exceptions.RegistrationException">User name exists</exception>
         public void Register(User user);
         public string LogIn(string username, string password);
     }
