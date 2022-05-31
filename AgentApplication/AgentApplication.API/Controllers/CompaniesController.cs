@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AgentApplication.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CompaniesController : ControllerBase
     {
@@ -32,7 +32,7 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyReadRepository>().GetAll());
         }
 
-        [HttpGet]
+        [HttpGet("Details")]
         public IActionResult GetAllDetails()
         {
             return Ok(_uow.GetRepository<ICompanyReadRepository>().GetAll(FetchType.Eager));
@@ -44,19 +44,19 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyReadRepository>().GetById(id, FetchType.Eager));
         }
 
-        [HttpGet("{userId:guid}")]
+        [HttpGet("User/{userId:guid}")]
         public IActionResult GetFromUser(Guid userId)
         {
             return Ok(_uow.GetRepository<ICompanyReadRepository>().GetFromUser(userId, FetchType.Eager));
         }
 
-        [HttpGet]
+        [HttpGet("Registered")]
         public IActionResult GetRegistered()
         {
             return Ok(_uow.GetRepository<ICompanyReadRepository>().GetRegistered(FetchType.Eager));
         }
 
-        [HttpGet]
+        [HttpGet("NotRegistered")]
         public IActionResult GetNotRegistered()
         {
             return Ok(_uow.GetRepository<ICompanyReadRepository>().GetNotRegistered(FetchType.Eager));
@@ -82,7 +82,7 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
-        [HttpPut]
+        [HttpPut("{id:guid}/Register")]
         public IActionResult RegisterCompany(Guid id)
         {
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(id);
@@ -90,7 +90,7 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
-        [HttpPut]
+        [HttpPut("Grade")]
         public IActionResult AddGrade(PostGradeDto dto)
         {
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
@@ -107,7 +107,7 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
-        [HttpPost]
+        [HttpPost("Comment")]
         public IActionResult AddComment(PostCommentDto dto)
         {
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
@@ -117,7 +117,7 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
-        [HttpPut]
+        [HttpPut("Comment")]
         public IActionResult UpdateComment(PutCommentDto dto)
         {
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
@@ -126,7 +126,7 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
-        [HttpPost]
+        [HttpPost("JobOffer")]
         public IActionResult AddJobOffer(PostJobOfferDto dto)
         {
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
@@ -136,7 +136,7 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
-        [HttpPut]
+        [HttpPut("JobOffer/Activate")]
         public IActionResult ActivateJobOffer(ActivateJobOfferDto dto)
         {
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);
@@ -145,7 +145,7 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
-        [HttpPut]
+        [HttpPut("JobOffer")]
         public IActionResult UpdateJobOffer(PutJobOfferDto dto)
         {
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId);

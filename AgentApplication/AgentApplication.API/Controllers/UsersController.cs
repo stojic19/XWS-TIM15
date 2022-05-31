@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AgentApplication.API.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -48,7 +48,7 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<IUserWriteRepository>().Add(user));
         }
 
-        [HttpPut]
+        [HttpPut("Username")]
         public IActionResult UpdateUsername(PutUsernameDto dto)
         {
             User user = _uow.GetRepository<IUserReadRepository>().GetById(dto.Id);
@@ -56,7 +56,7 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<IUserWriteRepository>().Update(user));
         }
 
-        [HttpPut]
+        [HttpPut("Info")]
         public IActionResult UpdateUserInfo(PutUserInfoDto dto)
         {
             User user = _uow.GetRepository<IUserReadRepository>().GetById(dto.Id);
