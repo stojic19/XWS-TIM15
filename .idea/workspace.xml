@@ -5,20 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fa3f74b9-be4b-4973-94b2-f1b3f2d0a37f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/application/posts_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/application/posts_service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/domain/posts_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/domain/posts_store.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/infrastructure/api/posts_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/infrastructure/api/posts_grpc_api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/infrastructure/persistence/posts_mongo_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/infrastructure/persistence/posts_mongo_store.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/startup/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/startup/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/main.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://D:/Go" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" url="file://C:/Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -38,6 +39,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
     &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
@@ -45,7 +47,8 @@
     &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/User/Desktop/Milan/XWS/XWS-TIM15/Posts_microservice/infrastructure&quot;
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Aleksandar&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -60,7 +63,7 @@
       <command value="mvn clean install" />
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build main.go">
+  <component name="RunManager" selected="Go Build.go build main.go (2)">
     <configuration name="go build github.com/stojic19/XWS-TIM15/api_gateway" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="XWS-TIM15" />
       <working_directory value="$PROJECT_DIR$/api_gateway" />
@@ -79,6 +82,22 @@
       <filePath value="$PROJECT_DIR$/Posts_microservice/main.go" />
       <method v="2" />
     </configuration>
+    <configuration name="go build main.go (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="XWS-TIM15" />
+      <working_directory value="$PROJECT_DIR$/api_gateway" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/api_gateway/main.go" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go build main.go (2)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="XWS-TIM15" />
+      <working_directory value="$PROJECT_DIR$/Job_Offers_microservice" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/Job_Offers_microservice/main.go" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="XWS-TIM15" />
       <working_directory value="$PROJECT_DIR$/Followers_microservice" />
@@ -89,6 +108,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build main.go (2)" />
+        <item itemvalue="Go Build.go build main.go (1)" />
         <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build github.com/stojic19/XWS-TIM15/api_gateway" />
         <item itemvalue="Go Build.go build github.com/stojic19/XWS-TIM15/posts_microservice" />
