@@ -8,6 +8,11 @@ namespace AgentApplication.ClassLib.Model
 {
     public class JobOffer : PersistentEntity
     {
+        public JobOffer()
+        {
+            TimeOfCreation = DateTime.Now;
+            IsActive = false;
+        }
         public DateTime TimeOfCreation { get; set; }
         public string Position { get; set; }
         public string Description { get; set; }

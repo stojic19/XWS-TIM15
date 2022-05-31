@@ -43,8 +43,6 @@ namespace AgentApplication.API.Controllers
         public IActionResult PostUser(PostUserDto dto)
         {
             User user = _mapper.Map<User>(dto);
-            user.TimeOfRegistration = DateTime.Now;
-            user.Role = Role.Regular;
             return Ok(_uow.GetRepository<IUserWriteRepository>().Add(user));
         }
 

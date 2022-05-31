@@ -66,11 +66,6 @@ namespace AgentApplication.API.Controllers
         public IActionResult PostCompany(PostCompanyDto dto)
         {
             Company company = _mapper.Map<Company>(dto);
-            company.Registered = false;
-            company.TimeOfCreation = DateTime.Now;
-            company.Comments = new List<Comment>();
-            company.Grades = new List<Grade>();
-            company.JobOffers = new List<JobOffer>();
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Add(company));
         }
 
@@ -106,7 +101,6 @@ namespace AgentApplication.API.Controllers
                 return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
             }
             Grade newGrade = _mapper.Map<Grade>(dto);
-            newGrade.TimeOfCreation = DateTime.Now;
             company.Grades.Add(newGrade);
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
@@ -117,7 +111,6 @@ namespace AgentApplication.API.Controllers
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
             if (company == null) return NotFound("Company not found");
             Comment comment = _mapper.Map<Comment>(dto);
-            comment.TimeOfCreation = DateTime.Now;
             company.Comments.Add(comment);
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
@@ -139,7 +132,6 @@ namespace AgentApplication.API.Controllers
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
             if (company == null) return NotFound("Company not found");
             JobOffer jobOffer = _mapper.Map<JobOffer>(dto);
-            jobOffer.TimeOfCreation = DateTime.Now;
             company.JobOffers.Add(jobOffer);
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
