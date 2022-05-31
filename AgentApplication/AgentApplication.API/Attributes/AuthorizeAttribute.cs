@@ -9,7 +9,7 @@ namespace AgentApplication.API.Attributes
 {
     public class AuthorizeAttribute : Attribute, Microsoft.AspNetCore.Mvc.Filters.IAuthorizationFilter
     {
-        private List<string> _roles;
+        private readonly List<string> _roles;
 
         public AuthorizeAttribute(string[] roles)
         {
