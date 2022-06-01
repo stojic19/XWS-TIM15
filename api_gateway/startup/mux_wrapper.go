@@ -3,9 +3,10 @@ package startup
 import (
 	"container/list"
 	"context"
-	"fmt"
+	"errors"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"net/http"
 )
 
@@ -19,12 +20,18 @@ type MuxWrapper struct {
 func NewMuxWrapper() *MuxWrapper {
 	return &MuxWrapper{
 		ServeMux: *runtime.NewServeMux(
+			runtime.WithErrorHandler(func(ctx context.Context, mux *runtime.ServeMux, marshaler runtime.Marshaler,
+				writer http.ResponseWriter, request *http.Request, err error) {
+				st, _ := status.FromError(err)
+				newError := runtime.HTTPStatusError{
+					HTTPStatus: runtime.HTTPStatusFromCode(st.Code()),
+					Err:        errors.New(st.Message()),
+				}
+				runtime.DefaultHTTPErrorHandler(ctx, mux, marshaler, writer, request, &newError)
+			}),
 			runtime.WithMetadata(func(ctx context.Context, request *http.Request) metadata.MD {
-				header := request.Header.Get("Server")
-				md := metadata.Pairs("evo", header)
-				ctx = context.WithValue(ctx, "evo", header)
-				evo := ctx.Value("evo")
-				fmt.Println(evo)
+				header := request.Header.Get("sub")
+				md := metadata.Pairs("sub", header)
 				return md
 			})),
 		middlewares: list.List{},

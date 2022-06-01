@@ -2,12 +2,13 @@ package api
 
 import (
 	"context"
-	"fmt"
 	"github.com/stojic19/XWS-TIM15/common/proto/job_offers"
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/application"
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/domain"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 )
 
 type JobOffersHandler struct {
@@ -22,10 +23,12 @@ func NewJobOffersHandler(service *application.JobOffersService) *JobOffersHandle
 }
 
 func (handler *JobOffersHandler) GetAll(ctx context.Context, request *job_offers.GetAllRequest) (*job_offers.GetAllResponse, error) {
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
 	offers, err := handler.service.GetAll()
-	evo, _ := metadata.FromIncomingContext(ctx)
-	str := evo.Get("evo")[0]
-	fmt.Println(str)
 	if err != nil {
 		return nil, err
 	}
@@ -53,6 +56,7 @@ func (handler *JobOffersHandler) Get(ctx context.Context, request *job_offers.Jo
 }
 
 func (handler *JobOffersHandler) Create(ctx context.Context, request *job_offers.NewJobOffer) (*job_offers.Response, error) {
+
 	jobOffer := mapNewJobOffer(request)
 	err := handler.service.Create(jobOffer)
 	if err != nil {
