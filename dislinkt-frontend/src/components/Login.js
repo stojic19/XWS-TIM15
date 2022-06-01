@@ -12,12 +12,16 @@ const Login = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        const login = { username: email, password: password };
-        setIsPending(true);
+        const res1 = await axios.get(axios.defaults.baseURL + 'users');
+        const login = { "username": email, "password": password };
+        //setIsPending(true);
+        console.log(res1);
+        console.log(login);
         const res = await axios.post(axios.defaults.baseURL + 'login', login);
+        console.log(res);
         if (res.status === 200) {
             setIsPending(false);
-            localStorage.setItem('token', res.data.access_token);
+            //localStorage.setItem('token', res.data.access_token);
             //localStorage.setItem('auth_name', res.data.name);
             history.push('/index');
         } else {
