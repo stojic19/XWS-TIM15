@@ -43,8 +43,6 @@ namespace AgentApplication.API.Controllers
         public IActionResult PostUser(PostUserDto dto)
         {
             User user = _mapper.Map<User>(dto);
-            user.TimeOfRegistration = DateTime.Now;
-            user.Role = Role.Regular;
             return Ok(_uow.GetRepository<IUserWriteRepository>().Add(user));
         }
 
@@ -52,6 +50,7 @@ namespace AgentApplication.API.Controllers
         public IActionResult UpdateUsername(PutUsernameDto dto)
         {
             User user = _uow.GetRepository<IUserReadRepository>().GetById(dto.Id);
+            if (user == null) return NotFound("User not found");
             user.Username = dto.Username;
             return Ok(_uow.GetRepository<IUserWriteRepository>().Update(user));
         }
@@ -60,8 +59,18 @@ namespace AgentApplication.API.Controllers
         public IActionResult UpdateUserInfo(PutUserInfoDto dto)
         {
             User user = _uow.GetRepository<IUserReadRepository>().GetById(dto.Id);
+            if (user == null) return NotFound("User not found");
             user.PersonalInfo = _mapper.Map<UserPersonalInfo>(dto);
             return Ok(_uow.GetRepository<IUserWriteRepository>().Update(user));
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteUser(Guid id)
+        {
+            User user = _uow.GetRepository<IUserReadRepository>().GetById(id);
+            if (user == null) return NotFound("User not found");
+            _uow.GetRepository<IUserWriteRepository>().Delete(user);
+            return Ok();
         }
     }
 }
