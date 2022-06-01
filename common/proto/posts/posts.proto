@@ -154,19 +154,25 @@ message CommentPostResponse{
 
 message NewPost{
   string title = 1;
-  string content = 2;
+  Content content = 2;
   User owner = 3;
 }
 
 message Post{
   string id = 1;
   string title = 2;
-  string content = 3;
+  Content content = 3;
   google.protobuf.Timestamp createTime = 4;
   User owner = 5;
   repeated Comment comments = 6;
   repeated User likes = 7;
   repeated User dislikes = 8;
+}
+
+message Content {
+  string text = 1;
+  repeated string links = 2;
+  repeated string images = 3;
 }
 
 message User{

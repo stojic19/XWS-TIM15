@@ -212,9 +212,13 @@ func insertSideInfo(handler *PostsHandler, postInfo *domain.PostUsersInfo) {
 
 func mapPost(post *posts.Post) domain.PostUsersInfo {
 	postInfo := domain.PostUsersInfo{
-		Id:         post.Id,
-		Title:      post.Title,
-		Content:    post.Content,
+		Id:    post.Id,
+		Title: post.Title,
+		Content: domain.Content{
+			Text:   post.Content.Text,
+			Links:  post.Content.Links,
+			Images: post.Content.Images,
+		},
 		CreateTime: post.CreateTime.AsTime(),
 		Owner: &domain.UserPostInfo{
 			Id: post.Owner.Id,
