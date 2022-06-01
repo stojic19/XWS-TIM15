@@ -7,8 +7,8 @@ namespace AgentApplication.API.Dto
 {
     public class DeleteJobOfferDto
     {
-        public Guid Id;
-        public Guid CompanyId;
+        public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
 
     }
 }

@@ -7,7 +7,7 @@ namespace AgentApplication.API.Dto
 {
     public class DeleteGradeDto
     {
-        public Guid Id;
-        public Guid CompanyId;
+        public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
     }
 }
