@@ -2,6 +2,7 @@ package services
 
 import (
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
+	"github.com/stojic19/XWS-TIM15/common/proto/job_offers"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"google.golang.org/grpc"
@@ -31,6 +32,14 @@ func NewPostsClient(address string) posts.PostsServiceClient {
 		log.Fatalf("Failed to start gRPC connection to Posts service: %v", err)
 	}
 	return posts.NewPostsServiceClient(conn)
+}
+
+func NewJobOffersClient(address string) job_offers.JobOffersServiceClient {
+	conn, err := getConnection(address)
+	if err != nil {
+		log.Fatalf("Failed to start gRPC connection to Job offers service: %v", err)
+	}
+	return job_offers.NewJobOffersServiceClient(conn)
 }
 
 func getConnection(address string) (*grpc.ClientConn, error) {
