@@ -23,6 +23,12 @@ service JobOffersService{
       body: "*"
     };
   }
+  rpc Update(UpdateJobOffer) returns(Response){
+    option(google.api.http) = {
+      put: "/job_offers"
+      body: "*"
+    };
+  }
 }
 
 
@@ -48,6 +54,14 @@ message NewJobOffer{
   string requirements = 3;
 }
 
+message UpdateJobOffer{
+  string id = 1;
+  string position = 2;
+  string description = 3;
+  string requirements = 4;
+  bool IsActive = 5;
+}
+
 message JobOfferId{
   string id = 1;
 }
@@ -56,3 +70,5 @@ message Response{
    int32 code = 1;
    string message = 2;
 }
+
+//protoc -I ./proto --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative --grpc-gateway_out=allow_delete_body=true:./proto --grpc-gateway_opt=paths=source_relative ./proto/job_offers/job_offers.proto

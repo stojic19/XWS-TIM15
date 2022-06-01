@@ -27,3 +27,7 @@ func (service *JobOffersService) Create(offer *domain.JobOffer) error {
 	offer.IsActive = true
 	return service.store.Create(offer)
 }
+
+func (service *JobOffersService) Update(offer *domain.JobOffer) error {
+	return service.store.Update(offer)
+}

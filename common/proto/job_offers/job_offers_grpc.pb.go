@@ -25,6 +25,7 @@ type JobOffersServiceClient interface {
 	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
 	Get(ctx context.Context, in *JobOfferId, opts ...grpc.CallOption) (*JobOffer, error)
 	Create(ctx context.Context, in *NewJobOffer, opts ...grpc.CallOption) (*Response, error)
+	Update(ctx context.Context, in *UpdateJobOffer, opts ...grpc.CallOption) (*Response, error)
 }
 
 type jobOffersServiceClient struct {
@@ -62,6 +63,15 @@ func (c *jobOffersServiceClient) Create(ctx context.Context, in *NewJobOffer, op
 	return out, nil
 }
 
+func (c *jobOffersServiceClient) Update(ctx context.Context, in *UpdateJobOffer, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/job_offers.JobOffersService/Update", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // JobOffersServiceServer is the server API for JobOffersService service.
 // All implementations must embed UnimplementedJobOffersServiceServer
 // for forward compatibility
@@ -69,6 +79,7 @@ type JobOffersServiceServer interface {
 	GetAll(context.Context, *GetAllRequest) (*GetAllResponse, error)
 	Get(context.Context, *JobOfferId) (*JobOffer, error)
 	Create(context.Context, *NewJobOffer) (*Response, error)
+	Update(context.Context, *UpdateJobOffer) (*Response, error)
 	mustEmbedUnimplementedJobOffersServiceServer()
 }
 
@@ -84,6 +95,9 @@ func (UnimplementedJobOffersServiceServer) Get(context.Context, *JobOfferId) (*J
 }
 func (UnimplementedJobOffersServiceServer) Create(context.Context, *NewJobOffer) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
+}
+func (UnimplementedJobOffersServiceServer) Update(context.Context, *UpdateJobOffer) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedJobOffersServiceServer) mustEmbedUnimplementedJobOffersServiceServer() {}
 
@@ -152,6 +166,24 @@ func _JobOffersService_Create_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _JobOffersService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateJobOffer)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JobOffersServiceServer).Update(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/job_offers.JobOffersService/Update",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JobOffersServiceServer).Update(ctx, req.(*UpdateJobOffer))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // JobOffersService_ServiceDesc is the grpc.ServiceDesc for JobOffersService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -170,6 +202,10 @@ var JobOffersService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Create",
 			Handler:    _JobOffersService_Create_Handler,
+		},
+		{
+			MethodName: "Update",
+			Handler:    _JobOffersService_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

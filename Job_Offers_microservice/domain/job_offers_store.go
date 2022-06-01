@@ -6,4 +6,5 @@ type JobOffersStore interface {
 	GetAll() ([]*JobOffer, error)
 	Get(id primitive.ObjectID) (*JobOffer, error)
 	Create(*JobOffer) error
+	Update(*JobOffer) error
 }

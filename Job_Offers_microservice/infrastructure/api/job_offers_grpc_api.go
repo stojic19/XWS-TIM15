@@ -62,6 +62,21 @@ func (handler *JobOffersHandler) Create(ctx context.Context, request *job_offers
 	}, nil
 }
 
+func (handler *JobOffersHandler) Update(ctx context.Context, request *job_offers.UpdateJobOffer) (*job_offers.Response, error) {
+	jobOffer := mapJobOfferUpdate(request)
+	err := handler.service.Update(jobOffer)
+	if err != nil {
+		return &job_offers.Response{
+			Message: "Oops, something went wrong. Try again!",
+			Code:    500,
+		}, err
+	}
+	return &job_offers.Response{
+		Message: "Job offer updated!",
+		Code:    200,
+	}, nil
+}
+
 func mapJobOffer(jobOffer *domain.JobOffer) *job_offers.JobOffer {
 	jobOfferPb := &job_offers.JobOffer{
 		Id:           jobOffer.Id.Hex(),
@@ -80,4 +95,16 @@ func mapNewJobOffer(jobOffer *job_offers.NewJobOffer) *domain.JobOffer {
 		Requirements: jobOffer.Requirements,
 	}
 	return domainJobOffer
+}
+
+func mapJobOfferUpdate(jobOffer *job_offers.UpdateJobOffer) *domain.JobOffer {
+	id, _ := primitive.ObjectIDFromHex(jobOffer.Id)
+	jobOfferPb := &domain.JobOffer{
+		Id:           id,
+		Position:     jobOffer.Position,
+		Description:  jobOffer.Description,
+		Requirements: jobOffer.Requirements,
+		IsActive:     jobOffer.IsActive,
+	}
+	return jobOfferPb
 }

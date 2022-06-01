@@ -44,6 +44,22 @@ func (store *JobOffersMongoStore) Create(jobOffer *domain.JobOffer) error {
 	return nil
 }
 
+func (store *JobOffersMongoStore) Update(jobOffer *domain.JobOffer) error {
+	_, err := store.jobOffers.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": jobOffer.Id},
+		bson.D{
+			{"$set", bson.D{
+				{"position", jobOffer.Position},
+				{"description", jobOffer.Description},
+				{"requirements", jobOffer.Requirements}}},
+		})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (store *JobOffersMongoStore) filter(filter interface{}) ([]*domain.JobOffer, error) {
 	cursor, err := store.jobOffers.Find(context.TODO(), filter)
 	defer cursor.Close(context.TODO())
