@@ -29,6 +29,18 @@ service JobOffersService{
       body: "*"
     };
   }
+  rpc FollowJobOffer(FollowRequest) returns(Response){
+    option(google.api.http) = {
+      put: "/job_offers/follow"
+      body: "*"
+    };
+  }
+  rpc UnfollowJobOffer(UnfollowRequest) returns(Response){
+    option(google.api.http) = {
+      put: "/job_offers/unfollow"
+      body: "*"
+    };
+  }
 }
 
 
@@ -46,6 +58,7 @@ message JobOffer{
   string description = 3;
   string requirements = 4;
   bool isActive = 5;
+  repeated User followers = 6;
 }
 
 message NewJobOffer{
@@ -66,9 +79,23 @@ message JobOfferId{
   string id = 1;
 }
 
+message FollowRequest{
+  string id = 1;
+  string jobOfferId = 2;
+}
+
+message UnfollowRequest{
+  string id = 1;
+  string jobOfferId = 2;
+}
+
 message Response{
    int32 code = 1;
    string message = 2;
+}
+
+message User{
+  string id = 1;
 }
 
 //protoc -I ./proto --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative --grpc-gateway_out=allow_delete_body=true:./proto --grpc-gateway_opt=paths=source_relative ./proto/job_offers/job_offers.proto

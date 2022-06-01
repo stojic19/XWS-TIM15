@@ -31,3 +31,11 @@ func (service *JobOffersService) Create(offer *domain.JobOffer) error {
 func (service *JobOffersService) Update(offer *domain.JobOffer) error {
 	return service.store.Update(offer)
 }
+
+func (service *JobOffersService) Follow(jobOfferId primitive.ObjectID, user *domain.User) error {
+	return service.store.Follow(jobOfferId, user)
+}
+
+func (service *JobOffersService) Unfollow(jobOfferId primitive.ObjectID, user *domain.User) error {
+	return service.store.Unfollow(jobOfferId, user)
+}

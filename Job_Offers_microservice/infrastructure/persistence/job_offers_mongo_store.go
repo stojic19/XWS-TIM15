@@ -60,6 +60,34 @@ func (store *JobOffersMongoStore) Update(jobOffer *domain.JobOffer) error {
 	return nil
 }
 
+func (store *JobOffersMongoStore) Follow(jobOfferId primitive.ObjectID, user *domain.User) error {
+	_, err := store.jobOffers.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": jobOfferId},
+		bson.D{
+			{"$addToSet", bson.D{{"followers", user}}},
+		},
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (store *JobOffersMongoStore) Unfollow(jobOfferId primitive.ObjectID, user *domain.User) error {
+	_, err := store.jobOffers.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": jobOfferId},
+		bson.D{
+			{"$pull", bson.D{{"followers", user}}},
+		},
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (store *JobOffersMongoStore) filter(filter interface{}) ([]*domain.JobOffer, error) {
 	cursor, err := store.jobOffers.Find(context.TODO(), filter)
 	defer cursor.Close(context.TODO())

@@ -26,6 +26,8 @@ type JobOffersServiceClient interface {
 	Get(ctx context.Context, in *JobOfferId, opts ...grpc.CallOption) (*JobOffer, error)
 	Create(ctx context.Context, in *NewJobOffer, opts ...grpc.CallOption) (*Response, error)
 	Update(ctx context.Context, in *UpdateJobOffer, opts ...grpc.CallOption) (*Response, error)
+	FollowJobOffer(ctx context.Context, in *FollowRequest, opts ...grpc.CallOption) (*Response, error)
+	UnfollowJobOffer(ctx context.Context, in *UnfollowRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type jobOffersServiceClient struct {
@@ -72,6 +74,24 @@ func (c *jobOffersServiceClient) Update(ctx context.Context, in *UpdateJobOffer,
 	return out, nil
 }
 
+func (c *jobOffersServiceClient) FollowJobOffer(ctx context.Context, in *FollowRequest, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/job_offers.JobOffersService/FollowJobOffer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *jobOffersServiceClient) UnfollowJobOffer(ctx context.Context, in *UnfollowRequest, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/job_offers.JobOffersService/UnfollowJobOffer", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // JobOffersServiceServer is the server API for JobOffersService service.
 // All implementations must embed UnimplementedJobOffersServiceServer
 // for forward compatibility
@@ -80,6 +100,8 @@ type JobOffersServiceServer interface {
 	Get(context.Context, *JobOfferId) (*JobOffer, error)
 	Create(context.Context, *NewJobOffer) (*Response, error)
 	Update(context.Context, *UpdateJobOffer) (*Response, error)
+	FollowJobOffer(context.Context, *FollowRequest) (*Response, error)
+	UnfollowJobOffer(context.Context, *UnfollowRequest) (*Response, error)
 	mustEmbedUnimplementedJobOffersServiceServer()
 }
 
@@ -98,6 +120,12 @@ func (UnimplementedJobOffersServiceServer) Create(context.Context, *NewJobOffer)
 }
 func (UnimplementedJobOffersServiceServer) Update(context.Context, *UpdateJobOffer) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
+}
+func (UnimplementedJobOffersServiceServer) FollowJobOffer(context.Context, *FollowRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FollowJobOffer not implemented")
+}
+func (UnimplementedJobOffersServiceServer) UnfollowJobOffer(context.Context, *UnfollowRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnfollowJobOffer not implemented")
 }
 func (UnimplementedJobOffersServiceServer) mustEmbedUnimplementedJobOffersServiceServer() {}
 
@@ -184,6 +212,42 @@ func _JobOffersService_Update_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _JobOffersService_FollowJobOffer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FollowRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JobOffersServiceServer).FollowJobOffer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/job_offers.JobOffersService/FollowJobOffer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JobOffersServiceServer).FollowJobOffer(ctx, req.(*FollowRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _JobOffersService_UnfollowJobOffer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnfollowRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JobOffersServiceServer).UnfollowJobOffer(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/job_offers.JobOffersService/UnfollowJobOffer",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JobOffersServiceServer).UnfollowJobOffer(ctx, req.(*UnfollowRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // JobOffersService_ServiceDesc is the grpc.ServiceDesc for JobOffersService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +270,14 @@ var JobOffersService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Update",
 			Handler:    _JobOffersService_Update_Handler,
+		},
+		{
+			MethodName: "FollowJobOffer",
+			Handler:    _JobOffersService_FollowJobOffer_Handler,
+		},
+		{
+			MethodName: "UnfollowJobOffer",
+			Handler:    _JobOffersService_UnfollowJobOffer_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

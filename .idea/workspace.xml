@@ -8,6 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/application/job_offers_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/application/job_offers_service.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/domain/job_offers_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/domain/job_offers_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/domain/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/domain/model.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/persistence/job_offers_mongo_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/persistence/job_offers_mongo_store.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/proto/job_offers/job_offers.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/job_offers/job_offers.pb.go" afterDir="false" />

@@ -1,6 +1,8 @@
 package domain
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type JobOffer struct {
 	Id           primitive.ObjectID `bson:"_id"`
@@ -8,4 +10,9 @@ type JobOffer struct {
 	Description  string             `bson:"description"`
 	Requirements string             `bson:"requirements"`
 	IsActive     bool               `bson:"isActive"`
+	Followers    []User             `bson:"followers"`
+}
+
+type User struct {
+	Id string
 }
