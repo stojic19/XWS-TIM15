@@ -6,12 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fa3f74b9-be4b-4973-94b2-f1b3f2d0a37f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api_gateway/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/Login.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

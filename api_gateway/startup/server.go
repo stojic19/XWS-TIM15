@@ -66,8 +66,9 @@ func (server *Server) initCustomHandlers() {
 func (server *Server) Start() {
 	fmt.Printf("Port: %s\n", server.config.Port)
 	handler := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000"},
-		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete},
+		AllowedOrigins:   []string{"http://localhost:3000", "https://localhost:3000/**"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Accept-Language", "Content-Type", "Content-Language", "Origin", "Authorization", "Access-Control-Allow-Origin", "*"},
 		AllowCredentials: true,
 	}).Handler(server.mux)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), handler))
