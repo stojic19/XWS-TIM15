@@ -24,12 +24,18 @@ type PostUsersInfoList struct {
 type PostUsersInfo struct {
 	Id         string
 	Title      string
-	Content    string
+	Content    Content
 	CreateTime time.Time
 	Owner      *UserPostInfo
 	Comments   []*CommentPostInfo
 	Likes      []*UserPostInfo
 	Dislikes   []*UserPostInfo
+}
+
+type Content struct {
+	Text   string
+	Links  []string
+	Images []string
 }
 
 type UserPostInfo struct {
