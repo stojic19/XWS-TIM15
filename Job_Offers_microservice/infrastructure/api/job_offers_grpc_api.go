@@ -77,7 +77,7 @@ func (handler *JobOffersHandler) Update(ctx context.Context, request *job_offers
 	}, nil
 }
 
-func (handler *JobOffersHandler) FollowJobOffer(ctx context.Context, request *job_offers.FollowRequest) (*job_offers.Response, error) {
+func (handler *JobOffersHandler) FollowJobOffer(ctx context.Context, request *job_offers.SubscribeRequest) (*job_offers.Response, error) {
 	jobOfferId, _ := primitive.ObjectIDFromHex(request.JobOfferId)
 	user := &domain.User{Id: request.Id}
 	err := handler.service.Follow(jobOfferId, user)
@@ -93,7 +93,7 @@ func (handler *JobOffersHandler) FollowJobOffer(ctx context.Context, request *jo
 	}, nil
 }
 
-func (handler *JobOffersHandler) UnfollowJobOffer(ctx context.Context, request *job_offers.UnfollowRequest) (*job_offers.Response, error) {
+func (handler *JobOffersHandler) UnfollowJobOffer(ctx context.Context, request *job_offers.UnsubscribeRequest) (*job_offers.Response, error) {
 	jobOfferId, _ := primitive.ObjectIDFromHex(request.JobOfferId)
 	user := &domain.User{Id: request.Id}
 	err := handler.service.Unfollow(jobOfferId, user)
@@ -117,11 +117,11 @@ func mapJobOffer(jobOffer *domain.JobOffer) *job_offers.JobOffer {
 		Requirements: jobOffer.Requirements,
 		IsActive:     jobOffer.IsActive,
 	}
-	for _, follower := range jobOffer.Followers {
+	for _, follower := range jobOffer.Subscribers {
 		followerPb := &job_offers.User{
 			Id: follower.Id,
 		}
-		jobOfferPb.Followers = append(jobOfferPb.Followers, followerPb)
+		jobOfferPb.Subscribers = append(jobOfferPb.Subscribers, followerPb)
 	}
 	return jobOfferPb
 }
@@ -131,7 +131,7 @@ func mapNewJobOffer(jobOffer *job_offers.NewJobOffer) *domain.JobOffer {
 		Position:     jobOffer.Position,
 		Description:  jobOffer.Description,
 		Requirements: jobOffer.Requirements,
-		Followers:    []domain.User{},
+		Subscribers:  []domain.User{},
 	}
 	return domainJobOffer
 }

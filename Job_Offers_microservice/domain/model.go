@@ -10,7 +10,7 @@ type JobOffer struct {
 	Description  string             `bson:"description"`
 	Requirements string             `bson:"requirements"`
 	IsActive     bool               `bson:"isActive"`
-	Followers    []User             `bson:"followers"`
+	Subscribers  []User             `bson:"subscribers"`
 }
 
 type User struct {

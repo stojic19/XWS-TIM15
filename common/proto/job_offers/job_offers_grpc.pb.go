@@ -26,8 +26,8 @@ type JobOffersServiceClient interface {
 	Get(ctx context.Context, in *JobOfferId, opts ...grpc.CallOption) (*JobOffer, error)
 	Create(ctx context.Context, in *NewJobOffer, opts ...grpc.CallOption) (*Response, error)
 	Update(ctx context.Context, in *UpdateJobOffer, opts ...grpc.CallOption) (*Response, error)
-	FollowJobOffer(ctx context.Context, in *FollowRequest, opts ...grpc.CallOption) (*Response, error)
-	UnfollowJobOffer(ctx context.Context, in *UnfollowRequest, opts ...grpc.CallOption) (*Response, error)
+	SubscribeJobOffer(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (*Response, error)
+	UnsubscribeJobOffer(ctx context.Context, in *UnsubscribeRequest, opts ...grpc.CallOption) (*Response, error)
 }
 
 type jobOffersServiceClient struct {
@@ -74,18 +74,18 @@ func (c *jobOffersServiceClient) Update(ctx context.Context, in *UpdateJobOffer,
 	return out, nil
 }
 
-func (c *jobOffersServiceClient) FollowJobOffer(ctx context.Context, in *FollowRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *jobOffersServiceClient) SubscribeJobOffer(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/job_offers.JobOffersService/FollowJobOffer", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/job_offers.JobOffersService/SubscribeJobOffer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *jobOffersServiceClient) UnfollowJobOffer(ctx context.Context, in *UnfollowRequest, opts ...grpc.CallOption) (*Response, error) {
+func (c *jobOffersServiceClient) UnsubscribeJobOffer(ctx context.Context, in *UnsubscribeRequest, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/job_offers.JobOffersService/UnfollowJobOffer", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/job_offers.JobOffersService/UnsubscribeJobOffer", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -100,8 +100,8 @@ type JobOffersServiceServer interface {
 	Get(context.Context, *JobOfferId) (*JobOffer, error)
 	Create(context.Context, *NewJobOffer) (*Response, error)
 	Update(context.Context, *UpdateJobOffer) (*Response, error)
-	FollowJobOffer(context.Context, *FollowRequest) (*Response, error)
-	UnfollowJobOffer(context.Context, *UnfollowRequest) (*Response, error)
+	SubscribeJobOffer(context.Context, *SubscribeRequest) (*Response, error)
+	UnsubscribeJobOffer(context.Context, *UnsubscribeRequest) (*Response, error)
 	mustEmbedUnimplementedJobOffersServiceServer()
 }
 
@@ -121,11 +121,11 @@ func (UnimplementedJobOffersServiceServer) Create(context.Context, *NewJobOffer)
 func (UnimplementedJobOffersServiceServer) Update(context.Context, *UpdateJobOffer) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
-func (UnimplementedJobOffersServiceServer) FollowJobOffer(context.Context, *FollowRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method FollowJobOffer not implemented")
+func (UnimplementedJobOffersServiceServer) SubscribeJobOffer(context.Context, *SubscribeRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SubscribeJobOffer not implemented")
 }
-func (UnimplementedJobOffersServiceServer) UnfollowJobOffer(context.Context, *UnfollowRequest) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UnfollowJobOffer not implemented")
+func (UnimplementedJobOffersServiceServer) UnsubscribeJobOffer(context.Context, *UnsubscribeRequest) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnsubscribeJobOffer not implemented")
 }
 func (UnimplementedJobOffersServiceServer) mustEmbedUnimplementedJobOffersServiceServer() {}
 
@@ -212,38 +212,38 @@ func _JobOffersService_Update_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _JobOffersService_FollowJobOffer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(FollowRequest)
+func _JobOffersService_SubscribeJobOffer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SubscribeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(JobOffersServiceServer).FollowJobOffer(ctx, in)
+		return srv.(JobOffersServiceServer).SubscribeJobOffer(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/job_offers.JobOffersService/FollowJobOffer",
+		FullMethod: "/job_offers.JobOffersService/SubscribeJobOffer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(JobOffersServiceServer).FollowJobOffer(ctx, req.(*FollowRequest))
+		return srv.(JobOffersServiceServer).SubscribeJobOffer(ctx, req.(*SubscribeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _JobOffersService_UnfollowJobOffer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UnfollowRequest)
+func _JobOffersService_UnsubscribeJobOffer_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnsubscribeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(JobOffersServiceServer).UnfollowJobOffer(ctx, in)
+		return srv.(JobOffersServiceServer).UnsubscribeJobOffer(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/job_offers.JobOffersService/UnfollowJobOffer",
+		FullMethod: "/job_offers.JobOffersService/UnsubscribeJobOffer",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(JobOffersServiceServer).UnfollowJobOffer(ctx, req.(*UnfollowRequest))
+		return srv.(JobOffersServiceServer).UnsubscribeJobOffer(ctx, req.(*UnsubscribeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -272,12 +272,12 @@ var JobOffersService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _JobOffersService_Update_Handler,
 		},
 		{
-			MethodName: "FollowJobOffer",
-			Handler:    _JobOffersService_FollowJobOffer_Handler,
+			MethodName: "SubscribeJobOffer",
+			Handler:    _JobOffersService_SubscribeJobOffer_Handler,
 		},
 		{
-			MethodName: "UnfollowJobOffer",
-			Handler:    _JobOffersService_UnfollowJobOffer_Handler,
+			MethodName: "UnsubscribeJobOffer",
+			Handler:    _JobOffersService_UnsubscribeJobOffer_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

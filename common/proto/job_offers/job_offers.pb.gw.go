@@ -169,8 +169,8 @@ func local_request_JobOffersService_Update_0(ctx context.Context, marshaler runt
 
 }
 
-func request_JobOffersService_FollowJobOffer_0(ctx context.Context, marshaler runtime.Marshaler, client JobOffersServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq FollowRequest
+func request_JobOffersService_SubscribeJobOffer_0(ctx context.Context, marshaler runtime.Marshaler, client JobOffersServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SubscribeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -181,13 +181,13 @@ func request_JobOffersService_FollowJobOffer_0(ctx context.Context, marshaler ru
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.FollowJobOffer(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.SubscribeJobOffer(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_JobOffersService_FollowJobOffer_0(ctx context.Context, marshaler runtime.Marshaler, server JobOffersServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq FollowRequest
+func local_request_JobOffersService_SubscribeJobOffer_0(ctx context.Context, marshaler runtime.Marshaler, server JobOffersServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SubscribeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -198,13 +198,13 @@ func local_request_JobOffersService_FollowJobOffer_0(ctx context.Context, marsha
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.FollowJobOffer(ctx, &protoReq)
+	msg, err := server.SubscribeJobOffer(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_JobOffersService_UnfollowJobOffer_0(ctx context.Context, marshaler runtime.Marshaler, client JobOffersServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UnfollowRequest
+func request_JobOffersService_UnsubscribeJobOffer_0(ctx context.Context, marshaler runtime.Marshaler, client JobOffersServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UnsubscribeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -215,13 +215,13 @@ func request_JobOffersService_UnfollowJobOffer_0(ctx context.Context, marshaler 
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.UnfollowJobOffer(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.UnsubscribeJobOffer(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_JobOffersService_UnfollowJobOffer_0(ctx context.Context, marshaler runtime.Marshaler, server JobOffersServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UnfollowRequest
+func local_request_JobOffersService_UnsubscribeJobOffer_0(ctx context.Context, marshaler runtime.Marshaler, server JobOffersServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UnsubscribeRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -232,7 +232,7 @@ func local_request_JobOffersService_UnfollowJobOffer_0(ctx context.Context, mars
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.UnfollowJobOffer(ctx, &protoReq)
+	msg, err := server.UnsubscribeJobOffer(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -339,19 +339,19 @@ func RegisterJobOffersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("PUT", pattern_JobOffersService_FollowJobOffer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PUT", pattern_JobOffersService_SubscribeJobOffer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/job_offers.JobOffersService/FollowJobOffer", runtime.WithHTTPPathPattern("/job_offers/follow"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/job_offers.JobOffersService/SubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/follow"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_JobOffersService_FollowJobOffer_0(ctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_JobOffersService_SubscribeJobOffer_0(ctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -359,23 +359,23 @@ func RegisterJobOffersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 			return
 		}
 
-		forward_JobOffersService_FollowJobOffer_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_JobOffersService_SubscribeJobOffer_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("PUT", pattern_JobOffersService_UnfollowJobOffer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PUT", pattern_JobOffersService_UnsubscribeJobOffer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/job_offers.JobOffersService/UnfollowJobOffer", runtime.WithHTTPPathPattern("/job_offers/unfollow"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/job_offers.JobOffersService/UnsubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/unfollow"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_JobOffersService_UnfollowJobOffer_0(ctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_JobOffersService_UnsubscribeJobOffer_0(ctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -383,7 +383,7 @@ func RegisterJobOffersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 			return
 		}
 
-		forward_JobOffersService_UnfollowJobOffer_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_JobOffersService_UnsubscribeJobOffer_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -512,45 +512,45 @@ func RegisterJobOffersServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 
 	})
 
-	mux.Handle("PUT", pattern_JobOffersService_FollowJobOffer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PUT", pattern_JobOffersService_SubscribeJobOffer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/job_offers.JobOffersService/FollowJobOffer", runtime.WithHTTPPathPattern("/job_offers/follow"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/job_offers.JobOffersService/SubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/follow"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_JobOffersService_FollowJobOffer_0(ctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_JobOffersService_SubscribeJobOffer_0(ctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_JobOffersService_FollowJobOffer_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_JobOffersService_SubscribeJobOffer_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("PUT", pattern_JobOffersService_UnfollowJobOffer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("PUT", pattern_JobOffersService_UnsubscribeJobOffer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/job_offers.JobOffersService/UnfollowJobOffer", runtime.WithHTTPPathPattern("/job_offers/unfollow"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/job_offers.JobOffersService/UnsubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/unfollow"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_JobOffersService_UnfollowJobOffer_0(ctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_JobOffersService_UnsubscribeJobOffer_0(ctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_JobOffersService_UnfollowJobOffer_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_JobOffersService_UnsubscribeJobOffer_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -566,9 +566,9 @@ var (
 
 	pattern_JobOffersService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"job_offers"}, ""))
 
-	pattern_JobOffersService_FollowJobOffer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"job_offers", "follow"}, ""))
+	pattern_JobOffersService_SubscribeJobOffer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"job_offers", "follow"}, ""))
 
-	pattern_JobOffersService_UnfollowJobOffer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"job_offers", "unfollow"}, ""))
+	pattern_JobOffersService_UnsubscribeJobOffer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"job_offers", "unfollow"}, ""))
 )
 
 var (
@@ -580,7 +580,7 @@ var (
 
 	forward_JobOffersService_Update_0 = runtime.ForwardResponseMessage
 
-	forward_JobOffersService_FollowJobOffer_0 = runtime.ForwardResponseMessage
+	forward_JobOffersService_SubscribeJobOffer_0 = runtime.ForwardResponseMessage
 
-	forward_JobOffersService_UnfollowJobOffer_0 = runtime.ForwardResponseMessage
+	forward_JobOffersService_UnsubscribeJobOffer_0 = runtime.ForwardResponseMessage
 )

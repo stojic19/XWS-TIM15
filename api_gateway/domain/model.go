@@ -58,7 +58,7 @@ type JobOfferUsersInfo struct {
 	Description  string
 	Requirements string
 	IsActive     bool
-	Followers    []*UserJobOfferInfo
+	Subscribers  []*UserJobOfferInfo
 }
 
 type UserJobOfferInfo struct {

@@ -29,13 +29,13 @@ service JobOffersService{
       body: "*"
     };
   }
-  rpc FollowJobOffer(FollowRequest) returns(Response){
+  rpc SubscribeJobOffer(SubscribeRequest) returns(Response){
     option(google.api.http) = {
       put: "/job_offers/follow"
       body: "*"
     };
   }
-  rpc UnfollowJobOffer(UnfollowRequest) returns(Response){
+  rpc UnsubscribeJobOffer(UnsubscribeRequest) returns(Response){
     option(google.api.http) = {
       put: "/job_offers/unfollow"
       body: "*"
@@ -58,7 +58,7 @@ message JobOffer{
   string description = 3;
   string requirements = 4;
   bool isActive = 5;
-  repeated User followers = 6;
+  repeated User subscribers = 6;
 }
 
 message NewJobOffer{
@@ -79,12 +79,12 @@ message JobOfferId{
   string id = 1;
 }
 
-message FollowRequest{
+message SubscribeRequest{
   string id = 1;
   string jobOfferId = 2;
 }
 
-message UnfollowRequest{
+message UnsubscribeRequest{
   string id = 1;
   string jobOfferId = 2;
 }

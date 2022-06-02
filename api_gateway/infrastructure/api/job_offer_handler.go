@@ -43,7 +43,7 @@ func (handler *JobOffersHandler) GetJobOffersDetails(w http.ResponseWriter, r *h
 	}
 
 	for _, jobOfferInfo := range jobOffersInfo.JobOffers {
-		for _, followerInfo := range jobOfferInfo.Followers {
+		for _, followerInfo := range jobOfferInfo.Subscribers {
 			err = handler.addUserInfo(followerInfo)
 			if err != nil {
 				break
@@ -73,13 +73,13 @@ func (handler *JobOffersHandler) addJobOffersInfo(jobOffersInfoList *domain.JobO
 			Description:  jobOfferPb.Description,
 			Requirements: jobOfferPb.Requirements,
 			IsActive:     jobOfferPb.IsActive,
-			Followers:    []*domain.UserJobOfferInfo{},
+			Subscribers:  []*domain.UserJobOfferInfo{},
 		}
-		for _, follower := range jobOfferPb.Followers {
+		for _, follower := range jobOfferPb.Subscribers {
 			follower := domain.UserJobOfferInfo{
 				Id: follower.Id,
 			}
-			jobOffer.Followers = append(jobOffer.Followers, &follower)
+			jobOffer.Subscribers = append(jobOffer.Subscribers, &follower)
 		}
 		jobOffersInfoList.JobOffers = append(jobOffersInfoList.JobOffers, &jobOffer)
 	}
