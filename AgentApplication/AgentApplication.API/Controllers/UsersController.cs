@@ -7,6 +7,7 @@ using AgentApplication.API.Dto;
 using AgentApplication.ClassLib.Database.Infrastructure;
 using AgentApplication.ClassLib.Database.Repository;
 using AgentApplication.ClassLib.Database.Repository.Enums;
+using AgentApplication.ClassLib.Exceptions;
 using AgentApplication.ClassLib.Model;
 using AgentApplication.ClassLib.Model.Enumerations;
 using AgentApplication.ClassLib.Service;
@@ -48,8 +49,20 @@ namespace AgentApplication.API.Controllers
         public IActionResult PostUser(PostUserDto dto)
         {
             User user = _mapper.Map<User>(dto);
-            _authenticationService.Register(user);
-            return Ok();
+            try
+            {
+                _authenticationService.Register(user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                switch (ex)
+                {
+                    case RegistrationException: return BadRequest(ex.Message);
+                    default: return Problem("Oops, something went wrong! Try again later.");
+                }
+            }
+            
         }
 
         [HttpPut("Username")]

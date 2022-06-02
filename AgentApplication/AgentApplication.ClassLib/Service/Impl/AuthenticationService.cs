@@ -35,7 +35,10 @@ namespace AgentApplication.ClassLib.Service.Impl
             user.Password = EncodePassword(user.Password, user.Salt);
             _uow.GetRepository<IUserWriteRepository>().Add(user);
         }
-
+        /// <Summary>
+        ///     Logs in user, returns jwt
+        /// </Summary>
+        /// <exception cref="AgentApplication.ClassLib.Exceptions.LogInException">User name exists</exception>
         public string LogIn(string username, string password)
         {
             var user = _uow.GetRepository<IUserReadRepository>().GetByUsername(username);
