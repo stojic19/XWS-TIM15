@@ -23,7 +23,23 @@ func (service *JobOffersService) Get(id primitive.ObjectID) (*domain.JobOffer, e
 	return service.store.Get(id)
 }
 
+func (service *JobOffersService) GetSubscribed(userId string) ([]*domain.JobOffer, error) {
+	return service.store.GetSubscribed(userId)
+}
+
 func (service *JobOffersService) Create(offer *domain.JobOffer) error {
 	offer.IsActive = true
 	return service.store.Create(offer)
+}
+
+func (service *JobOffersService) Update(offer *domain.JobOffer) error {
+	return service.store.Update(offer)
+}
+
+func (service *JobOffersService) Follow(jobOfferId primitive.ObjectID, user *domain.User) error {
+	return service.store.Follow(jobOfferId, user)
+}
+
+func (service *JobOffersService) Unfollow(jobOfferId primitive.ObjectID, user *domain.User) error {
+	return service.store.Unfollow(jobOfferId, user)
 }

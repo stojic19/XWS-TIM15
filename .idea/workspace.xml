@@ -11,6 +11,14 @@
       <change beforePath="$PROJECT_DIR$/api_gateway/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api_gateway/startup/middleware/auth_middleware.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/middleware/auth_middleware.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api_gateway/startup/mux_wrapper.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/mux_wrapper.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/application/job_offers_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/application/job_offers_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/domain/job_offers_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/domain/job_offers_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/persistence/job_offers_mongo_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/persistence/job_offers_mongo_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/job_offers/job_offers.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/job_offers/job_offers.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/job_offers/job_offers.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/job_offers/job_offers.pb.gw.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/job_offers/job_offers.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/job_offers/job_offers.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/job_offers/job_offers_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/job_offers/job_offers_grpc.pb.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +32,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file://C:/Program Files/Go" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -53,13 +61,14 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Aleksandar&quot;
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/User/Desktop/Milan/XWS/XWS-TIM15/api_gateway/infrastructure/api&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
   }
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\User\Desktop\Milan\XWS\XWS-TIM15\Posts_microservice\infrastructure" />
       <recent name="C:\Users\User\Desktop\Milan\XWS\XWS-TIM15\api_gateway\infrastructure\api" />
+      <recent name="C:\Users\User\Desktop\Milan\XWS\XWS-TIM15\Posts_microservice\infrastructure" />
       <recent name="C:\Users\User\Desktop\Milan\XWS\XWS-TIM15\api_gateway" />
     </key>
   </component>
@@ -69,6 +78,14 @@
     </option>
   </component>
   <component name="RunManager" selected="Go Build.go build main.go (2)">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="XWS-TIM15" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build github.com/stojic19/XWS-TIM15/api_gateway" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="XWS-TIM15" />
       <working_directory value="$PROJECT_DIR$/api_gateway" />
@@ -111,12 +128,21 @@
       <filePath value="$PROJECT_DIR$/Followers_microservice/main.go" />
       <method v="2" />
     </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="XWS-TIM15" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Go Build.go build main.go (2)" />
         <item itemvalue="Go Build.go build main.go (1)" />
-        <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build github.com/stojic19/XWS-TIM15/api_gateway" />
+        <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build github.com/stojic19/XWS-TIM15/posts_microservice" />
       </list>
     </recent_temporary>

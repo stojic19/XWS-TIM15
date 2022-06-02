@@ -3,6 +3,8 @@ package startup
 import (
 	"context"
 	"fmt"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/rs/cors"
 	"github.com/stojic19/XWS-TIM15/api_gateway/infrastructure/api"
 	"github.com/stojic19/XWS-TIM15/api_gateway/startup/config"
 	"github.com/stojic19/XWS-TIM15/api_gateway/startup/middleware"
@@ -64,12 +66,22 @@ func (server *Server) initCustomHandlers() {
 	followersEndpoint := fmt.Sprintf("%s:%s", server.config.FollowersHost, server.config.FollowersPort)
 	usersEndpoint := fmt.Sprintf("%s:%s", server.config.UsersHost, server.config.UsersPort)
 	postsEndpoint := fmt.Sprintf("%s:%s", server.config.PostsHost, server.config.PostsPort)
+	jobOffersEndpoint := fmt.Sprintf("%s:%s", server.config.JobOffersHost, server.config.JobOffersPort)
 	followersHandler := api.NewFollowersHandler(followersEndpoint, usersEndpoint)
 	followersHandler.Init(&server.mux.ServeMux)
 	postsHandler := api.NewPostsHandler(postsEndpoint, followersEndpoint, usersEndpoint)
 	postsHandler.Init(&server.mux.ServeMux)
+	jobOffersHandler := api.NewJobOffersHandler(jobOffersEndpoint, usersEndpoint)
+	jobOffersHandler.Init(&server.mux.ServeMux)
 }
 
 func (server *Server) Start() {
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), server.mux))
+	fmt.Printf("Port: %s\n", server.config.Port)
+	handler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000", "https://localhost:3000/**"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Accept-Language", "Content-Type", "Content-Language", "Origin", "Authorization", "Access-Control-Allow-Origin", "*"},
+		AllowCredentials: true,
+	}).Handler(server.mux)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), handler))
 }

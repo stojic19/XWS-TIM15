@@ -9,6 +9,7 @@ using AgentApplication.ClassLib.Database.Repository;
 using AgentApplication.ClassLib.Database.Repository.Enums;
 using AgentApplication.ClassLib.Model;
 using AgentApplication.ClassLib.Model.Enumerations;
+using AgentApplication.ClassLib.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +22,14 @@ namespace AgentApplication.API.Controllers
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        public UsersController(IUnitOfWork uow, IMapper mapper)
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IJwtGenerator _jwtGenerator;
+        public UsersController(IUnitOfWork uow, IMapper mapper, IAuthenticationService authenticationService, IJwtGenerator jwtGenerator)
         {
             _uow = uow;
             _mapper = mapper;
+            _authenticationService = authenticationService;
+            _jwtGenerator = jwtGenerator;
         }
 
         [HttpGet]
@@ -43,15 +48,15 @@ namespace AgentApplication.API.Controllers
         public IActionResult PostUser(PostUserDto dto)
         {
             User user = _mapper.Map<User>(dto);
-            user.TimeOfRegistration = DateTime.Now;
-            user.Role = Role.Regular;
-            return Ok(_uow.GetRepository<IUserWriteRepository>().Add(user));
+            _authenticationService.Register(user);
+            return Ok();
         }
 
         [HttpPut("Username")]
         public IActionResult UpdateUsername(PutUsernameDto dto)
         {
             User user = _uow.GetRepository<IUserReadRepository>().GetById(dto.Id);
+            if (user == null) return NotFound("User not found");
             user.Username = dto.Username;
             return Ok(_uow.GetRepository<IUserWriteRepository>().Update(user));
         }
@@ -60,8 +65,18 @@ namespace AgentApplication.API.Controllers
         public IActionResult UpdateUserInfo(PutUserInfoDto dto)
         {
             User user = _uow.GetRepository<IUserReadRepository>().GetById(dto.Id);
+            if (user == null) return NotFound("User not found");
             user.PersonalInfo = _mapper.Map<UserPersonalInfo>(dto);
             return Ok(_uow.GetRepository<IUserWriteRepository>().Update(user));
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteUser(Guid id)
+        {
+            User user = _uow.GetRepository<IUserReadRepository>().GetById(id);
+            if (user == null) return NotFound("User not found");
+            _uow.GetRepository<IUserWriteRepository>().Delete(user);
+            return Ok();
         }
     }
 }

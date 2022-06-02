@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AgentApplication.ClassLib.Database.EfStructures;
 using AgentApplication.ClassLib.Database.Repository.Base;
+using AgentApplication.ClassLib.Database.Repository.Enums;
 using AgentApplication.ClassLib.Model;
 
 namespace AgentApplication.ClassLib.Database.Repository.Implementation
@@ -13,6 +14,11 @@ namespace AgentApplication.ClassLib.Database.Repository.Implementation
     {
         public UserReadRepository(AppDbContext context) : base(context)
         {
+        }
+
+        public User GetByUsername(string username)
+        {
+            return GetSet().FirstOrDefault(user => user.Username.Equals(username));
         }
     }
 }

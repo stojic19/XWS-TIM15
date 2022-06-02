@@ -7,10 +7,10 @@ namespace AgentApplication.API.Dto
 {
     public class PutJobOfferDto
     {
-        public Guid Id;
-        public Guid CompanyId;
-        public string Position;
-        public string Description;
-        public string Requirements;
+        public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
+        public string Position { get; set; }
+        public string Description { get; set; }
+        public string Requirements { get; set; }
     }
 }
