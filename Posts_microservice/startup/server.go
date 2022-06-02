@@ -50,7 +50,8 @@ func (server *Server) initPostsService(store domain.PostsStore) *application.Pos
 
 func (server *Server) initPostsHandler(postsService *application.PostsService) *api.PostsHandler {
 	followersEndpoint := fmt.Sprintf("%s:%s", server.config.FollowersHost, server.config.FollowersPort)
-	return api.NewPostsHandler(postsService, followersEndpoint)
+	usersEndpoint := fmt.Sprintf("%s:%s", server.config.UsersHost, server.config.UsersPort)
+	return api.NewPostsHandler(postsService, followersEndpoint, usersEndpoint)
 }
 
 func (server *Server) startGrpcServer(postsHandler *api.PostsHandler) {

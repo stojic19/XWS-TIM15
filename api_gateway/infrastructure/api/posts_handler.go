@@ -44,6 +44,10 @@ func (handler *PostsHandler) Init(mux *runtime.ServeMux) {
 	if err != nil {
 		panic(err)
 	}
+	err = mux.HandlePath("GET", "/posts/public/details", handler.GetPostsFromPublicDetails)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (handler *PostsHandler) GetAllPostsDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
@@ -117,9 +121,40 @@ func (handler *PostsHandler) GetPostDetails(w http.ResponseWriter, r *http.Reque
 	finishPost(w, err, postInfo)
 }
 
+func (handler *PostsHandler) GetPostsFromPublicDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	postsInfo, error := initializePosts(w, pathParams)
+	if error {
+		return
+	}
+
+	err := handler.addPublicPosts(postsInfo)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+	for _, postInfo := range postsInfo.Posts {
+		insertSideInfo(handler, postInfo)
+	}
+
+	finishPosts(w, err, postsInfo)
+}
+
 func (handler *PostsHandler) addPosts(postsInfo *domain.PostUsersInfoList) error {
 	postsClient := services.NewPostsClient(handler.postsClientAddress)
 	postsList, err := postsClient.GetAll(context.TODO(), &posts.GetAllRequest{})
+	if err != nil {
+		return err
+	}
+	for _, post := range postsList.Posts {
+		postInfo := mapPost(post)
+		postsInfo.Posts = append(postsInfo.Posts, &postInfo)
+	}
+	return nil
+}
+
+func (handler *PostsHandler) addPublicPosts(postsInfo *domain.PostUsersInfoList) error {
+	postsClient := services.NewPostsClient(handler.postsClientAddress)
+	postsList, err := postsClient.GetFromPublic(context.TODO(), &posts.GetPublicRequest{})
 	if err != nil {
 		return err
 	}

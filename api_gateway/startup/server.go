@@ -53,7 +53,7 @@ func (server *Server) initHandlers() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%s:%s", server.config.JobOffersHost, server.config.JobOffersPort)
+	fmt.Printf("%s:%s\n", server.config.JobOffersHost, server.config.JobOffersPort)
 	jobOffersEndpoint := fmt.Sprintf("%s:%s", server.config.JobOffersHost, server.config.JobOffersPort)
 	err = job_offers.RegisterJobOffersServiceHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, jobOffersEndpoint, opts)
 	if err != nil {
