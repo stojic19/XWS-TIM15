@@ -28,6 +28,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace AgentApplication.API
 {
@@ -54,11 +55,7 @@ namespace AgentApplication.API
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AgentApplicationApi", Version = "v1" });
-                c.OperationFilter<SwaggerHeaderParameter>();
-            });
+            services.AddSwaggerGen(SwaggerOptionsConfigurer.Configure);
 
             using (var context = new AppDbContextFactory().CreateDbContext(new string [] {}))
             {

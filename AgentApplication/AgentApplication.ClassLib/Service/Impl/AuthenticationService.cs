@@ -31,32 +31,20 @@ namespace AgentApplication.ClassLib.Service.Impl
         {
             if (_uow.GetRepository<IUserReadRepository>().GetByUsername(user.Username) != null)
                 throw new RegistrationException("Username already exists");
-            user.Salt = CreateSalt(16);
-            user.Password = EncodePassword(user.Password, user.Salt);
+            user.Salt = Encoder.CreateSalt(16);
+            user.Password = Encoder.EncodePassword(user.Password, user.Salt);
             _uow.GetRepository<IUserWriteRepository>().Add(user);
         }
-
+        /// <Summary>
+        ///     Logs in user, returns jwt
+        /// </Summary>
+        /// <exception cref="AgentApplication.ClassLib.Exceptions.LogInException">User name exists</exception>
         public string LogIn(string username, string password)
         {
             var user = _uow.GetRepository<IUserReadRepository>().GetByUsername(username);
             if (user == null) throw new LogInException("User with given username not found!");
-            if (user.Password != EncodePassword(password, user.Salt)) throw new LogInException("Invalid password!");
+            if (user.Password != Encoder.EncodePassword(password, user.Salt)) throw new LogInException("Invalid password!");
             return _jwtGenerator.GenerateToken(user);
-        }
-
-        public static string CreateSalt(int size)
-        {
-            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-            byte[] buff = new byte[size];
-            rng.GetBytes(buff);
-            return Convert.ToBase64String(buff);
-        }
-
-        private string EncodePassword(string password, string salt)
-        {
-            using var sha = SHA256.Create();
-            var computedHash = sha.ComputeHash(Encoding.Unicode.GetBytes(salt + password));
-            return Convert.ToBase64String(computedHash);
         }
     }
 }

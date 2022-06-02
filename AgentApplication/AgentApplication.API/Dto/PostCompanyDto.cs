@@ -15,7 +15,6 @@ namespace AgentApplication.API.Dto
 
     public class PostCompanyDto
     {
-        public Guid OwnerId { get; set; }
         public PostCompanyInfoDto CompanyInfo { get; set; }
     }
 }
