@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Navbar from './components/Navbar';
 import Registration from './components/Registration';
+import PostsByUserId from './components/PostsByUserId';
 
 import axios from 'axios';
 
@@ -25,6 +26,7 @@ function App() {
           <Route exact path="/" element={[<Navbar />]}/>
           <Route exact path="/login" element={[<Navbar />,<Login />]}/>
           <Route exact path="/registration" element={[<Navbar />,<Registration />]}/>
+          <Route exact path="/userPosts/:id" element={[<Navbar />,<PostsByUserId />]}/>
         </Routes>
       </Router>
     </div>
