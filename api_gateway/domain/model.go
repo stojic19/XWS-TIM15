@@ -1,6 +1,8 @@
 package domain
 
-import "time"
+import (
+	"time"
+)
 
 type UserFollowerInfoList struct {
 	Users []*UserFollowerInfo
@@ -50,4 +52,25 @@ type CommentPostInfo struct {
 	Owner      *UserPostInfo
 	Content    string
 	CreateTime time.Time
+}
+
+type JobOffersUsersInfoList struct {
+	JobOffers []*JobOfferUsersInfo
+}
+
+type JobOfferUsersInfo struct {
+	Id           string
+	Position     string
+	Description  string
+	Requirements string
+	IsActive     bool
+	Subscribers  []*UserJobOfferInfo
+}
+
+type UserJobOfferInfo struct {
+	Id          string
+	Username    string
+	Name        string
+	Gender      string
+	DateOfBirth time.Time
 }

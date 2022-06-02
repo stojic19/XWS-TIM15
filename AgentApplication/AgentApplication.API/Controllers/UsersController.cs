@@ -9,6 +9,7 @@ using AgentApplication.ClassLib.Database.Repository;
 using AgentApplication.ClassLib.Database.Repository.Enums;
 using AgentApplication.ClassLib.Model;
 using AgentApplication.ClassLib.Model.Enumerations;
+using AgentApplication.ClassLib.Service;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +22,14 @@ namespace AgentApplication.API.Controllers
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        public UsersController(IUnitOfWork uow, IMapper mapper)
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IJwtGenerator _jwtGenerator;
+        public UsersController(IUnitOfWork uow, IMapper mapper, IAuthenticationService authenticationService, IJwtGenerator jwtGenerator)
         {
             _uow = uow;
             _mapper = mapper;
+            _authenticationService = authenticationService;
+            _jwtGenerator = jwtGenerator;
         }
 
         [HttpGet]
@@ -43,7 +48,8 @@ namespace AgentApplication.API.Controllers
         public IActionResult PostUser(PostUserDto dto)
         {
             User user = _mapper.Map<User>(dto);
-            return Ok(_uow.GetRepository<IUserWriteRepository>().Add(user));
+            _authenticationService.Register(user);
+            return Ok();
         }
 
         [HttpPut("Username")]

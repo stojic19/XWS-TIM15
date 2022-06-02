@@ -7,23 +7,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AgentApplication.API.AutoMapperProfiles;
+using AgentApplication.API.Middleware;
+using AgentApplication.API.Swagger;
 using AgentApplication.ClassLib.Database.EfStructures;
 using AgentApplication.ClassLib.Database.Infrastructure;
 using AgentApplication.ClassLib.Database.Repository;
 using AgentApplication.ClassLib.Database.Repository.Implementation;
+using AgentApplication.ClassLib.Service;
+using AgentApplication.ClassLib.Service.Impl;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace AgentApplication.API
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -41,8 +56,17 @@ namespace AgentApplication.API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HospitalApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AgentApplicationApi", Version = "v1" });
+                c.OperationFilter<SwaggerHeaderParameter>();
             });
+
+            using (var context = new AppDbContextFactory().CreateDbContext(new string [] {}))
+            {
+                if (context.Database.GetPendingMigrations().Any())
+                {
+                    context.Database.Migrate();
+                }
+            }
 
             List<Assembly> assemblies = new List<Assembly> { typeof(CompanyReadRepository).Assembly, typeof(CompanyProfile).Assembly };
             var containerBuilder = new ContainerBuilder();
@@ -54,6 +78,8 @@ namespace AgentApplication.API
             containerBuilder.RegisterModule(new AppDbContextModule());
             containerBuilder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             containerBuilder.RegisterAutoMapper(propertiesAutowired: false, assemblies.ToArray());
+            containerBuilder.RegisterType<AuthenticationService>().As<IAuthenticationService>();
+            containerBuilder.RegisterType<JwtGenerator>().As<IJwtGenerator>();
             containerBuilder.Populate(services);
             var container = containerBuilder.Build();
             return new AutofacServiceProvider(container);
@@ -68,7 +94,13 @@ namespace AgentApplication.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AgentApplication v1"));
             }
 
+            app.UseHttpsRedirection();
+
             app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseAuthorizationMiddleware();
 
             app.UseEndpoints(endpoints =>
             {

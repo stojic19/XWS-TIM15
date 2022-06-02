@@ -138,6 +138,9 @@ namespace AgentApplication.ClassLib.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Salt")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("TimeOfRegistration")
                         .HasColumnType("timestamp without time zone");
 

@@ -6,7 +6,7 @@ namespace AgentApplication.API.Dto
 {
     public class PutUsernameDto
     {
-        public Guid Id;
-        public string Username;
+        public Guid Id { get; set; }
+        public string Username { get; set; }
     }
 }
