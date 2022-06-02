@@ -17,6 +17,7 @@ namespace AgentApplication.API.AutoMapperProfiles
                     d.TimeOfRegistration = DateTime.Now;
                 }); 
             CreateMap<PostUserInfoDto, UserPersonalInfo>();
+            CreateMap<PutUserInfoDto, UserPersonalInfo>();
         }
     }
 }

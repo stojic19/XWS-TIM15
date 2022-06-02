@@ -18,9 +18,6 @@ namespace AgentApplication.API.Attributes
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             if (_roles.Count == 0) return;
-            Debug.WriteLine(context.HttpContext.Items["role"]);
-            Debug.WriteLine(context.HttpContext.Items["id"]);
-            Debug.WriteLine(context.HttpContext.Items["given_name"]);
             var role = context.HttpContext.Items["role"];
             bool found = false;
             foreach (var atrRole in _roles)
@@ -29,7 +26,8 @@ namespace AgentApplication.API.Attributes
                     found = true;
                     break;
                 }
-            if (!found)
+
+            if (!found || context.HttpContext.Items["given_name"] == null || context.HttpContext.Items["id"] == null)
             {
                 context.Result = new Microsoft.AspNetCore.Mvc.JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
             }

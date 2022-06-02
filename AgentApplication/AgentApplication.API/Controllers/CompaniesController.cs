@@ -27,7 +27,6 @@ namespace AgentApplication.API.Controllers
             _mapper = mapper;
         }
 
-        [Authorize(new []{"Regular"})]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -64,22 +63,33 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyReadRepository>().GetNotRegistered(FetchType.Eager));
         }
 
+        [Authorize(new[] { "Regular", "Admin" })]
         [HttpPost]
         public IActionResult PostCompany(PostCompanyDto dto)
         {
+            Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
             Company company = _mapper.Map<Company>(dto);
+            company.OwnerId = id;
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Add(company));
         }
 
+        [Authorize(new[] { "Regular", "Admin" })]
         [HttpPut]
         public IActionResult UpdateCompany(PutCompanyInfoDto dto)
         {
+            Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
+            var role = (HttpContext.Items["role"]?.ToString() ?? string.Empty);
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.Id);
             if (company == null) return NotFound("Company not found");
+            if (!role.Equals("Admin") && company.OwnerId != id)
+            {
+                return Unauthorized("You are not allowed to update this company!");
+            }
             company.CompanyInfo = _mapper.Map<CompanyInfo>(dto);
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
+        [Authorize(new[] { "Admin" })]
         [HttpPut("{id:guid}/Register")]
         public IActionResult RegisterCompany(Guid id)
         {
@@ -89,71 +99,99 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
+        [Authorize(new[] { "Regular", "Admin" })]
         [HttpPut("Grade")]
         public IActionResult AddGrade(PostGradeDto dto)
         {
+            Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
-            if (company == null) return NotFound("Company not found");
-            if (company.Grades.FirstOrDefault(g => g.UserId == dto.UserId) != null)
+            if (company == null) 
+                return NotFound("Company not found");
+            if (company.OwnerId == id)
+                return BadRequest("Grading your own company is not allowed!");
+            
+            var grade = company.Grades.FirstOrDefault(g => g.UserId == id);
+            if (grade != null)
             {
-                Grade grade = company.Grades.FirstOrDefault(g => g.UserId == dto.UserId);
-                if (grade == null) return NotFound("Grade not found");
                 grade.Value = dto.Value;
                 grade.TimeOfCreation = DateTime.Now;
                 return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
             }
+
             Grade newGrade = _mapper.Map<Grade>(dto);
+            newGrade.UserId = id;
             company.Grades.Add(newGrade);
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
+        [Authorize(new[] { "Regular", "Admin" })]
         [HttpPost("Comment")]
         public IActionResult AddComment(PostCommentDto dto)
         {
+            Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
-            if (company == null) return NotFound("Company not found");
+            if (company == null) 
+                return NotFound("Company not found");
+            if (company.OwnerId == id)
+                return BadRequest("Commenting on your own company is not allowed!");
             Comment comment = _mapper.Map<Comment>(dto);
+            comment.UserId = id;
             company.Comments.Add(comment);
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
+        [Authorize(new[] { "Regular", "Admin" })]
         [HttpPut("Comment")]
         public IActionResult UpdateComment(PutCommentDto dto)
         {
+            Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
-            if (company == null) return NotFound("Company not found");
+            if (company == null) 
+                return NotFound("Company not found");
             Comment comment = company.Comments.Find(c => c.Id == dto.Id);
-            if (comment == null) return NotFound("Comment not found");
+            if (comment == null) 
+                return NotFound("Comment not found");
+            if (comment.UserId != id)
+                return BadRequest("Changing other user's comments is not allowed!");
             comment.Content = dto.Content;
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
+        [Authorize(new[] { "Regular", "Admin" })]
         [HttpPost("JobOffer")]
         public IActionResult AddJobOffer(PostJobOfferDto dto)
         {
+            Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
             if (company == null) return NotFound("Company not found");
+            if (company.OwnerId != id) return BadRequest("Cannot add job offer since you do not own this company!");
             JobOffer jobOffer = _mapper.Map<JobOffer>(dto);
             company.JobOffers.Add(jobOffer);
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
+        [Authorize(new[] { "Regular", "Admin" })]
         [HttpPut("JobOffer/Activate")]
         public IActionResult ActivateJobOffer(ActivateJobOfferDto dto)
         {
+            Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
             if (company == null) return NotFound("Company not found");
+            if (company.OwnerId != id) return BadRequest("Cannot activate job offer since you do not own this company!");
             JobOffer jobOffer = company.JobOffers.FirstOrDefault(g => g.Id == dto.Id);
             if (jobOffer == null) return NotFound("Job offer not found");
             jobOffer.IsActive = true;
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
+        [Authorize(new[] { "Regular", "Admin" })]
         [HttpPut("JobOffer")]
         public IActionResult UpdateJobOffer(PutJobOfferDto dto)
         {
+            Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
             if (company == null) return NotFound("Company not found");
+            if (company.OwnerId != id) return BadRequest("Cannot update job offer since you do not own this company!");
             JobOffer jobOffer = company.JobOffers.Find(c => c.Id == dto.Id);
             if (jobOffer == null) return NotFound("Job offer not found");
             jobOffer.Position = dto.Position;
@@ -162,34 +200,54 @@ namespace AgentApplication.API.Controllers
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
-
+        [Authorize(new[] { "Regular", "Admin" })]
         [HttpDelete("Grade")]
         public IActionResult DeleteGrade(DeleteGradeDto dto)
         {
+            Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
+            var role = (HttpContext.Items["role"]?.ToString() ?? string.Empty);
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
             if (company == null) return NotFound("Company not found");
             Grade grade = company.Grades.FirstOrDefault(g => g.Id == dto.Id);
+            if (!role.Equals("Admin") && grade.UserId != id)
+            {
+                return Unauthorized("You are not allowed to delete this grade!");
+            }
             if (grade == null) return NotFound("Grade not found");
             company.Grades.Remove(grade);
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
+        [Authorize(new[] { "Regular", "Admin" })]
         [HttpDelete("Comment")]
         public IActionResult DeleteComment(DeleteCommentDto dto)
         {
+            Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
+            var role = (HttpContext.Items["role"]?.ToString() ?? string.Empty);
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
             if (company == null) return NotFound("Company not found");
             Comment comment = company.Comments.FirstOrDefault(c => c.Id == dto.Id);
             if (comment == null) return NotFound("Comment not found");
+            if (!role.Equals("Admin") && comment.UserId != id)
+            {
+                return Unauthorized("You are not allowed to delete this comment!");
+            }
             company.Comments.Remove(comment);
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
+        [Authorize(new[] { "Regular", "Admin" })]
         [HttpDelete("JobOffer")]
         public IActionResult DeleteJobOffer(DeleteJobOfferDto dto)
         {
+            Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
+            var role = (HttpContext.Items["role"]?.ToString() ?? string.Empty);
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
             if (company == null) return NotFound("Company not found");
+            if (!role.Equals("Admin") && company.OwnerId != id)
+            {
+                return Unauthorized("You are not the owner of this company! You cannot delete its job offers");
+            }
             JobOffer jobOffer = company.JobOffers.FirstOrDefault(j => j.Id == dto.Id);
             if (jobOffer == null) return NotFound("Job offer not found");
             company.JobOffers.Remove(jobOffer);

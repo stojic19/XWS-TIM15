@@ -14,6 +14,10 @@ namespace AgentApplication.ClassLib.Service
         /// </Summary>
         /// <exception cref="AgentApplication.ClassLib.Exceptions.RegistrationException">User name exists</exception>
         public void Register(User user);
+        /// <Summary>
+        ///     Logs in user, returns jwt
+        /// </Summary>
+        /// <exception cref="AgentApplication.ClassLib.Exceptions.LogInException">User name exists</exception>
         public string LogIn(string username, string password);
     }
 }
