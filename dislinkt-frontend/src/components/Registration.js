@@ -18,48 +18,52 @@ const Registration = () => {
     const history = useNavigate();
 
     const Validate = () => {
-        if(email === "" || username ==="" || password ==="" || telephoneNumber ==="" 
-        || gender ==="" || name ==="" || dateOfBirth ==="" || biography ===""){
-            Swal.fire({  
-                icon: 'warning',  
-                title: 'Oops...',  
-                text: 'All inputs must be filled!',   
-              });
+        if (email === "" || username === "" || password === "" || telephoneNumber === ""
+            || gender === "" || name === "" || dateOfBirth === "" || biography === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'All inputs must be filled!',
+            });
             return false;
         }
         return true;
     }
-    const FormatDate = (date) =>{
+    const FormatDate = (date) => {
         var list = date.split('-');
-        return list[2]+'/'+list[1]+'/'+list[0];
+        return list[2] + '/' + list[1] + '/' + list[0];
     }
     const onSubmit = async (e) => {
         e.preventDefault();
-        console.log(FormatDate(dateOfBirth));
-        if(!Validate())
+        if (!Validate())
             return;
         setIsPending(true);
-        const registration = {  "username": username,
-                                "password": password,
-                                "email" : email,
-                                "name" : name,
-                                "telephoneNo" : telephoneNumber,
-                                "gender" : gender,
-                                "biography":biography,
-                                "isPrivate": isPrivate ==="false" ? false : true ,
-                                "dateOfBirth": FormatDate(dateOfBirth),
-                            };
+        const registration = {
+            "username": username,
+            "password": password,
+            "email": email,
+            "name": name,
+            "telephoneNo": telephoneNumber,
+            "gender": gender,
+            "biography": biography,
+            "isPrivate": isPrivate === "false" ? false : true,
+            "dateOfBirth": FormatDate(dateOfBirth),
+        };
         console.log(registration)
-        const res = await axios.post(axios.defaults.baseURL + 'users', registration);
-        console.log(res);
-        if (res.status === 200) {
-            setIsPending(false);
-            //localStorage.setItem('token', res.data.access_token);
-            //localStorage.setItem('auth_name', res.data.name);
-            history('/');
-        } else {
-            setIsPending(false);
-        }
+        axios.post(axios.defaults.baseURL + 'users', registration)
+        .then(res => {
+            if(res.data.response.includes("Added user")){
+                setIsPending(false);
+                history('/');
+            }else{
+                setIsPending(false);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.response,
+                });
+            }
+        });
     }
 
     return (
@@ -112,8 +116,8 @@ const Registration = () => {
                     <label className="form-check-label">Private profile</label>
                 </div>
                 <div>
-                {!isPending && <button onClick={(e) => onSubmit(e)} type="submit" className="btn btn-primary">Submit</button>}
-                {isPending && <label>Registration...</label>}
+                    {!isPending && <button onClick={(e) => onSubmit(e)} type="submit" className="btn btn-primary">Submit</button>}
+                    {isPending && <label>Registration...</label>}
                 </div>
             </form>
         </div>
