@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from "sweetalert2";
 
 const Registration = () => {
     const [email, setEmail] = useState("");
@@ -14,20 +15,27 @@ const Registration = () => {
     const [biography, setBiography] = useState("");
     const [isPrivate, setIsPrivate] = useState(false);
     const [isPending, setIsPending] = useState(false);
-    const [message, setMessage] = useState("");
     const history = useNavigate();
 
     const Validate = () => {
         if(email === "" || username ==="" || password ==="" || telephoneNumber ==="" 
         || gender ==="" || name ==="" || dateOfBirth ==="" || biography ===""){
-            setMessage('All inputs must be filled!');
+            Swal.fire({  
+                icon: 'warning',  
+                title: 'Oops...',  
+                text: 'All inputs must be filled!',   
+              });
             return false;
         }
         return true;
     }
+    const FormatDate = (date) =>{
+        var list = date.split('-');
+        return list[2]+'/'+list[1]+'/'+list[0];
+    }
     const onSubmit = async (e) => {
         e.preventDefault();
-        setMessage("");
+        console.log(FormatDate(dateOfBirth));
         if(!Validate())
             return;
         setIsPending(true);
@@ -39,7 +47,7 @@ const Registration = () => {
                                 "gender" : gender,
                                 "biography":biography,
                                 "isPrivate": isPrivate ==="false" ? false : true ,
-                                "dateOfBirth":dateOfBirth,
+                                "dateOfBirth": FormatDate(dateOfBirth),
                             };
         console.log(registration)
         const res = await axios.post(axios.defaults.baseURL + 'users', registration);
@@ -48,11 +56,9 @@ const Registration = () => {
             setIsPending(false);
             //localStorage.setItem('token', res.data.access_token);
             //localStorage.setItem('auth_name', res.data.name);
-            setMessage(res.data);
             history('/');
         } else {
             setIsPending(false);
-            setMessage(res.data);
         }
     }
 
@@ -108,9 +114,6 @@ const Registration = () => {
                 <div>
                 {!isPending && <button onClick={(e) => onSubmit(e)} type="submit" className="btn btn-primary">Submit</button>}
                 {isPending && <label>Registration...</label>}
-                </div>
-                <div className="mb-3">
-                    <h4 style={{color: "red"}}>{message}</h4>
                 </div>
             </form>
         </div>

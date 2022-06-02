@@ -2,17 +2,21 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate  } from 'react-router-dom';
 import axios from 'axios';
+import Swal from "sweetalert2";
 
 const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isPending, setIsPending] = useState(false);
-    const [message, setMessage] = useState("");
     const history = useNavigate();
 
     const Validate = () => {
         if(username ==="" || password ===""){
-            setMessage('All inputs must be filled!');
+            Swal.fire({  
+                icon: 'warning',  
+                title: 'Oops...',  
+                text: 'All inputs must be filled!',   
+              });
             return false;
         }
         return true;
@@ -20,7 +24,6 @@ const Login = () => {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        setMessage("");
         if(!Validate())
             return;
         const login = { "username": username,
@@ -32,11 +35,9 @@ const Login = () => {
             setIsPending(false);
             //localStorage.setItem('token', res.data.access_token);
             //localStorage.setItem('auth_name', res.data.name);
-            setMessage("Success!");
             history('/');
         } else {
             setIsPending(false);
-            setMessage("Invalid credentials.");
         }
     }
 
@@ -56,9 +57,6 @@ const Login = () => {
                     <Link to="#" onClick={(e) => onSubmit(e)} type="submit" className="btn btn-primary">Login</Link>
                 </span>}
                 {isPending && <label>Logging...</label>}
-                </div>
-                <div className="mb-3">
-                    {message}
                 </div>
             </form>
         </div>
