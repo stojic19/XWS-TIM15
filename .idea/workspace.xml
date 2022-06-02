@@ -6,11 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="fa3f74b9-be4b-4973-94b2-f1b3f2d0a37f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/server.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dislinkt-frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dislinkt-frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/Navbar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/Registration.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/Registration.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,7 +24,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file://D:/Go" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -33,7 +32,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="28q6layNpDTTvz2fsD6OVp7JRvA" />
   <component name="ProjectLevelVcsManager">
@@ -43,19 +42,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
-    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Aleksandar&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "C:/Users/Aleksa",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "settings.editor.selected.configurable": "go.sdk"
   }
 }</component>
   <component name="RecentsManager">
@@ -70,7 +72,14 @@
       <command value="mvn clean install" />
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build main.go (1)">
+  <component name="RunManager" selected="Go Build.go build main.go (3)">
+    <configuration name="go build api_gateway/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="XWS-TIM15" />
+      <working_directory value="$PROJECT_DIR$/api_gateway" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$/api_gateway" />
+      <method v="2" />
+    </configuration>
     <configuration name="go build github.com/stojic19/XWS-TIM15/api_gateway" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="XWS-TIM15" />
       <working_directory value="$PROJECT_DIR$/api_gateway" />
@@ -78,15 +87,6 @@
       <package value="github.com/stojic19/XWS-TIM15/api_gateway" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$/api_gateway/main.go" />
-      <method v="2" />
-    </configuration>
-    <configuration name="go build github.com/stojic19/XWS-TIM15/posts_microservice" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="XWS-TIM15" />
-      <working_directory value="$PROJECT_DIR$/Posts_microservice" />
-      <kind value="PACKAGE" />
-      <package value="github.com/stojic19/XWS-TIM15/posts_microservice" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/Posts_microservice/main.go" />
       <method v="2" />
     </configuration>
     <configuration name="go build main.go (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
@@ -105,21 +105,21 @@
       <filePath value="$PROJECT_DIR$/Job_Offers_microservice/main.go" />
       <method v="2" />
     </configuration>
-    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build main.go (3)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="XWS-TIM15" />
-      <working_directory value="$PROJECT_DIR$/Followers_microservice" />
+      <working_directory value="$PROJECT_DIR$/Posts_microservice" />
       <kind value="FILE" />
       <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/Followers_microservice/main.go" />
+      <filePath value="$PROJECT_DIR$/Posts_microservice/main.go" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build main.go (3)" />
         <item itemvalue="Go Build.go build main.go (1)" />
+        <item itemvalue="Go Build.go build api_gateway/" />
         <item itemvalue="Go Build.go build main.go (2)" />
         <item itemvalue="Go Build.go build github.com/stojic19/XWS-TIM15/api_gateway" />
-        <item itemvalue="Go Build.go build main.go" />
-        <item itemvalue="Go Build.go build github.com/stojic19/XWS-TIM15/posts_microservice" />
       </list>
     </recent_temporary>
   </component>

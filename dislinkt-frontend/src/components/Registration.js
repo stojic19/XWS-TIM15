@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from "sweetalert2";
 
 const Registration = () => {
     const [email, setEmail] = useState("");
@@ -14,46 +14,55 @@ const Registration = () => {
     const [biography, setBiography] = useState("");
     const [isPrivate, setIsPrivate] = useState(false);
     const [isPending, setIsPending] = useState(false);
-    const [message, setMessage] = useState("");
     const history = useNavigate();
 
     const Validate = () => {
-        if(email === "" || username ==="" || password ==="" || telephoneNumber ==="" 
-        || gender ==="" || name ==="" || dateOfBirth ==="" || biography ===""){
-            setMessage('All inputs must be filled!');
+        if (email === "" || username === "" || password === "" || telephoneNumber === ""
+            || gender === "" || name === "" || dateOfBirth === "" || biography === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'All inputs must be filled!',
+            });
             return false;
         }
         return true;
     }
+    const FormatDate = (date) => {
+        var list = date.split('-');
+        return list[2] + '/' + list[1] + '/' + list[0];
+    }
     const onSubmit = async (e) => {
         e.preventDefault();
-        setMessage("");
-        if(!Validate())
+        if (!Validate())
             return;
         setIsPending(true);
-        const registration = {  "username": username,
-                                "password": password,
-                                "email" : email,
-                                "name" : name,
-                                "telephoneNo" : telephoneNumber,
-                                "gender" : gender,
-                                "biography":biography,
-                                "isPrivate": isPrivate ==="false" ? false : true ,
-                                "dateOfBirth":dateOfBirth,
-                            };
+        const registration = {
+            "username": username,
+            "password": password,
+            "email": email,
+            "name": name,
+            "telephoneNo": telephoneNumber,
+            "gender": gender,
+            "biography": biography,
+            "isPrivate": isPrivate === "false" ? false : true,
+            "dateOfBirth": FormatDate(dateOfBirth),
+        };
         console.log(registration)
-        const res = await axios.post(axios.defaults.baseURL + 'users', registration);
-        console.log(res);
-        if (res.status === 200) {
-            setIsPending(false);
-            //localStorage.setItem('token', res.data.access_token);
-            //localStorage.setItem('auth_name', res.data.name);
-            setMessage(res.data);
-            history('/');
-        } else {
-            setIsPending(false);
-            setMessage(res.data);
-        }
+        axios.post(axios.defaults.baseURL + 'users', registration)
+        .then(res => {
+            if(res.data.response.includes("Added user")){
+                setIsPending(false);
+                history('/');
+            }else{
+                setIsPending(false);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: res.data.response,
+                });
+            }
+        });
     }
 
     return (
@@ -106,11 +115,8 @@ const Registration = () => {
                     <label className="form-check-label">Private profile</label>
                 </div>
                 <div>
-                {!isPending && <button onClick={(e) => onSubmit(e)} type="submit" className="btn btn-primary">Submit</button>}
-                {isPending && <label>Registration...</label>}
-                </div>
-                <div className="mb-3">
-                    <h4 style={{color: "red"}}>{message}</h4>
+                    {!isPending && <button onClick={(e) => onSubmit(e)} type="submit" className="btn btn-primary">Submit</button>}
+                    {isPending && <label>Registration...</label>}
                 </div>
             </form>
         </div>
