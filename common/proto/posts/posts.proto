@@ -28,6 +28,11 @@ service PostsService{
       get: "/posts/postsFollowed/{id}"
     };
   }
+  rpc GetFromPublic(GetPublicRequest) returns(GetPublicResponse){
+    option(google.api.http) = {
+      get: "/posts/public"
+    };
+  }
   rpc CreatePost(CreatePostRequest) returns(CreatePostResponse){
     option(google.api.http) = {
       post: "/posts/posts"
@@ -95,6 +100,14 @@ message GetFollowedRequest{
 }
 
 message GetFollowedResponse{
+  repeated Post posts = 1;
+}
+
+message GetPublicRequest{
+
+}
+
+message GetPublicResponse{
   repeated Post posts = 1;
 }
 

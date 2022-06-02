@@ -10,6 +10,8 @@ type Config struct {
 	PostsDbHost   string
 	FollowersHost string
 	FollowersPort string
+	UsersHost     string
+	UsersPort     string
 }
 
 func NewConfig() *Config {
@@ -19,6 +21,8 @@ func NewConfig() *Config {
 		PostsDbPort:   LookupEnvOrGetDefault("POSTS_DB_PORT", "27017"),
 		FollowersHost: LookupEnvOrGetDefault("FOLLOWERS_HOST", "localhost"),
 		FollowersPort: LookupEnvOrGetDefault("FOLLOWERS_PORT", "8001"),
+		UsersHost:     LookupEnvOrGetDefault("USERS_SERVICE_HOST", "localhost"),
+		UsersPort:     LookupEnvOrGetDefault("USERS_PORT", "9090"),
 	}
 }
 

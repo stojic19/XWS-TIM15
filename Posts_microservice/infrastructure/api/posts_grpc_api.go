@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
+	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/application"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/domain"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/infrastructure/services"
@@ -16,12 +17,14 @@ type PostsHandler struct {
 	posts.UnimplementedPostsServiceServer
 	service                *application.PostsService
 	followersClientAddress string
+	usersClientAddress     string
 }
 
-func NewPostsHandler(service *application.PostsService, followersClientAddress string) *PostsHandler {
+func NewPostsHandler(service *application.PostsService, followersClientAddress string, usersClientAddress string) *PostsHandler {
 	return &PostsHandler{
 		service:                service,
 		followersClientAddress: followersClientAddress,
+		usersClientAddress:     usersClientAddress,
 	}
 }
 
@@ -86,6 +89,27 @@ func (handler *PostsHandler) GetFromFollowed(ctx context.Context, request *posts
 		return nil, err
 	}
 	response := &posts.GetFollowedResponse{
+		Posts: []*posts.Post{},
+	}
+	for _, post := range returnPosts {
+		current := mapPost(post)
+		response.Posts = append(response.Posts, current)
+	}
+	return response, nil
+}
+
+func (handler *PostsHandler) GetFromPublic(ctx context.Context, request *posts.GetPublicRequest) (*posts.GetPublicResponse, error) {
+	usersClient := services.NewUsersClient(handler.usersClientAddress)
+	publicResponse, err := usersClient.SearchPublicUsers(context.TODO(), &users.SearchRequest{SearchTerm: ""})
+	var publicIds []string
+	for _, user := range publicResponse.Users {
+		publicIds = append(publicIds, user.Id)
+	}
+	returnPosts, err := handler.service.GetFromUsers(publicIds)
+	if err != nil {
+		return nil, err
+	}
+	response := &posts.GetPublicResponse{
 		Posts: []*posts.Post{},
 	}
 	for _, post := range returnPosts {

@@ -26,6 +26,7 @@ type PostsServiceClient interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	GetFromUser(ctx context.Context, in *GetFromUserRequest, opts ...grpc.CallOption) (*GetFromUserResponse, error)
 	GetFromFollowed(ctx context.Context, in *GetFollowedRequest, opts ...grpc.CallOption) (*GetFollowedResponse, error)
+	GetFromPublic(ctx context.Context, in *GetPublicRequest, opts ...grpc.CallOption) (*GetPublicResponse, error)
 	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*CreatePostResponse, error)
 	LikePost(ctx context.Context, in *LikePostRequest, opts ...grpc.CallOption) (*LikePostResponse, error)
 	RemoveLike(ctx context.Context, in *RemoveLikeRequest, opts ...grpc.CallOption) (*RemoveLikeResponse, error)
@@ -72,6 +73,15 @@ func (c *postsServiceClient) GetFromUser(ctx context.Context, in *GetFromUserReq
 func (c *postsServiceClient) GetFromFollowed(ctx context.Context, in *GetFollowedRequest, opts ...grpc.CallOption) (*GetFollowedResponse, error) {
 	out := new(GetFollowedResponse)
 	err := c.cc.Invoke(ctx, "/posts.PostsService/GetFromFollowed", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postsServiceClient) GetFromPublic(ctx context.Context, in *GetPublicRequest, opts ...grpc.CallOption) (*GetPublicResponse, error) {
+	out := new(GetPublicResponse)
+	err := c.cc.Invoke(ctx, "/posts.PostsService/GetFromPublic", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -140,6 +150,7 @@ type PostsServiceServer interface {
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	GetFromUser(context.Context, *GetFromUserRequest) (*GetFromUserResponse, error)
 	GetFromFollowed(context.Context, *GetFollowedRequest) (*GetFollowedResponse, error)
+	GetFromPublic(context.Context, *GetPublicRequest) (*GetPublicResponse, error)
 	CreatePost(context.Context, *CreatePostRequest) (*CreatePostResponse, error)
 	LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error)
 	RemoveLike(context.Context, *RemoveLikeRequest) (*RemoveLikeResponse, error)
@@ -164,6 +175,9 @@ func (UnimplementedPostsServiceServer) GetFromUser(context.Context, *GetFromUser
 }
 func (UnimplementedPostsServiceServer) GetFromFollowed(context.Context, *GetFollowedRequest) (*GetFollowedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFromFollowed not implemented")
+}
+func (UnimplementedPostsServiceServer) GetFromPublic(context.Context, *GetPublicRequest) (*GetPublicResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFromPublic not implemented")
 }
 func (UnimplementedPostsServiceServer) CreatePost(context.Context, *CreatePostRequest) (*CreatePostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
@@ -264,6 +278,24 @@ func _PostsService_GetFromFollowed_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostsServiceServer).GetFromFollowed(ctx, req.(*GetFollowedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostsService_GetFromPublic_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPublicRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostsServiceServer).GetFromPublic(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/posts.PostsService/GetFromPublic",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostsServiceServer).GetFromPublic(ctx, req.(*GetPublicRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -398,6 +430,10 @@ var PostsService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetFromFollowed",
 			Handler:    _PostsService_GetFromFollowed_Handler,
+		},
+		{
+			MethodName: "GetFromPublic",
+			Handler:    _PostsService_GetFromPublic_Handler,
 		},
 		{
 			MethodName: "CreatePost",
