@@ -5,6 +5,7 @@ go 1.18
 replace github.com/stojic19/XWS-TIM15/common => ../common
 
 require (
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.0
 	github.com/rs/cors v1.8.2
 	github.com/stojic19/XWS-TIM15/common v0.0.0-00010101000000-000000000000
