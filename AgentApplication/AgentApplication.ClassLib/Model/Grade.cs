@@ -8,6 +8,10 @@ namespace AgentApplication.ClassLib.Model
 {
     public class Grade : PersistentEntity
     {
+        public Grade()
+        {
+            TimeOfCreation = DateTime.Now;
+        }
         public Guid UserId { get; set; }
         public User User { get; set; }
         public int Value { get; set; }

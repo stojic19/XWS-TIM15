@@ -7,10 +7,14 @@ using System.Threading.Tasks;
 
 namespace AgentApplication.ClassLib.Model
 {
-    
-
     public class User : PersistentEntity
     {
+        public User()
+        {
+            TimeOfRegistration = DateTime.Now;
+            Role = Role.Regular;
+        }
+
         public string Username { get; set; }
         public string Password { get; set; }
         public string Salt { get; set; }

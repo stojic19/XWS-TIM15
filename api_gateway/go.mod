@@ -6,7 +6,7 @@ replace github.com/stojic19/XWS-TIM15/common => ../common
 
 require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.0
-	github.com/stojic19/XWS-TIM15/Followers_microservice v0.0.0-20220516020509-8d93ef736e9b
+	github.com/rs/cors v1.8.2
 	github.com/stojic19/XWS-TIM15/common v0.0.0-00010101000000-000000000000
 	google.golang.org/grpc v1.46.0
 )

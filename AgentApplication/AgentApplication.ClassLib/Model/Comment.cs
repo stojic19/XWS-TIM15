@@ -8,6 +8,10 @@ namespace AgentApplication.ClassLib.Model
 {
     public class Comment : PersistentEntity
     {
+        public Comment()
+        {
+            TimeOfCreation = DateTime.Now;
+        }
         public Guid UserId { get; set; }
         public User User { get; set; }
         public string Content { get; set; }
