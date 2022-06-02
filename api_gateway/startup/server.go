@@ -8,6 +8,7 @@ import (
 	"github.com/stojic19/XWS-TIM15/api_gateway/infrastructure/api"
 	"github.com/stojic19/XWS-TIM15/api_gateway/startup/config"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
+	"github.com/stojic19/XWS-TIM15/common/proto/job_offers"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"google.golang.org/grpc"
@@ -51,16 +52,25 @@ func (server *Server) initHandlers() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("%s:%s", server.config.JobOffersHost, server.config.JobOffersPort)
+	jobOffersEndpoint := fmt.Sprintf("%s:%s", server.config.JobOffersHost, server.config.JobOffersPort)
+	err = job_offers.RegisterJobOffersServiceHandlerFromEndpoint(context.TODO(), server.mux, jobOffersEndpoint, opts)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (server *Server) initCustomHandlers() {
 	followersEndpoint := fmt.Sprintf("%s:%s", server.config.FollowersHost, server.config.FollowersPort)
 	usersEndpoint := fmt.Sprintf("%s:%s", server.config.UsersHost, server.config.UsersPort)
 	postsEndpoint := fmt.Sprintf("%s:%s", server.config.PostsHost, server.config.PostsPort)
+	jobOffersEndpoint := fmt.Sprintf("%s:%s", server.config.JobOffersHost, server.config.JobOffersPort)
 	followersHandler := api.NewFollowersHandler(followersEndpoint, usersEndpoint)
 	followersHandler.Init(server.mux)
 	postsHandler := api.NewPostsHandler(postsEndpoint, followersEndpoint, usersEndpoint)
 	postsHandler.Init(server.mux)
+	jobOffersHandler := api.NewJobOffersHandler(jobOffersEndpoint, usersEndpoint)
+	jobOffersHandler.Init(server.mux)
 }
 
 func (server *Server) Start() {

@@ -11,10 +11,19 @@ namespace AgentApplication.ClassLib.Database.EfStructures
     public class AppDbContext : DbContext
     {
         public DbSet<Company> Companies { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
+            
+        }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Company>().OwnsOne(t => t.CompanyInfo);
+
+            modelBuilder.Entity<User>().OwnsOne(t => t.PersonalInfo);
+            base.OnModelCreating(modelBuilder);
         }
 
     }
