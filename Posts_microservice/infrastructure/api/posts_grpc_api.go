@@ -186,9 +186,13 @@ func mapPost(post *domain.Post) *posts.Post {
 		Id: post.Owner.Id,
 	}
 	postPb := &posts.Post{
-		Id:         post.Id.Hex(),
-		Title:      post.Title,
-		Content:    post.Content,
+		Id:    post.Id.Hex(),
+		Title: post.Title,
+		Content: &posts.Content{
+			Text:   post.Content.Text,
+			Links:  post.Content.Links,
+			Images: post.Content.Images,
+		},
 		CreateTime: timestamppb.New(post.CreateTime),
 		Owner:      ownerPb,
 	}
@@ -225,8 +229,12 @@ func mapNewPost(post *posts.NewPost) *domain.Post {
 		Id: post.Owner.Id,
 	}
 	newPost := &domain.Post{
-		Title:      post.Title,
-		Content:    post.Content,
+		Title: post.Title,
+		Content: domain.Content{
+			Text:   post.Content.Text,
+			Links:  post.Content.Links,
+			Images: post.Content.Images,
+		},
 		Owner:      newPostOwner,
 		CreateTime: time.Now(),
 		Comments:   []domain.Comment{},
