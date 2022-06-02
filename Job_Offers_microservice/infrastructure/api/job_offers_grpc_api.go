@@ -47,6 +47,22 @@ func (handler *JobOffersHandler) Get(ctx context.Context, request *job_offers.Jo
 	return offerPb, nil
 }
 
+func (handler *JobOffersHandler) GetSubscribed(ctx context.Context, request *job_offers.GetSubscribedRequest) (*job_offers.GetSubscribedResponse, error) {
+	userId := request.Id
+	offers, err := handler.service.GetSubscribed(userId)
+	if err != nil {
+		return nil, err
+	}
+	offersPb := &job_offers.GetSubscribedResponse{
+		JobOffers: []*job_offers.JobOffer{},
+	}
+	for _, jobOffer := range offers {
+		current := mapJobOffer(jobOffer)
+		offersPb.JobOffers = append(offersPb.JobOffers, current)
+	}
+	return offersPb, nil
+}
+
 func (handler *JobOffersHandler) Create(ctx context.Context, request *job_offers.NewJobOffer) (*job_offers.Response, error) {
 	jobOffer := mapNewJobOffer(request)
 	err := handler.service.Create(jobOffer)

@@ -34,6 +34,11 @@ func (store *JobOffersMongoStore) Get(id primitive.ObjectID) (*domain.JobOffer, 
 	return store.filterOne(filter)
 }
 
+func (store *JobOffersMongoStore) GetSubscribed(userId string) ([]*domain.JobOffer, error) {
+	filter := bson.M{"subscribers.id": userId}
+	return store.filter(filter)
+}
+
 func (store *JobOffersMongoStore) Create(jobOffer *domain.JobOffer) error {
 	jobOffer.Id = primitive.NewObjectID()
 	result, err := store.jobOffers.InsertOne(context.TODO(), jobOffer)

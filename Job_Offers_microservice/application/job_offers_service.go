@@ -23,6 +23,10 @@ func (service *JobOffersService) Get(id primitive.ObjectID) (*domain.JobOffer, e
 	return service.store.Get(id)
 }
 
+func (service *JobOffersService) GetSubscribed(userId string) ([]*domain.JobOffer, error) {
+	return service.store.GetSubscribed(userId)
+}
+
 func (service *JobOffersService) Create(offer *domain.JobOffer) error {
 	offer.IsActive = true
 	return service.store.Create(offer)

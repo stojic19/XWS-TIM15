@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type JobOffersServiceClient interface {
 	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
 	Get(ctx context.Context, in *JobOfferId, opts ...grpc.CallOption) (*JobOffer, error)
+	GetSubscribed(ctx context.Context, in *GetSubscribedRequest, opts ...grpc.CallOption) (*GetSubscribedResponse, error)
 	Create(ctx context.Context, in *NewJobOffer, opts ...grpc.CallOption) (*Response, error)
 	Update(ctx context.Context, in *UpdateJobOffer, opts ...grpc.CallOption) (*Response, error)
 	SubscribeJobOffer(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (*Response, error)
@@ -50,6 +51,15 @@ func (c *jobOffersServiceClient) GetAll(ctx context.Context, in *GetAllRequest, 
 func (c *jobOffersServiceClient) Get(ctx context.Context, in *JobOfferId, opts ...grpc.CallOption) (*JobOffer, error) {
 	out := new(JobOffer)
 	err := c.cc.Invoke(ctx, "/job_offers.JobOffersService/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *jobOffersServiceClient) GetSubscribed(ctx context.Context, in *GetSubscribedRequest, opts ...grpc.CallOption) (*GetSubscribedResponse, error) {
+	out := new(GetSubscribedResponse)
+	err := c.cc.Invoke(ctx, "/job_offers.JobOffersService/GetSubscribed", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -98,6 +108,7 @@ func (c *jobOffersServiceClient) UnsubscribeJobOffer(ctx context.Context, in *Un
 type JobOffersServiceServer interface {
 	GetAll(context.Context, *GetAllRequest) (*GetAllResponse, error)
 	Get(context.Context, *JobOfferId) (*JobOffer, error)
+	GetSubscribed(context.Context, *GetSubscribedRequest) (*GetSubscribedResponse, error)
 	Create(context.Context, *NewJobOffer) (*Response, error)
 	Update(context.Context, *UpdateJobOffer) (*Response, error)
 	SubscribeJobOffer(context.Context, *SubscribeRequest) (*Response, error)
@@ -114,6 +125,9 @@ func (UnimplementedJobOffersServiceServer) GetAll(context.Context, *GetAllReques
 }
 func (UnimplementedJobOffersServiceServer) Get(context.Context, *JobOfferId) (*JobOffer, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedJobOffersServiceServer) GetSubscribed(context.Context, *GetSubscribedRequest) (*GetSubscribedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSubscribed not implemented")
 }
 func (UnimplementedJobOffersServiceServer) Create(context.Context, *NewJobOffer) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
@@ -172,6 +186,24 @@ func _JobOffersService_Get_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(JobOffersServiceServer).Get(ctx, req.(*JobOfferId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _JobOffersService_GetSubscribed_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSubscribedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JobOffersServiceServer).GetSubscribed(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/job_offers.JobOffersService/GetSubscribed",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JobOffersServiceServer).GetSubscribed(ctx, req.(*GetSubscribedRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -262,6 +294,10 @@ var JobOffersService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _JobOffersService_Get_Handler,
+		},
+		{
+			MethodName: "GetSubscribed",
+			Handler:    _JobOffersService_GetSubscribed_Handler,
 		},
 		{
 			MethodName: "Create",

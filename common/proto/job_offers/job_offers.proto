@@ -17,6 +17,11 @@ service JobOffersService{
       get: "/job_offers/{id}"
     };
   }
+  rpc GetSubscribed(GetSubscribedRequest) returns(GetSubscribedResponse){
+    option(google.api.http) = {
+      get: "/job_offers/subscribed/{id}"
+    };
+  }
   rpc Create(NewJobOffer) returns(Response){
     option(google.api.http) = {
       post: "/job_offers"
@@ -77,6 +82,14 @@ message UpdateJobOffer{
 
 message JobOfferId{
   string id = 1;
+}
+
+message GetSubscribedRequest{
+  string id = 1;
+}
+
+message GetSubscribedResponse{
+  repeated JobOffer jobOffers = 1;
 }
 
 message SubscribeRequest{
