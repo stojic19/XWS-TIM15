@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/rs/cors"
 	"github.com/stojic19/XWS-TIM15/api_gateway/infrastructure/api"
 	"github.com/stojic19/XWS-TIM15/api_gateway/startup/config"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
@@ -73,5 +74,12 @@ func (server *Server) initCustomHandlers() {
 }
 
 func (server *Server) Start() {
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), server.mux))
+	fmt.Printf("Port: %s\n", server.config.Port)
+	handler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000", "https://localhost:3000/**"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Accept-Language", "Content-Type", "Content-Language", "Origin", "Authorization", "Access-Control-Allow-Origin", "*"},
+		AllowCredentials: true,
+	}).Handler(server.mux)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), handler))
 }
