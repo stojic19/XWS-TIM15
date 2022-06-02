@@ -34,6 +34,11 @@ func (store *JobOffersMongoStore) Get(id primitive.ObjectID) (*domain.JobOffer, 
 	return store.filterOne(filter)
 }
 
+func (store *JobOffersMongoStore) GetSubscribed(userId string) ([]*domain.JobOffer, error) {
+	filter := bson.M{"subscribers.id": userId}
+	return store.filter(filter)
+}
+
 func (store *JobOffersMongoStore) Create(jobOffer *domain.JobOffer) error {
 	jobOffer.Id = primitive.NewObjectID()
 	result, err := store.jobOffers.InsertOne(context.TODO(), jobOffer)
@@ -41,6 +46,50 @@ func (store *JobOffersMongoStore) Create(jobOffer *domain.JobOffer) error {
 		return err
 	}
 	jobOffer.Id = result.InsertedID.(primitive.ObjectID)
+	return nil
+}
+
+func (store *JobOffersMongoStore) Update(jobOffer *domain.JobOffer) error {
+	_, err := store.jobOffers.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": jobOffer.Id},
+		bson.D{
+			{"$set", bson.D{
+				{"position", jobOffer.Position},
+				{"description", jobOffer.Description},
+				{"requirements", jobOffer.Requirements}}},
+		})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (store *JobOffersMongoStore) Follow(jobOfferId primitive.ObjectID, user *domain.User) error {
+	_, err := store.jobOffers.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": jobOfferId},
+		bson.D{
+			{"$addToSet", bson.D{{"followers", user}}},
+		},
+	)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (store *JobOffersMongoStore) Unfollow(jobOfferId primitive.ObjectID, user *domain.User) error {
+	_, err := store.jobOffers.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": jobOfferId},
+		bson.D{
+			{"$pull", bson.D{{"followers", user}}},
+		},
+	)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
