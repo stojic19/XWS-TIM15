@@ -7,6 +7,11 @@
     <list default="true" id="fa3f74b9-be4b-4973-94b2-f1b3f2d0a37f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api_gateway/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/Navbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/Registration.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/Registration.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,15 +70,7 @@
       <command value="mvn clean install" />
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build main.go (2)">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="XWS-TIM15" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="FILE" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Go Build.go build main.go (1)">
     <configuration name="go build github.com/stojic19/XWS-TIM15/api_gateway" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="XWS-TIM15" />
       <working_directory value="$PROJECT_DIR$/api_gateway" />
@@ -116,19 +113,10 @@
       <filePath value="$PROJECT_DIR$/Followers_microservice/main.go" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="XWS-TIM15" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build main.go (2)" />
         <item itemvalue="Go Build.go build main.go (1)" />
+        <item itemvalue="Go Build.go build main.go (2)" />
         <item itemvalue="Go Build.go build github.com/stojic19/XWS-TIM15/api_gateway" />
         <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build github.com/stojic19/XWS-TIM15/posts_microservice" />
