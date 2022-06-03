@@ -23,11 +23,11 @@ func NewJobOffersHandler(service *application.JobOffersService) *JobOffersHandle
 }
 
 func (handler *JobOffersHandler) GetAll(ctx context.Context, request *job_offers.GetAllRequest) (*job_offers.GetAllResponse, error) {
-	metadata, _ := metadata.FromIncomingContext(ctx)
+	/*metadata, _ := metadata.FromIncomingContext(ctx)
 	sub := metadata.Get("sub")
 	if sub == nil || sub[0] == "" {
 		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
-	}
+	}*/
 	offers, err := handler.service.GetAll()
 	if err != nil {
 		return nil, err

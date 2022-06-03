@@ -16,6 +16,7 @@ using AgentApplication.ClassLib.Model;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace AgentApplication.API.Controllers
 {
@@ -23,7 +24,7 @@ namespace AgentApplication.API.Controllers
     [ApiController]
     public class CompaniesController : BaseApiController
     {
-        public CompaniesController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper) { }
+        public CompaniesController(IUnitOfWork uow, IMapper mapper, IConfiguration config) : base(uow, mapper, config) { }
 
         [HttpGet]
         public IActionResult GetAll()
@@ -185,7 +186,7 @@ namespace AgentApplication.API.Controllers
                 RequestUri = new Uri(_dislinktApiGatewayBaseUrl + "job_offers"),
                 Content = GetContent(_mapper.Map<NewJobOfferToDislinktDto>(jobOffer))
             };
-            request.Headers.Add("apiKey", "94ebab18-c806-4831-aa50-0864bcdf05d3");
+            request.Headers.Add("apiKey", _config["DislinktApiKey"]);
             var result = await _httpClient.SendAsync(request);
             if (result.StatusCode != HttpStatusCode.OK) return BadRequest(result.ToString());
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
