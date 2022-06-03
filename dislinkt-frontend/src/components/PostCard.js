@@ -10,7 +10,7 @@ const PostCard = (post) => {
             <img src="https://i.pinimg.com/originals/80/d3/64/80d364e09d31fcba8af274926d4332ff.jpg" className="card-img-top" alt="..." />
             <div className="card-body">
                 <h5 className="card-title">{post.post.title}</h5>
-                <p className="card-text">{post.post.content}</p>
+                <p className="card-text">{post.post.content.text}</p>
                 <a href={"/profile/" + post.post.owner.id} className="btn btn-primary">Visit author profile</a>
                 <ul className="list-group list-group-flush">
                     <li className="list-group-item">
