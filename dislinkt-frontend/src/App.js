@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Navbar from './components/Navbar';
 import Registration from './components/Registration';
 import PostsByUserId from './components/PostsByUserId';
+import UserNavbar from './components/UserNavbar';
 
 import axios from 'axios';
 
@@ -27,6 +28,10 @@ function App() {
           <Route exact path="/login" element={[<Navbar />,<Login />]}/>
           <Route exact path="/registration" element={[<Navbar />,<Registration />]}/>
           <Route exact path="/userPosts/:id" element={[<Navbar />,<PostsByUserId />]}/>
+          <Route exact path="/home" element={[<UserNavbar />]}/>
+          <Route exact path="/profiles" element={[<UserNavbar />]}/>
+          <Route exact path="/jobOffers" element={[<UserNavbar />]}/>
+          <Route exact path="/profile" element={[<UserNavbar />]}/>
         </Routes>
       </Router>
     </div>
