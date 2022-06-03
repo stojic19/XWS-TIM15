@@ -6,6 +6,8 @@ import Registration from './components/Registration';
 import PostsByUserId from './components/PostsByUserId';
 
 import axios from 'axios';
+import Home from './components/Home';
+import Users from './components/Users'
 
 axios.defaults.baseURL = "http://localhost:8000/";
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -21,14 +23,15 @@ axios.defaults.baseURL = "http://localhost:8000/";
 function App() {
   return (
     <div className="App">
-      <Router>
-      <Routes>
-          <Route exact path="/" element={[<Navbar />]}/>
-          <Route exact path="/login" element={[<Navbar />,<Login />]}/>
-          <Route exact path="/registration" element={[<Navbar />,<Registration />]}/>
-          <Route exact path="/userPosts/:id" element={[<Navbar />,<PostsByUserId />]}/>
-        </Routes>
-      </Router>
+        <Router>
+        <Routes>
+            <Route exact path="/" element={[<Navbar />, <Home/>]}/>
+            <Route exact path="/login" element={[<Navbar />,<Login />]}/>
+            <Route exact path="/registration" element={[<Navbar />,<Registration />]}/>
+            <Route exact path="/userPosts/:id" element={[<Navbar />,<PostsByUserId />]}/>
+            <Route exact path="/users" element={[<Navbar />,<Users/>]}/>
+          </Routes>
+        </Router>
     </div>
   );
 }

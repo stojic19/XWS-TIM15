@@ -32,7 +32,7 @@ const Login = () => {
         };
         setIsPending(true);
         axios.post(axios.defaults.baseURL + 'login', login).then(res => {
-            if (res.data.response.includes("Added user")) {
+            if (res.data.status == 200) {
                 setIsPending(false);
                 //localStorage.setItem('token', res.data.access_token);
                 //localStorage.setItem('auth_name', res.data.name);
@@ -42,7 +42,7 @@ const Login = () => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
-                    text: res.data.response,
+                    text: res.data.error,
                 });
             }
         });
