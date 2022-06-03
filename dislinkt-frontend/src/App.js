@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Navbar from './components/Navbar';
 import Registration from './components/Registration';
 import PostsByUserId from './components/PostsByUserId';
+import UserNavbar from './components/UserNavbar';
 
 import axios from 'axios';
 import Home from './components/Home';
@@ -23,13 +24,17 @@ axios.defaults.baseURL = "http://localhost:8000/";
 function App() {
   return (
     <div className="App">
-        <Router>
-        <Routes>
-            <Route exact path="/" element={[<Navbar />, <Home/>]}/>
-            <Route exact path="/login" element={[<Navbar />,<Login />]}/>
-            <Route exact path="/registration" element={[<Navbar />,<Registration />]}/>
-            <Route exact path="/userPosts/:id" element={[<Navbar />,<PostsByUserId />]}/>
-            <Route exact path="/users" element={[<Navbar />,<Users/>]}/>
+      <Router>
+      <Routes>
+          <Route exact path="/" element={[<Navbar />, <Home/>]}/>
+          <Route exact path="/login" element={[<Navbar />,<Login />]}/>
+          <Route exact path="/registration" element={[<Navbar />,<Registration />]}/>
+          <Route exact path="/userPosts/:id" element={[<Navbar />,<PostsByUserId />]}/>
+          <Route exact path="/home" element={[<UserNavbar />]}/>
+          <Route exact path="/profiles" element={[<UserNavbar />]}/>
+          <Route exact path="/jobOffers" element={[<UserNavbar />]}/>
+          <Route exact path="/profile" element={[<UserNavbar />]}/>
+          <Route exact path="/users" element={[<Navbar />,<Users/>]}/>
           </Routes>
         </Router>
     </div>

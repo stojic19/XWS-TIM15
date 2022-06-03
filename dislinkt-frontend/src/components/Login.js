@@ -36,7 +36,7 @@ const Login = () => {
                 setIsPending(false);
                 //localStorage.setItem('token', res.data.access_token);
                 //localStorage.setItem('auth_name', res.data.name);
-                history('/');
+                history('/home');
             } else {
                 setIsPending(false);
                 Swal.fire({
