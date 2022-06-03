@@ -73,6 +73,13 @@ func (handler *JobOffersHandler) GetSubscribed(ctx context.Context, request *job
 
 func (handler *JobOffersHandler) Create(ctx context.Context, request *job_offers.NewJobOffer) (*job_offers.Response, error) {
 
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	apiKey := metadata.Get("apiKey")
+	if (sub == nil || sub[0] == "") && (apiKey == nil || apiKey[0] != GetAgentAppApiKey()) {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+
 	jobOffer := mapNewJobOffer(request)
 	err := handler.service.Create(jobOffer)
 	if err != nil {

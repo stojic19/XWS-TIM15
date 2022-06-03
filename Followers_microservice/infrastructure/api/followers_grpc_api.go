@@ -2,10 +2,12 @@ package api
 
 import (
 	"context"
+	"fmt"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/application"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/infrastructure/services"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -49,6 +51,8 @@ func (handler *FollowersHandler) GetFollowers(ctx context.Context, request *foll
 }
 
 func (handler *FollowersHandler) GetFollowRequests(ctx context.Context, request *followers.GetFollowRequestsRequest) (*followers.GetFollowRequestsResponse, error) {
+	md, _ := metadata.FromIncomingContext(ctx)
+	fmt.Println(md)
 	id := request.Id
 	response, err := handler.service.GetFollowRequests(id)
 	if err != nil {

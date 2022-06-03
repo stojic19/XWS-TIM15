@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
+using System.Threading.Tasks;
 using AgentApplication.API.Attributes;
+using AgentApplication.API.Controllers.Base;
 using AgentApplication.API.Dto;
 using AgentApplication.ClassLib.Database.Infrastructure;
 using AgentApplication.ClassLib.Database.Repository;
@@ -17,15 +21,9 @@ namespace AgentApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompaniesController : ControllerBase
+    public class CompaniesController : BaseApiController
     {
-        private readonly IUnitOfWork _uow;
-        private readonly IMapper _mapper;
-        public CompaniesController(IUnitOfWork uow, IMapper mapper)
-        {
-            _uow = uow;
-            _mapper = mapper;
-        }
+        public CompaniesController(IUnitOfWork uow, IMapper mapper) : base(uow, mapper) { }
 
         [HttpGet]
         public IActionResult GetAll()
@@ -172,7 +170,7 @@ namespace AgentApplication.API.Controllers
 
         [Authorize(new[] { "Regular", "Admin" })]
         [HttpPut("JobOffer/Activate")]
-        public IActionResult ActivateJobOffer(ActivateJobOfferDto dto)
+        public async Task<IActionResult> ActivateJobOffer(ActivateJobOfferDto dto)
         {
             Guid id = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
             Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(dto.CompanyId, FetchType.Eager);
@@ -181,6 +179,15 @@ namespace AgentApplication.API.Controllers
             JobOffer jobOffer = company.JobOffers.FirstOrDefault(g => g.Id == dto.Id);
             if (jobOffer == null) return NotFound("Job offer not found");
             jobOffer.IsActive = true;
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(_dislinktApiGatewayBaseUrl + "job_offers"),
+                Content = GetContent(_mapper.Map<NewJobOfferToDislinktDto>(jobOffer))
+            };
+            request.Headers.Add("apiKey", "94ebab18-c806-4831-aa50-0864bcdf05d3");
+            var result = await _httpClient.SendAsync(request);
+            if (result.StatusCode != HttpStatusCode.OK) return BadRequest(result.ToString());
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
         }
 
