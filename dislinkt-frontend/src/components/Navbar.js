@@ -1,6 +1,6 @@
 const Navbar = () => {
     return (
-        <div className="m-5 p-1">
+        <div className="m-4 p-1">
         <ul className="nav nav-pills nav-fill ">
             <li className="nav-item" key={1}>
                 <a style={{textDecoration: "none"}} href="/"><h1>Dislinkt</h1></a>
