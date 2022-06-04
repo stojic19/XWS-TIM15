@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from "sweetalert2";
+import DatePicker from "react-datepicker";
 
 const Registration = () => {
     const [email, setEmail] = useState("");
@@ -12,13 +13,13 @@ const Registration = () => {
     const [name, setName] = useState("");
     const [dateOfBirth, setDateOfBirth] = useState("");
     const [biography, setBiography] = useState("");
-    const [isPrivate, setIsPrivate] = useState(false);
+    const [isPrivate, setIsPrivate] = useState("");
     const [isPending, setIsPending] = useState(false);
     const history = useNavigate();
 
     const Validate = () => {
         if (email === "" || username === "" || password === "" || telephoneNumber === ""
-            || gender === "" || name === "" || dateOfBirth === "" || biography === "") {
+            || gender === "" || name === "" || dateOfBirth === "" || biography === "" || isPrivate === "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Oops...',
@@ -29,8 +30,10 @@ const Registration = () => {
         return true;
     }
     const FormatDate = (date) => {
-        var list = date.split('-');
-        return list[2] + '/' + list[1] + '/' + list[0];
+        var month = date.getUTCMonth() + 1; //months from 1-12.
+        var day = date.getUTCDate() + 1;
+        var year = date.getUTCFullYear();
+        return day + '/' + month + '/' + year;
     }
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -50,19 +53,19 @@ const Registration = () => {
         };
         console.log(registration)
         axios.post(axios.defaults.baseURL + 'users', registration)
-        .then(res => {
-            if(res.data.response.includes("Added user")){
-                setIsPending(false);
-                history('/');
-            }else{
-                setIsPending(false);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res.data.response,
-                });
-            }
-        });
+            .then(res => {
+                if (res.data.response.includes("Added user")) {
+                    setIsPending(false);
+                    history('/');
+                } else {
+                    setIsPending(false);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res.data.response,
+                    });
+                }
+            });
     }
 
     return (
@@ -104,15 +107,24 @@ const Registration = () => {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Date of birth</label>
-                    <input selected={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} type="date" className="form-control" id="InputDateOfBirth" />
+                    <DatePicker dateFormat="dd/MM/yyyy" selected={dateOfBirth} onChange={(date) => setDateOfBirth(date)} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Biography</label>
                     <textarea value={biography} onChange={(e) => setBiography(e.target.value)} type="text" className="form-control" id="InputBiography" />
                 </div>
-                <div className="mb-3 form-check">
-                    <input value={isPrivate} onChange={(e) => setIsPrivate(!isPrivate)} type="checkbox" className="form-check-input" id="CheckIsPrivate" />
-                    <label className="form-check-label">Private profile</label>
+                <div className="mb-3">
+                    <label className="form-label">Profile visibility</label>
+                    <select id="InputVisibility"
+                        name="visibility"
+                        className="form-control"
+                        value={isPrivate}
+                        onChange={(e) => setIsPrivate(e.target.value)}
+                    >
+                        <option value="" disabled>Choose visibility</option>
+                        <option value="true">Private</option>
+                        <option value="false">Public</option>
+                    </select>
                 </div>
                 <div>
                     {!isPending && <button onClick={(e) => onSubmit(e)} type="submit" className="btn btn-primary">Submit</button>}

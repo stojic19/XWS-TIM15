@@ -10,8 +10,8 @@ const UserCard = (props) => {
                             }
                         </h6>
                         <figure><img src={require("../images/user-avatar.png")} class="img-responsive" alt=""></img></figure>
-                        <h3><a href="">{props.user.name}</a></h3>
-                        <p>Freelance Web Developer</p>
+                        <h3><a href={'/profile/' + props.user.id}>{props.user.name}</a></h3>
+                        {/* <p>Freelance Web Developer</p> */}
                         <button type="button" class="btn btn-outline-primary">Follow</button>
                     </div>
         </li>

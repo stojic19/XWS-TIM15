@@ -9,13 +9,13 @@ const UserNavbar = () => {
                 <a className="nav-link active" aria-current="page" href="/home">Home</a>
             </li>
             <li className="nav-item" key={3}>
-                <a className="nav-link" href="/profiles">Profiles</a>
+                <a className="nav-link" href="/publicProfiles">Profiles</a>
             </li>
             <li className="nav-item" key={4}>
                 <a className="nav-link" href="/jobOffers">Job offers</a>
             </li>
             <li className="nav-item" key={5}>
-                <a className="nav-link" href="/profile">Profile</a>
+                <a className="nav-link" href="/personalProfile">Profile</a>
             </li>
             <li className="nav-item" key={6}>
                 <a className="nav-link disabled" href="/" aria-disabled="true">Disabled</a>
