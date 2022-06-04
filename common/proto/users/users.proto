@@ -100,6 +100,11 @@ service UsersService{
       body: "*"
     };
   }
+  rpc GetUserForEdit(GetUserRequest) returns(GetUserResponse){
+    option(google.api.http) = {
+      get: "/getUserForEdit/{id}"
+    };
+  }
 }
 message AddUserRequest{
   string username = 1;
@@ -130,6 +135,7 @@ message UpdateUserRequest{
 }
 message UpdateUserResponse{
   string response = 1;
+  string error = 2;
 }
 
 message GetUsersRequest{}
@@ -218,6 +224,7 @@ message LoginResponse {
   int64 status = 1;
   string error = 2;
   string token = 3;
+  string id = 4;
 }
 // Validate
 message ValidateRequest {
