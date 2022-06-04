@@ -1,7 +1,5 @@
 import '../css/postCard.css'
-import PostsByUserId from './PostsByUserId';
-import axios from 'axios';
-import { useState } from 'react';
+import Comment from './Comment';
 
 const PostCard = (post) => {
     
@@ -11,16 +9,7 @@ const PostCard = (post) => {
     const DislikeCount = () => {
         return post.post.dislikes.length;
     }
-    const GetUserNameById = (id) => {
-        let name
-        axios.get(axios.defaults.baseURL + 'users/' + id)
-                .then(res => {
-                    console.log(res.data.user.name)
-                    return res.data.user.name;
-                }).catch(err => {
-                    console.log(err);
-                });
-    }
+    
     return (
         <div class="container">
             <div class="row">
@@ -30,7 +19,10 @@ const PostCard = (post) => {
                         <div class="panel-heading">
                             <img class="[ img-circle pull-left ]" src={require("../images/user-avatar.png")} style={{height: "50px"}}/>
                             <h3>{post.post.title}</h3> {/*Bolje ime korisnika umesto naslova*/}
-                            <h5><span>{post.post.createTime}</span> </h5>
+                            <h5><span>
+                                {
+                                (post.post.createTime).split("T")[0]
+                                }</span> </h5>
                         </div>
                         <div class="panel-body">
                             <p>{post.post.content.text}</p>
@@ -52,8 +44,7 @@ const PostCard = (post) => {
                             {
                                 (post.post.comments).map((comment, index) => {
                                     return(
-                                        <li key={index} class="list-group-item">
-                                            {comment.owner.id} : {comment.content}</li>
+                                        <Comment index={index} comment={comment}></Comment>
                                     );
                                 })
                             }
