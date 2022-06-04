@@ -33,12 +33,12 @@ function App() {
     <div className="App">
       <Router>
       <Routes>
-          <Route exact path="/" element={[<Navbar />, <Home/>]}/>
+          <Route exact path="/" element={[<Navbar />, <PublicProfileSearch displayFollowButtons={false}/>]}/>
           <Route exact path="/login" element={[<Navbar />,<Login />]}/>
           <Route exact path="/registration" element={[<Navbar />,<Registration />]}/>
           <Route exact path="/userPosts/:id" element={[<Navbar />,<PostsByUserId />]}/>
           <Route exact path="/home" element={[<UserNavbar />]}/>
-          <Route exact path="/publicProfiles" element={[<UserNavbar />, <PublicProfileSearch/>]}/>
+          <Route exact path="/publicProfiles" element={[<UserNavbar />, <PublicProfileSearch displayFollowButtons={true}/>]}/>
           <Route exact path="/jobOffers" element={[<UserNavbar />]}/>
           <Route exact path="/profile/:id" element={[<UserNavbar />, <UserProfile/>]}/>
           <Route exact path="/users" element={[<Navbar />,<Users/>]}/>

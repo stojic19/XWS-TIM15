@@ -5,11 +5,13 @@ import { useEffect } from 'react';
 import Swal from 'sweetalert2';
 import UserList from './UserList';
 
-const PublicProfileSearch = () =>{
+const PublicProfileSearch = (props) =>{
 
     const[users, setUsers] = useState('');
     const [loading, setLoading] = useState(true);
     const[searchTerm, setSearchTerm] = useState('');
+    const[follows, setFollows] = useState([]);
+    const[followRequests, setFollowRequests] = useState();
 
     const fetchUsers = async () => {
         setLoading(true);
@@ -28,6 +30,44 @@ const PublicProfileSearch = () =>{
             });
         });
     };
+    useEffect(() => {
+        const fetchFollowRequests = async () => {
+            let id = localStorage.getItem('user_id');
+            axios.get(axios.defaults.baseURL + 'followers/followRequests/' + id)
+                .then(res => {
+                    let followRequests = res.data.followRequests;
+                    setFollowRequests(followRequests);
+                    console.log(res);
+                }).catch(err => {
+                    console.log(err);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: err.data,
+                    });
+                });
+        };
+        const fetchFollows = async () => {
+            let id = localStorage.getItem('user_id');
+            axios.get(axios.defaults.baseURL + 'followers/follows/' + id)
+                .then(res => {
+                    let follows = res.data.follows;
+                    console.log(res);
+                    setFollows(follows);
+                }).catch(err => {
+                    console.log(err);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: err.data,
+                    });
+                });
+        };
+        if(props.displayFollowButtons){
+            fetchFollowRequests();
+            fetchFollows();
+        }
+    }, []);
 
     useEffect(() => {
         fetchUsers();
@@ -54,7 +94,7 @@ const PublicProfileSearch = () =>{
             </div>
         </div>
             {loading && <h3>Loading...</h3>}
-            {!loading && users && <UserList users={users} />}
+            {!loading && users && <UserList users={users} displayFollowButtons={props.displayFollowButtons} follows={follows} followRequests={followRequests} />}
         </div>
     );
 }
