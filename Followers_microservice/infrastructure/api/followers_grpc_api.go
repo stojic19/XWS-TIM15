@@ -7,7 +7,9 @@ import (
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/infrastructure/services"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -91,6 +93,13 @@ func (handler *FollowersHandler) GetRelationship(ctx context.Context, request *f
 }
 
 func (handler *FollowersHandler) ConfirmFollow(ctx context.Context, request *followers.ConfirmFollowRequest) (*followers.ConfirmFollowResponse, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	followerId := request.FollowerId
 	followedId := request.FollowedId
 	response, err := handler.service.ConfirmFollow(followerId, followedId)
@@ -102,6 +111,13 @@ func (handler *FollowersHandler) ConfirmFollow(ctx context.Context, request *fol
 }
 
 func (handler *FollowersHandler) Follow(ctx context.Context, request *followers.FollowRequest) (*followers.FollowResponse, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	followerId := request.FollowerId
 	followedId := request.FollowedId
 	userClient := services.NewUsersClient(handler.usersClientAddress)
@@ -126,6 +142,13 @@ func (handler *FollowersHandler) Follow(ctx context.Context, request *followers.
 }
 
 func (handler *FollowersHandler) Unfollow(ctx context.Context, request *followers.UnfollowRequest) (*followers.UnfollowResponse, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	followerId := request.FollowerId
 	followedId := request.FollowedId
 	response, err := handler.service.Unfollow(followerId, followedId)
@@ -137,6 +160,13 @@ func (handler *FollowersHandler) Unfollow(ctx context.Context, request *follower
 }
 
 func (handler *FollowersHandler) RemoveFollowRequest(ctx context.Context, request *followers.RemoveFollowRequestRequest) (*followers.RemoveFollowRequestResponse, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	followerId := request.FollowerId
 	followedId := request.FollowedId
 	response, err := handler.service.RemoveFollowRequest(followerId, followedId)

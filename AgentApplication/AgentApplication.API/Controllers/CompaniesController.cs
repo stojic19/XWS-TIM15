@@ -179,6 +179,7 @@ namespace AgentApplication.API.Controllers
             if (company.OwnerId != id) return BadRequest("Cannot activate job offer since you do not own this company!");
             JobOffer jobOffer = company.JobOffers.FirstOrDefault(g => g.Id == dto.Id);
             if (jobOffer == null) return NotFound("Job offer not found");
+            if (jobOffer.IsActive) return BadRequest("Job offer already active");
             jobOffer.IsActive = true;
             var request = new HttpRequestMessage
             {
