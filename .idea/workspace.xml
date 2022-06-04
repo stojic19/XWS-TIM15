@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a6b993a3-c44c-4f46-becf-35fd37d678bd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AgentApplication/AgentApplication.API/Controllers/CompaniesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/AgentApplication/AgentApplication.API/Controllers/CompaniesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Posts_microservice/infrastructure/api/posts_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Posts_microservice/infrastructure/api/posts_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api_gateway/infrastructure/api/follower_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/infrastructure/api/follower_handler.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

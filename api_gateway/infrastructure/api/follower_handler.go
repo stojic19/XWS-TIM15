@@ -8,7 +8,7 @@ import (
 	"github.com/stojic19/XWS-TIM15/api_gateway/infrastructure/services"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
-	metadata2 "google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/metadata"
 	"net/http"
 )
 
@@ -169,10 +169,10 @@ func (handler *FollowersHandler) addFollowerRequestInfo(followersInfo *domain.Us
 
 func (handler *FollowersHandler) addFollowRequestInfo(followersInfo *domain.UserFollowerInfoList, id string) error {
 	followersClient := services.NewFollowersClient(handler.followersClientAddress)
-	metadata1 := metadata2.MD{}
+	metadata1 := metadata.MD{}
 	metadata1.Set("proba", "1")
 	context1 := context.TODO()
-	context1 = metadata2.NewOutgoingContext(context1, metadata1)
+	context1 = metadata.NewOutgoingContext(context1, metadata1)
 	followRequestsIds, err := followersClient.GetFollowRequests(context1, &followers.GetFollowRequestsRequest{Id: id})
 	if err != nil {
 		return err
