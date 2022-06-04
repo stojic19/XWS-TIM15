@@ -5,12 +5,13 @@ import Navbar from './components/Navbar';
 import Registration from './components/Registration';
 import PostsByUserId from './components/PostsByUserId';
 import UserNavbar from './components/UserNavbar';
-import Home from './components/Home';
-import Users from './components/Users';
-import EditProfile from './components/EditProfile';
-import UserProfile from './components/UserProfile';
 
 import axios from 'axios';
+import Home from './components/Home';
+import Users from './components/Users'
+import UserProfile from './components/UserProfile';
+import PublicProfileSearch from './components/PublicProfileSearch'
+import EditProfile from './components/EditProfile'
 
 axios.defaults.baseURL = "http://localhost:8000/";
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -33,7 +34,7 @@ function App() {
           <Route exact path="/registration" element={[<Navbar />,<Registration />]}/>
           <Route exact path="/userPosts/:id" element={[<Navbar />,<PostsByUserId />]}/>
           <Route exact path="/home" element={[<UserNavbar />]}/>
-          <Route exact path="/profiles" element={[<UserNavbar />]}/>
+          <Route exact path="/publicProfiles" element={[<UserNavbar />, <PublicProfileSearch/>]}/>
           <Route exact path="/jobOffers" element={[<UserNavbar />]}/>
           <Route exact path="/profile/:id" element={[<UserNavbar />, <UserProfile/>]}/>
           <Route exact path="/users" element={[<Navbar />,<Users/>]}/>

@@ -1,11 +1,11 @@
 import PostCard from "./PostCard";
 
-const PostList = (posts) => {
+const PostList = (props) => {
 
     return (
         <div className="container align-content: center display: flex align-items: center mt-5">
-            {posts.posts &&
-                (posts.posts).map((post, index) => {
+            {props.posts &&
+                (props.posts).map((post, index) => {
                     return (
                         <PostCard key={index} post={post} />
                     );
