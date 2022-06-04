@@ -13,13 +13,13 @@ const Registration = () => {
     const [name, setName] = useState("");
     const [dateOfBirth, setDateOfBirth] = useState("");
     const [biography, setBiography] = useState("");
-    const [isPrivate, setIsPrivate] = useState(false);
+    const [isPrivate, setIsPrivate] = useState("");
     const [isPending, setIsPending] = useState(false);
     const history = useNavigate();
 
     const Validate = () => {
         if (email === "" || username === "" || password === "" || telephoneNumber === ""
-            || gender === "" || name === "" || dateOfBirth === "" || biography === "") {
+            || gender === "" || name === "" || dateOfBirth === "" || biography === "" || isPrivate === "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Oops...',
@@ -53,19 +53,19 @@ const Registration = () => {
         };
         console.log(registration)
         axios.post(axios.defaults.baseURL + 'users', registration)
-        .then(res => {
-            if(res.data.response.includes("Added user")){
-                setIsPending(false);
-                history('/');
-            }else{
-                setIsPending(false);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res.data.response,
-                });
-            }
-        });
+            .then(res => {
+                if (res.data.response.includes("Added user")) {
+                    setIsPending(false);
+                    history('/');
+                } else {
+                    setIsPending(false);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: res.data.response,
+                    });
+                }
+            });
     }
 
     return (
@@ -113,9 +113,18 @@ const Registration = () => {
                     <label className="form-label">Biography</label>
                     <textarea value={biography} onChange={(e) => setBiography(e.target.value)} type="text" className="form-control" id="InputBiography" />
                 </div>
-                <div className="mb-3 form-check">
-                    <input value={isPrivate} onChange={(e) => setIsPrivate(!isPrivate)} type="checkbox" className="form-check-input" id="CheckIsPrivate" />
-                    <label className="form-check-label">Private profile</label>
+                <div className="mb-3">
+                    <label className="form-label">Profile visibility</label>
+                    <select id="InputVisibility"
+                        name="visibility"
+                        className="form-control"
+                        value={isPrivate}
+                        onChange={(e) => setIsPrivate(e.target.value)}
+                    >
+                        <option value="" disabled>Choose visibility</option>
+                        <option value="true">Private</option>
+                        <option value="false">Public</option>
+                    </select>
                 </div>
                 <div>
                     {!isPending && <button onClick={(e) => onSubmit(e)} type="submit" className="btn btn-primary">Submit</button>}

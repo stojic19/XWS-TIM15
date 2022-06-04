@@ -35,19 +35,19 @@ const PublicProfileSearch = () =>{
 
     return(
         <div>
-	    <div class="col-12">
+	    <div className="col-12">
     	    <div id="custom-search-input">
-                <div class="input-group">
-                    <input type="text" class="search-query form-control" placeholder="Search" 
+                <div className="input-group">
+                    <input type="text" className="search-query form-control" placeholder="Search" 
                     onKeyPress={(ev) => {
                         if (ev.key === "Enter") {
                         ev.preventDefault();
                         setSearchTerm(ev.target.value)
                         }
                     }} />
-                    <span class="input-group-btn">
+                    <span className="input-group-btn">
                         <button type="button" disabled>
-                            <span class="fa fa-search"></span>
+                            <span className="fa fa-search"></span>
                         </button>
                     </span>
                 </div>
