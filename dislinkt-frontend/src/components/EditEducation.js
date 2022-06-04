@@ -6,16 +6,18 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import axios from 'axios';
 
-const EditWorkExperience = () => {
+const EditEducation = () => {
     const [loading, setLoading] = useState(true);
     const [email, setEmail] = useState("");;
     const [name, setName] = useState("");
     const [isPending, setIsPending] = useState(false);
-    const [workExperience, setWorkExperience] = useState([]);
+    const [education, setEducation] = useState([]);
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
-    const [jobTitle, setJobTitle] = useState('');
-    const [companyName, setCompanyName] = useState('');
+    const [institutionName, setInstitutionName] = useState('');
+    const [institutionType, setInstitutionType] = useState('');
+    const [title, setTitle] = useState('');
+    const [gpa, setGpa] = useState(0.0);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -36,13 +38,13 @@ const EditWorkExperience = () => {
                     });
                 });
         };
-        const fetchWorkExperience = async () => {
+        const fetchEducation = async () => {
             let id = localStorage.getItem('user_id');
             setLoading(true);
-            axios.get(axios.defaults.baseURL + 'workExperience/' + id)
+            axios.get(axios.defaults.baseURL + 'education/' + id)
                 .then(res => {
-                    let workExperience = res.data.workExperience;
-                    setWorkExperience(workExperience);
+                    let education = res.data.education;
+                    setEducation(education);
                     setLoading(false);
                 }).catch(err => {
                     console.log(err);
@@ -54,11 +56,13 @@ const EditWorkExperience = () => {
                 });
         };
         fetchUser();
-        fetchWorkExperience();
+        fetchEducation();
     }, []);
 
     const Validate = () => {
-        if (companyName === "" || jobTitle === "" || startDate === "" || endDate === "") {
+        if (institutionName === "" || institutionType === ""
+        || title === "" || gpa === "" 
+        || startDate === "" || endDate === "") {
             Swal.fire({
                 icon: 'warning',
                 title: 'Oops...',
@@ -89,29 +93,33 @@ const EditWorkExperience = () => {
 
         setIsPending(true);
 
-        let workExperiences = []
+        let educationUpdate = []
 
-        workExperience.map((workExperience) => {
-            console.log(workExperience)
-            workExperiences = workExperiences.concat({
-                "jobTitle": workExperience.jobTitle,
-                "companyName": workExperience.companyName,
-                "startDate": FormatDate(new Date(workExperience.startDate)),
-                "endDate": FormatDate(new Date(workExperience.endDate))
+        education.map((ed) => {
+            console.log(ed)
+            educationUpdate = educationUpdate.concat({
+                "title": ed.title,
+                "gpa": ed.gpa,
+                "institutionName": ed.institutionName,
+                "institutionType": ed.institutionType,
+                "startDate": FormatDate(new Date(ed.startDate)),
+                "endDate": FormatDate(new Date(ed.endDate))
             })
         })
-        workExperiences = workExperiences.concat({
-            "jobTitle": jobTitle,
-            "companyName": companyName,
+        educationUpdate = educationUpdate.concat({
+            "title": title,
+            "gpa": gpa,
+            "institutionName": institutionName,
+            "institutionType": institutionType,
             "startDate": FormatDate(startDate),
             "endDate": FormatDate(endDate)
         })
 
         const update = {
             "userId": localStorage.getItem('user_id'),
-            "workExperiences": workExperiences
+            "education": educationUpdate
         };
-        axios.put(axios.defaults.baseURL + 'workExperience', update)
+        axios.put(axios.defaults.baseURL + 'education', update)
             .then(res => {
                 setIsPending(false);
                 Swal.fire({
@@ -127,24 +135,26 @@ const EditWorkExperience = () => {
         e.preventDefault();
         setIsPending(true);
 
-        let workExperiences = []
+        let educationUpdate = []
 
-        workExperience.map((workExperience, checkIndex) => {
-            console.log(workExperience)
+        education.map((ed, checkIndex) => {
+            console.log(ed)
             if (checkIndex != index)
-                workExperiences = workExperiences.concat({
-                    "jobTitle": workExperience.jobTitle,
-                    "companyName": workExperience.companyName,
-                    "startDate": FormatDate(new Date(workExperience.startDate)),
-                    "endDate": FormatDate(new Date(workExperience.endDate))
-                })
+            educationUpdate = educationUpdate.concat({
+                "title": ed.title,
+                "gpa": ed.gpa,
+                "institutionName": ed.institutionName,
+                "institutionType": ed.institutionType,
+                "startDate": FormatDate(new Date(ed.startDate)),
+                "endDate": FormatDate(new Date(ed.endDate))
+            })
         })
 
         const update = {
             "userId": localStorage.getItem('user_id'),
-            "workExperiences": workExperiences
+            "education": educationUpdate
         };
-        axios.put(axios.defaults.baseURL + 'workExperience', update)
+        axios.put(axios.defaults.baseURL + 'education', update)
             .then(res => {
                 setIsPending(false);
                 Swal.fire({
@@ -174,27 +184,37 @@ const EditWorkExperience = () => {
                         <div className="d-flex justify-content-between align-items-center mb-3">
                             <h4 className="text-right">Work Experience Settings</h4>
                         </div>
-                        {workExperience && workExperience.map((ex, index) => {
+                        {education && education.map((ed, index) => {
                             return (
                                 <div key={index}>
                                     <div className="row mt-2">
                                         <div className="col-md-6">
-                                            <label className="labels">Company name</label>
-                                            <input type="text" className="form-control" placeholder="Enter company name" value={ex.companyName} readOnly />
+                                            <label className="labels">Institution name</label>
+                                            <input type="text" className="form-control" placeholder="Enter institution name" value={ed.institutionName} readOnly />
                                         </div>
                                         <div className="col-md-6">
-                                            <label className="labels">Job title</label>
-                                            <input type="text" className="form-control" value={ex.jobTitle} placeholder="Enter job title" readOnly />
+                                            <label className="labels">Institution type</label>
+                                            <input type="text" className="form-control" value={ed.institutionType} placeholder="Enter institution type" readOnly />
+                                        </div>
+                                    </div>
+                                    <div className="row mt-2">
+                                        <div className="col-md-6">
+                                            <label className="labels">Title</label>
+                                            <input type="text" className="form-control" placeholder="Enter title" value={ed.title} readOnly />
+                                        </div>
+                                        <div className="col-md-6">
+                                            <label className="labels">GPA</label>
+                                            <input type="text" className="form-control" value={ed.gpa} placeholder="Enter GPA" readOnly />
                                         </div>
                                     </div>
                                     <div className="row mt-2">
                                         <div className="col-md-6">
                                             <label className="labels">Start date</label>
-                                            <DatePicker dateFormat="dd/MM/yyyy" selected={getDateFormatForDisplay(ex.startDate)} className="form-control" readOnly />
+                                            <DatePicker dateFormat="dd/MM/yyyy" selected={getDateFormatForDisplay(ed.startDate)} className="form-control" readOnly />
                                         </div>
                                         <div className="col-md-6">
                                             <label className="labels">End date</label>
-                                            <DatePicker dateFormat="dd/MM/yyyy" selected={getDateFormatForDisplay(ex.endDate)} className="form-control" readOnly />
+                                            <DatePicker dateFormat="dd/MM/yyyy" selected={getDateFormatForDisplay(ed.endDate)} className="form-control" readOnly />
                                         </div>
                                     </div>
                                     <div className="align-items-center m-2 text-center">
@@ -208,22 +228,32 @@ const EditWorkExperience = () => {
                         <div>
                             <div className="row mt-2">
                                 <div className="col-md-6">
-                                    <label className="labels">Company name</label>
-                                    <input type="text" className="form-control" placeholder="Enter company name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
+                                    <label className="labels">Institution name</label>
+                                    <input type="text" className="form-control" placeholder="Enter institution name" value={institutionName}  onChange={(e) => setInstitutionName(e.target.value)}/>
                                 </div>
                                 <div className="col-md-6">
-                                    <label className="labels">Job title</label>
-                                    <input type="text" className="form-control" value={jobTitle} placeholder="Enter job title" onChange={(e) => setJobTitle(e.target.value)} />
+                                    <label className="labels">Institution type</label>
+                                    <input type="text" className="form-control" value={institutionType} placeholder="Enter institution type" onChange={(e) => setInstitutionType(e.target.value)} />
+                                </div>
+                            </div>
+                            <div className="row mt-2">
+                                <div className="col-md-6">
+                                    <label className="labels">Title</label>
+                                    <input type="text" className="form-control" placeholder="Enter title" value={title} onChange={(e) => setTitle(e.target.value)} />
+                                </div>
+                                <div className="col-md-6">
+                                    <label className="labels">GPA</label>
+                                    <input type="text" className="form-control" value={gpa} placeholder="Enter GPA" onChange={(e) => setGpa(e.target.value)} />
                                 </div>
                             </div>
                             <div className="row mt-2">
                                 <div className="col-md-6">
                                     <label className="labels">Start date</label>
-                                    <DatePicker dateFormat="dd/MM/yyyy" selected={startDate} className="form-control" onChange={(date) => setStartDate(date)} />
+                                    <DatePicker dateFormat="dd/MM/yyyy" selected={getDateFormatForDisplay(startDate)} className="form-control"  onChange={(date) => setStartDate(date)} />
                                 </div>
                                 <div className="col-md-6">
                                     <label className="labels">End date</label>
-                                    <DatePicker dateFormat="dd/MM/yyyy" selected={endDate} className="form-control" onChange={(date) => setEndDate(date)} />
+                                    <DatePicker dateFormat="dd/MM/yyyy" selected={getDateFormatForDisplay(endDate)} className="form-control"  onChange={(date) => setEndDate(date)} />
                                 </div>
                             </div>
                             <hr />
@@ -239,4 +269,4 @@ const EditWorkExperience = () => {
     );
 }
 
-export default EditWorkExperience;
+export default EditEducation;
