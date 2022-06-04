@@ -16,6 +16,7 @@ import EditEducation from './components/EditEducation';
 import EditSkillsAndInterests from './components/EditSkillsAndInterests';
 import FollowRequestsList from './components/FollowRequestsList';
 import UserHome from './components/UserHome';
+import AllProfiles from './components/AllProfiles';
 
 import axios from 'axios';
 
@@ -41,6 +42,7 @@ function App() {
           <Route exact path="/userPosts/:id" element={[<Navbar />,<PostsByUserId />]}/>
           <Route exact path="/home" element={[<UserNavbar />, <UserHome/>]}/>
           <Route exact path="/publicProfiles" element={[<UserNavbar />, <PublicProfileSearch displayFollowButtons={true}/>]}/>
+          <Route exact path="/allProfiles" element={[<UserNavbar />, <AllProfiles displayFollowButtons={true}/>]}/>
           <Route exact path="/jobOffers" element={[<UserNavbar />]}/>
           <Route exact path="/profile/:id" element={[<UserNavbar />, <UserProfile/>]}/>
           <Route exact path="/users" element={[<Navbar />,<Users/>]}/>
