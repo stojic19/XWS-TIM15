@@ -12,12 +12,12 @@ const UserProfile = () => {
     const [interests, setInterests] = useState([])
     const [personalProfile, setPersonalProfile] = useState(false);
     const [posts, setPosts] = useState([])
-
+    const [relationship, setRelationship] = useState('')
+    
     useEffect(() => {
         const getUserById = async () => {
             axios.get(axios.defaults.baseURL + 'users/' + id)
                     .then(res => {
-                        console.log(res.data)
                         setUser(res.data.user)
                     }).catch(err => {
                         console.log(err);
@@ -69,6 +69,15 @@ const UserProfile = () => {
                 });
         };
 
+        const getRelationship = async () => {
+            if(id!==localStorage.getItem('user_id') && localStorage.getItem('user_id')!=='')
+            axios.get(axios.defaults.baseURL + 'followers/relationship/'+id+'/' + localStorage.getItem('user_id'))
+                .then(res => {
+                    setRelationship(res.data.relationship);
+                }).catch(err => {
+                    console.log(err);
+                });
+        };
         getUserById();
         getWorkExperience();
         getSkills();
@@ -76,8 +85,16 @@ const UserProfile = () => {
         getInterests();
         isPersonalProfile();
         getPosts();
+        getRelationship();
     }, [])
-
+    const isContentHidden = (user) => {
+        if(user.isPrivate || localStorage.getItem('user_id')===''){
+            if(relationship!=='FOLLOWING')
+                return true;
+            return false;
+        }
+        return false;
+    }
     return(
         <>{user && <Profile user={user} 
                 experience={experience} 
@@ -85,7 +102,9 @@ const UserProfile = () => {
                 education={education} 
                 interests={interests}
                 personalProfile={personalProfile}
-                posts={posts}></Profile>}</>
+                posts={posts}
+                hiddenContent={isContentHidden(user)}
+                relationship={relationship}></Profile>}</>
     );
 }
 

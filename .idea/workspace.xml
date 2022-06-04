@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a6b993a3-c44c-4f46-becf-35fd37d678bd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/EditWorkExperience.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/EditWorkExperience.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/PublicProfileSearch.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/PublicProfileSearch.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/UserCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/UserCard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/UserList.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/UserList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/UserProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/UserProfile.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
