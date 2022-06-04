@@ -54,6 +54,7 @@ ul{
 
 .our-webcoderskull{
   background: url("../images/background.jpg") no-repeat center top / cover;
+  height: 100%;
   
 }
 .our-webcoderskull .cnt-block{ 

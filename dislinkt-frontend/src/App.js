@@ -11,6 +11,7 @@ import EditProfile from './components/EditProfile';
 import UserProfile from './components/UserProfile';
 import PersonalProfile from './components/PersonalProfile';
 import EditWorkExperience from './components/EditWorkExperience';
+import PublicProfileSearch from './components/PublicProfileSearch';
 
 import axios from 'axios';
 
@@ -35,7 +36,7 @@ function App() {
           <Route exact path="/registration" element={[<Navbar />,<Registration />]}/>
           <Route exact path="/userPosts/:id" element={[<Navbar />,<PostsByUserId />]}/>
           <Route exact path="/home" element={[<UserNavbar />]}/>
-          <Route exact path="/profiles" element={[<UserNavbar />]}/>
+          <Route exact path="/publicProfiles" element={[<UserNavbar />, <PublicProfileSearch/>]}/>
           <Route exact path="/jobOffers" element={[<UserNavbar />]}/>
           <Route exact path="/profile/:id" element={[<UserNavbar />, <UserProfile/>]}/>
           <Route exact path="/users" element={[<Navbar />,<Users/>]}/>

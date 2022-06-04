@@ -1,13 +1,38 @@
+import axios from 'axios';
+import { useState } from 'react';
 import '../css/postCard.css'
 import Comment from './Comment';
+import Swal from 'sweetalert2';
 
 const PostCard = (post) => {
+    const[comment, setComment] = useState([])
     
     const LikeCount = () => {
         return post.post.likes.length;
     }
     const DislikeCount = () => {
         return post.post.dislikes.length;
+    }
+
+    const addPost = async (newContent) =>{
+            let newComment = {
+                userId: localStorage.getItem('user_id'),
+                content: newContent,
+                postId: post.post.id
+
+            }
+            console.log(newComment)
+            axios.post(axios.defaults.baseURL + 'posts/comment', newComment)
+                .then(res => {
+                    console.log(res.data)
+                }).catch(err => {
+                    console.log(err);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: err.data,
+                    });
+                });
     }
     
     return (
@@ -50,7 +75,13 @@ const PostCard = (post) => {
                             }
                             </ul>
                             <br></br>
-                            <input class="form-control form-control-sm" type="text" placeholder="Add comment..."/>
+                            <input class="form-control form-control-sm" type="text" placeholder="Add comment..." 
+                                    onKeyPress={(ev) => {
+                                        if (ev.key === "Enter") {
+                                        ev.preventDefault();
+                                        addPost(ev.target.value);
+                                        }
+                                    }}/>
                         </div>
                     </div>
                 </div>
