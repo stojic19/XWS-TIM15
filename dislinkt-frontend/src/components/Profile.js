@@ -1,10 +1,15 @@
 import '../css/userProfile.css'
+import { useNavigate } from 'react-router-dom';
 import PostList from './PostList';
 import PostsByUserId from './PostsByUserId';
 
 const Profile = (props) => {
+    const history = useNavigate();
 
-    return(
+    const editPersonalInfo = () => {
+        history('/editProfile');
+    }
+    return (
         <div className="container">
             <div className="row">
                 <div className="col-md-5">
@@ -12,43 +17,54 @@ const Profile = (props) => {
                         <div className="col-12 bg-white p-0 px-3 py-3 mb-5">
                             <div className="d-flex flex-column align-items-center">
                                 <h6>
-                                {
-                                    props.user.isPrivate ? 'Private' : 'Public'
-                                }
+                                    {
+                                        props.user.isPrivate ? 'Private' : 'Public'
+                                    }
                                 </h6>
-                                <img src={require('../images/user-avatar.png')}/>
+                                <img src={require('../images/user-avatar.png')} />
                                 <p className="fw-bold h4 mt-3">{props.user.name}</p>
                                 <p className="text-muted">Software developer</p> {/* sortirati listu experience pa podesiti poslednji posao */}
                                 <p className="text-muted mb-3">@{props.user.username}</p>
-                                <div className="d-flex ">
-                                    <div className="btn btn-primary follow me-2">Follow</div>
-                                    <div className="btn btn-outline-primary message">Message</div>
-                                </div>
+                                {
+                                    !props.personalProfile &&
+                                    <div className="d-flex ">
+                                        <div className="btn btn-primary follow me-2">Follow</div>
+                                        <div className="btn btn-outline-primary message">Message</div>
+                                    </div>
+                                }
+                                {
+                                    props.personalProfile &&
+                                    <div className="d-flex ">
+                                        <btn onClick={(e) => editPersonalInfo(e)} className="btn btn-primary follow me-2">Edit personal info</btn>
+                                    </div>
+                                }
                             </div>
                         </div>
                         <div className="col-12 bg-white px-3 pb-2 ">
                             <h6 className="d-flex align-items-center mb-3 fw-bold py-3 justify-content-center"><i
-                                    className="text-info me-2">Skills</i></h6>
-                                {
-                                    props.skills.map((skill, index)=>{
-                                        return(
-                                            <p style={{textAlign: "center"}} key={index}>{skill}</p>
-                                            
-                                        )
-                                    })
-                                }
+                                className="text-info me-2">Skills</i></h6>
+                            {props.skills.length === 0 && <p style={{ textAlign: "center" }}>No skills to show.</p>}
+                            {
+                                props.skills.map((skill, index) => {
+                                    return (
+                                        <p style={{ textAlign: "center" }} key={index}>{skill}</p>
+
+                                    )
+                                })
+                            }
                         </div>
                         <div className="col-12 bg-white px-3 pb-2 ">
                             <h6 className="d-flex align-items-center mb-3 fw-bold py-3 justify-content-center"><i
-                                    className="text-info me-2">Interests</i></h6>
-                                {
-                                    props.interests.map((interest, index)=>{
-                                        return(
-                                            <p style={{textAlign: "center"}} key={index}>{interest}</p>
-                                            
-                                        )
-                                    })
-                                }
+                                className="text-info me-2">Interests</i></h6>
+                            {props.interests.length === 0 && <p style={{ textAlign: "center" }}>No interests to show.</p>}
+                            {
+                                props.interests.map((interest, index) => {
+                                    return (
+                                        <p style={{ textAlign: "center" }} key={index}>{interest}</p>
+
+                                    )
+                                })
+                            }
                         </div>
                     </div>
                 </div>
@@ -84,15 +100,16 @@ const Profile = (props) => {
                             <div className="d-flex align-items-center justify-content-between border-bottom">
                                 <h4>Work experience</h4>
                             </div>
+                            {props.experience.length === 0 && <p style={{ textAlign: "center" }}>No work experience to show.</p>}
                             {
-                                (props.experience).map((ex, index)=>{
-                                   return(
-                                    <div key={index} className="d-flex align-items-center justify-content-between border-bottom">
-                                        <p className="py-2">{ex.startDate} - {ex.endDate}</p>
-                                        <p className="py-2">{ex.companyName} </p>
-                                        <p className="py-2 text-muted">{ex.jobTitle}</p>
-                                    </div>
-                                   )
+                                (props.experience).map((ex, index) => {
+                                    return (
+                                        <div key={index} className="d-flex align-items-center justify-content-between border-bottom">
+                                            <p className="py-2">{ex.startDate} - {ex.endDate}</p>
+                                            <p className="py-2">{ex.companyName} </p>
+                                            <p className="py-2 text-muted">{ex.jobTitle}</p>
+                                        </div>
+                                    )
                                 })
                             }
                         </div>
@@ -101,9 +118,10 @@ const Profile = (props) => {
                             <div className="d-flex align-items-center justify-content-between border-bottom">
                                 <h4>Education</h4>
                             </div>
+                            {props.education.length === 0 && <p style={{ textAlign: "center" }}>No education to show.</p>}
                             {
-                                props.education.map((edu, index)=>{
-                                    return(
+                                props.education.map((edu, index) => {
+                                    return (
                                         <div key={index} className="d-flex align-items-center justify-content-between border-bottom">
                                             <p className="py-2">{edu.startDate} - {edu.endDate}</p>
                                             <p className="py-2 text-muted">{edu.institutionName}</p>
@@ -112,6 +130,7 @@ const Profile = (props) => {
                                 })
                             }
                         </div>
+
                         <div className="col-12 bg-white px-3 mb-3 pb-3">
                             <div className="d-flex align-items-center justify-content-between border-bottom">
                                 <h4>Posts</h4>
@@ -121,7 +140,7 @@ const Profile = (props) => {
                                 <PostList posts={props.posts}></PostList>
                             }
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

@@ -1,30 +1,26 @@
 import { useEffect, useState } from "react";
 import Profile from "./Profile";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
-const UserProfile = () => {
-    const { id } = useParams();
-    const [user, setUser] = useState(null)
+const PersonalProfile = () => {
+    const [user, setUser] = useState([])
     const [education, setEducation] = useState([])
     const [experience, setExperience] = useState([])
     const [skills, setSkills] = useState([])
     const [interests, setInterests] = useState([])
-    const [personalProfile, setPersonalProfile] = useState(false);
-    const [posts, setPosts] = useState([])
+
 
     useEffect(() => {
         const getUserById = async () => {
-            axios.get(axios.defaults.baseURL + 'users/' + id)
+            axios.get(axios.defaults.baseURL + 'users/' + localStorage.getItem('user_id'))
                     .then(res => {
-                        console.log(res.data)
                         setUser(res.data.user)
                     }).catch(err => {
                         console.log(err);
                     });
         };
         const getWorkExperience = async () => {
-            axios.get(axios.defaults.baseURL + 'workExperience/' + id)
+            axios.get(axios.defaults.baseURL + 'workExperience/' + localStorage.getItem('user_id'))
                     .then(res => {
                         setExperience(res.data.workExperience)
                     }).catch(err => {
@@ -32,7 +28,7 @@ const UserProfile = () => {
                     });
         };
         const getSkills = async () => {
-            axios.get(axios.defaults.baseURL + 'education/' + id)
+            axios.get(axios.defaults.baseURL + 'education/' + localStorage.getItem('user_id'))
                     .then(res => {
                         setEducation(res.data.education)
                     }).catch(err => {
@@ -40,7 +36,7 @@ const UserProfile = () => {
                     });
         };
         const getEducation = async () => {
-            axios.get(axios.defaults.baseURL + 'skills/' + id)
+            axios.get(axios.defaults.baseURL + 'skills/' + localStorage.getItem('user_id'))
                     .then(res => {
                         setSkills(res.data.skills)
                     }).catch(err => {
@@ -48,45 +44,28 @@ const UserProfile = () => {
                     });
         };
         const getInterests = async () => {
-            axios.get(axios.defaults.baseURL + 'interests/' + id)
+            axios.get(axios.defaults.baseURL + 'interests/' + localStorage.getItem('user_id'))
                     .then(res => {
                         setInterests(res.data.interests)
                     }).catch(err => {
                         console.log(err);
                     });
         };
-        const isPersonalProfile = () => {
-            setPersonalProfile(id===localStorage.getItem('user_id'));
-        }
-
-        const getPosts = async () => {
-            axios.get(axios.defaults.baseURL + 'posts/postsFromUser/' + id)
-                .then(res => {
-                    let posts = Array.from(res.data.posts)
-                    setPosts(posts);
-                }).catch(err => {
-                    console.log(err);
-                });
-        };
-
         getUserById();
         getWorkExperience();
         getSkills();
         getEducation();
         getInterests();
-        isPersonalProfile();
-        getPosts();
     }, [])
 
     return(
-        <>{user && <Profile user={user} 
+        <Profile user={user} 
                 experience={experience} 
                 skills={skills} 
                 education={education} 
                 interests={interests}
-                personalProfile={personalProfile}></Profile>
-                posts={posts}></Profile>}</>
+                personalProfile={true}></Profile>
     );
 }
 
-export default UserProfile;
+export default PersonalProfile;

@@ -137,11 +137,11 @@ const EditProfile = () => {
                         <div className="row mt-2">
                             <div className="col-md-6">
                                 <label className="labels">Username</label>
-                                <input type="text" className="form-control" placeholder="first name" value={username} onChange={(e) => setUsername(e.target.value)} />
+                                <input type="text" className="form-control" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
                             </div>
                             <div className="col-md-6">
                                 <label className="labels">Email</label>
-                                <input type="text" className="form-control" value={email} placeholder="surname" onChange={(e) => setEmail(e.target.value)} />
+                                <input type="text" className="form-control" value={email} placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
                             </div>
                         </div>
                         <div className="row mt-3">

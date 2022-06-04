@@ -80,23 +80,16 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
         Optional<User> user = userRepository.findById(request.getId());
         if(user.isPresent()){
             User presentUser = user.get();
-            Date dateOfBirth = presentUser.getDateOfBirth();
-            String stringDate = dateOfBirth.toString();
-            try{
-            SimpleDateFormat DateFor = new SimpleDateFormat("MM/dd/yyyy");
-            stringDate= DateFor.format(dateOfBirth);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
             response = GetUserResponse.newBuilder().setUser(com.example.usermicroservice.User.newBuilder().
                     setUsername(presentUser.getUsername())
                     .setEmail(presentUser.getEmail())
                     .setBiography(presentUser.getBiography())
-                    .setDateOfBirth(stringDate)
+                    .setDateOfBirth(getFormattedDateForGetRequest(presentUser.getDateOfBirth()))
                     .setGender(presentUser.getGender())
                     .setId(presentUser.getId())
                     .setTelephoneNo(presentUser.getTelephoneNo())
                     .setName(presentUser.getName())
+                    .setIsPrivate(presentUser.isPrivate())
             ).build();
         }else{
             response = GetUserResponse.newBuilder().setUser(com.example.usermicroservice.User.newBuilder()).build();
@@ -114,7 +107,7 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
             com.example.usermicroservice.User protoUser = com.example.usermicroservice.User.newBuilder().setUsername(user.getUsername())
                     .setEmail(user.getEmail())
                     .setBiography(user.getBiography())
-                    .setDateOfBirth(user.getDateOfBirth().toString())
+                    .setDateOfBirth(getFormattedDateForGetRequest(user.getDateOfBirth()))
                     .setGender(user.getGender())
                     .setId(user.getId())
                     .setTelephoneNo(user.getTelephoneNo())
@@ -293,8 +286,8 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
                 workExperienceList.add(com.example.usermicroservice.WorkExperience.newBuilder().
                         setCompanyName(workExperience.getCompanyName())
                         .setJobTitle(workExperience.getJobTitle())
-                        .setStartDate(workExperience.getStartDate().toString())
-                        .setEndDate(workExperience.getEndDate().toString())
+                        .setStartDate(getFormattedDateForGetRequest(workExperience.getStartDate()))
+                        .setEndDate(getFormattedDateForGetRequest(workExperience.getEndDate()))
                         .build());
             response = GetWorkExperienceResponse.newBuilder().addAllWorkExperience(workExperienceList).build();
         }
@@ -316,8 +309,8 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
                         .setInstitutionName(education.getInstitutionName())
                         .setInstitutionType(education.getInstitutionType())
                         .setGpa(education.getGpa())
-                        .setStartDate(education.getStartDate().toString())
-                        .setEndDate(education.getEndDate().toString())
+                        .setStartDate(getFormattedDateForGetRequest(education.getStartDate()))
+                        .setEndDate(getFormattedDateForGetRequest(education.getEndDate()))
                         .build());
             response = GetEducationResponse.newBuilder().addAllEducation(educationList).build();
         }
@@ -363,19 +356,11 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
         Optional<User> user = userRepository.findById(request.getId());
         if(user.isPresent()){
             User presentUser = user.get();
-            Date dateOfBirth = presentUser.getDateOfBirth();
-            String stringDate = dateOfBirth.toString();
-            try{
-                SimpleDateFormat DateFor = new SimpleDateFormat("yyyy/MM/dd");
-                stringDate= DateFor.format(dateOfBirth);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
             response = GetUserResponse.newBuilder().setUser(com.example.usermicroservice.User.newBuilder().
                     setUsername(presentUser.getUsername())
                     .setEmail(presentUser.getEmail())
                     .setBiography(presentUser.getBiography())
-                    .setDateOfBirth(stringDate)
+                    .setDateOfBirth(getFormattedDateForGetRequest(presentUser.getDateOfBirth()))
                     .setGender(presentUser.getGender())
                     .setId(presentUser.getId())
                     .setTelephoneNo(presentUser.getTelephoneNo())
@@ -387,6 +372,17 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
         }
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+    }
+
+    private String getFormattedDateForGetRequest(Date date){
+        String stringDate = date.toString();
+        try{
+            SimpleDateFormat DateFor = new SimpleDateFormat("yyyy/MM/dd");
+            stringDate= DateFor.format(date);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return stringDate;
     }
 
     private Date getFormattedDate(String date){
