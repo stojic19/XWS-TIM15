@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b432fc6b-4262-4b80-8f8a-e67bdf5d7cf1" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../common/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../common/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dislinkt-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../dislinkt-frontend/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +38,7 @@
     "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
-    "last_opened_file_path": "C:/Users/Anja/Desktop/FAX/4. GODINA/XML/XWS-TIM15/common"
+    "last_opened_file_path": "C:/Users/Anja/Desktop/FAX/4. GODINA/XML/XWS-TIM15/api_gateway"
   }
 }]]></component>
   <component name="RunManager">

@@ -15,7 +15,6 @@ const PostsByUserId = () => {
             setLoading(true);
             axios.get(axios.defaults.baseURL + 'posts/postsFromUser/' + id)
                 .then(res => {
-                    console.log(res.data.posts);
                     let posts = Array.from(res.data.posts)
                     setPosts(posts);
                     setLoading(false);

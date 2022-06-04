@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d6c2a261-da03-4732-9d0c-555d0e3d86db" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/../api_gateway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../api_gateway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dislinkt-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../dislinkt-frontend/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +40,7 @@
     "configurable..is.expanded": "true",
     "configurable.GoLibrariesConfigurable.is.expanded": "true",
     "go.import.settings.migrated": "true",
-    "last_opened_file_path": "C:/Users/Anja/Desktop/FAX/4. GODINA/XML/XWS-TIM15/common",
+    "last_opened_file_path": "C:/Users/Anja/Desktop/FAX/4. GODINA/XML/XWS-TIM15/Posts_microservice",
     "settings.editor.selected.configurable": "com.goide.configuration.GoLibrariesConfigurableProvider"
   }
 }]]></component>
