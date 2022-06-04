@@ -85,6 +85,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void updateUser(UpdateUserRequest request, StreamObserver<UpdateUserResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         UpdateUserResponse response;
         if(isNullOrEmpty(request.getUsername(), request.getPassword(), request.getName(), request.getEmail(), request.getTelephoneNo(), request.getGender(), request.getDateOfBirth().toString(), request.getBiography()))
             response = UpdateUserResponse.newBuilder().setResponse("None of fields cannot be empty!").build();
@@ -181,6 +188,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void deleteUserById(GetUserRequest request, StreamObserver<StringResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         StringResponse stringResponse;
         if(userRepository.findById(request.getId()).isPresent()){
             userRepository.deleteById(request.getId());
@@ -215,6 +229,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void updateInterests(UpdateInterestsRequest request, StreamObserver<StringResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         StringResponse stringResponse;
         if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());
@@ -231,6 +252,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void updateSkills(UpdateSkillsRequest request, StreamObserver<StringResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         StringResponse stringResponse;
         if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());
@@ -247,6 +275,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void updateWorkExperience(UpdateWorkExperienceRequest request, StreamObserver<StringResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         StringResponse stringResponse;
         if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());
@@ -267,6 +302,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void updateEducation(UpdateEducationRequest request, StreamObserver<StringResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         StringResponse stringResponse;
         if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());
@@ -358,12 +400,8 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void login(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
-        String sub = UsersInterceptor.SUBCTX.get();
         LoginResponse response;
-        if (sub.isEmpty()){
-            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
-        }
-        else if(userRepository.findUserByUsername(request.getUsername()) == null)
+        if(userRepository.findUserByUsername(request.getUsername()) == null)
             response = LoginResponse.newBuilder().setError("Invalid username/password!").build();
         else{
             User user = userRepository.findUserByUsername(request.getUsername());
