@@ -9,6 +9,7 @@ import UserNavbar from './components/UserNavbar';
 import axios from 'axios';
 import Home from './components/Home';
 import Users from './components/Users'
+import UserProfile from './components/UserProfile';
 
 axios.defaults.baseURL = "http://localhost:8000/";
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -33,7 +34,7 @@ function App() {
           <Route exact path="/home" element={[<UserNavbar />]}/>
           <Route exact path="/profiles" element={[<UserNavbar />]}/>
           <Route exact path="/jobOffers" element={[<UserNavbar />]}/>
-          <Route exact path="/profile" element={[<UserNavbar />]}/>
+          <Route exact path="/profile/:id" element={[<UserNavbar />, <UserProfile/>]}/>
           <Route exact path="/users" element={[<Navbar />,<Users/>]}/>
           </Routes>
         </Router>
