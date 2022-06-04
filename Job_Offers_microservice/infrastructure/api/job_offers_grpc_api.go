@@ -23,11 +23,6 @@ func NewJobOffersHandler(service *application.JobOffersService) *JobOffersHandle
 }
 
 func (handler *JobOffersHandler) GetAll(ctx context.Context, request *job_offers.GetAllRequest) (*job_offers.GetAllResponse, error) {
-	metadata, _ := metadata.FromIncomingContext(ctx)
-	sub := metadata.Get("sub")
-	if sub == nil || sub[0] == "" {
-		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
-	}
 	offers, err := handler.service.GetAll()
 	if err != nil {
 		return nil, err
@@ -73,6 +68,13 @@ func (handler *JobOffersHandler) GetSubscribed(ctx context.Context, request *job
 
 func (handler *JobOffersHandler) Create(ctx context.Context, request *job_offers.NewJobOffer) (*job_offers.Response, error) {
 
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	apiKey := metadata.Get("apiKey")
+	if (sub == nil || sub[0] == "") && (apiKey == nil || apiKey[0] != GetAgentAppApiKey()) {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+
 	jobOffer := mapNewJobOffer(request)
 	err := handler.service.Create(jobOffer)
 	if err != nil {
@@ -88,6 +90,13 @@ func (handler *JobOffersHandler) Create(ctx context.Context, request *job_offers
 }
 
 func (handler *JobOffersHandler) Update(ctx context.Context, request *job_offers.UpdateJobOffer) (*job_offers.Response, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	jobOffer := mapJobOfferUpdate(request)
 	err := handler.service.Update(jobOffer)
 	if err != nil {
@@ -103,6 +112,13 @@ func (handler *JobOffersHandler) Update(ctx context.Context, request *job_offers
 }
 
 func (handler *JobOffersHandler) FollowJobOffer(ctx context.Context, request *job_offers.SubscribeRequest) (*job_offers.Response, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	jobOfferId, _ := primitive.ObjectIDFromHex(request.JobOfferId)
 	user := &domain.User{Id: request.Id}
 	err := handler.service.Follow(jobOfferId, user)
@@ -119,6 +135,13 @@ func (handler *JobOffersHandler) FollowJobOffer(ctx context.Context, request *jo
 }
 
 func (handler *JobOffersHandler) UnfollowJobOffer(ctx context.Context, request *job_offers.UnsubscribeRequest) (*job_offers.Response, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	jobOfferId, _ := primitive.ObjectIDFromHex(request.JobOfferId)
 	user := &domain.User{Id: request.Id}
 	err := handler.service.Unfollow(jobOfferId, user)

@@ -9,6 +9,9 @@ import (
 	"github.com/stojic19/XWS-TIM15/posts_microservice/domain"
 	"github.com/stojic19/XWS-TIM15/posts_microservice/infrastructure/services"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 )
@@ -120,6 +123,13 @@ func (handler *PostsHandler) GetFromPublic(ctx context.Context, request *posts.G
 }
 
 func (handler *PostsHandler) CreatePost(ctx context.Context, request *posts.CreatePostRequest) (*posts.CreatePostResponse, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	post := mapNewPost(request.NewPost)
 	err := handler.service.CreatePost(post)
 	if err != nil {
@@ -131,6 +141,13 @@ func (handler *PostsHandler) CreatePost(ctx context.Context, request *posts.Crea
 }
 
 func (handler *PostsHandler) LikePost(ctx context.Context, request *posts.LikePostRequest) (*posts.LikePostResponse, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	postId, err := primitive.ObjectIDFromHex(request.PostId)
 	if err != nil {
 		return nil, err
@@ -146,6 +163,13 @@ func (handler *PostsHandler) LikePost(ctx context.Context, request *posts.LikePo
 }
 
 func (handler *PostsHandler) RemoveLike(ctx context.Context, request *posts.RemoveLikeRequest) (*posts.RemoveLikeResponse, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	postId, err := primitive.ObjectIDFromHex(request.PostId)
 	if err != nil {
 		return nil, err
@@ -161,6 +185,13 @@ func (handler *PostsHandler) RemoveLike(ctx context.Context, request *posts.Remo
 }
 
 func (handler *PostsHandler) DislikePost(ctx context.Context, request *posts.DislikePostRequest) (*posts.DislikePostResponse, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	postId, err := primitive.ObjectIDFromHex(request.PostId)
 	if err != nil {
 		return nil, err
@@ -176,6 +207,13 @@ func (handler *PostsHandler) DislikePost(ctx context.Context, request *posts.Dis
 }
 
 func (handler *PostsHandler) RemoveDislike(ctx context.Context, request *posts.RemoveDislikeRequest) (*posts.RemoveDislikeResponse, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	postId, err := primitive.ObjectIDFromHex(request.PostId)
 	if err != nil {
 		return nil, err
@@ -191,6 +229,13 @@ func (handler *PostsHandler) RemoveDislike(ctx context.Context, request *posts.R
 }
 
 func (handler *PostsHandler) CommentPost(ctx context.Context, request *posts.CommentPostRequest) (*posts.CommentPostResponse, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
 	postId, err := primitive.ObjectIDFromHex(request.PostId)
 	if err != nil {
 		return nil, err

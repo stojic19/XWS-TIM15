@@ -1,18 +1,57 @@
 package com.example.usermicroservice.service.Impl;
 
 import com.example.usermicroservice.*;
+import com.example.usermicroservice.AddUserRequest;
+import com.example.usermicroservice.AddUserResponse;
+import com.example.usermicroservice.GetEducationResponse;
+import com.example.usermicroservice.GetInterestsResponse;
+import com.example.usermicroservice.GetSkillsResponse;
+import com.example.usermicroservice.GetUserByUsernameRequest;
+import com.example.usermicroservice.GetUserRequest;
+import com.example.usermicroservice.GetUserResponse;
+import com.example.usermicroservice.GetUsersRequest;
+import com.example.usermicroservice.GetUsersResponse;
+import com.example.usermicroservice.GetWorkExperienceResponse;
+import com.example.usermicroservice.LoginRequest;
+import com.example.usermicroservice.LoginResponse;
+import com.example.usermicroservice.SearchRequest;
+import com.example.usermicroservice.StringResponse;
+import com.example.usermicroservice.UpdateEducationRequest;
+import com.example.usermicroservice.UpdateInterestsRequest;
+import com.example.usermicroservice.UpdateSkillsRequest;
+import com.example.usermicroservice.UpdateUserRequest;
+import com.example.usermicroservice.UpdateUserResponse;
+import com.example.usermicroservice.UpdateWorkExperienceRequest;
+import com.example.usermicroservice.UsersServiceGrpc;
+import com.example.usermicroservice.ValidateRequest;
+import com.example.usermicroservice.ValidateResponse;
 import com.example.usermicroservice.model.User;
 import com.example.usermicroservice.model.WorkExperience;
 import com.example.usermicroservice.repository.UserRepository;
 import com.example.usermicroservice.service.UserService;
 import com.example.usermicroservice.token.JwtTokenUtil;
+import io.grpc.*;
 import io.grpc.stub.StreamObserver;
+import net.devh.boot.grpc.server.interceptor.GrpcGlobalServerInterceptor;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Meta;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+@GrpcGlobalServerInterceptor
+class UsersInterceptor implements ServerInterceptor {
+    public static Context.Key<String> SUBCTX = Context.key("sub");
+
+    @Override
+    public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(ServerCall<ReqT, RespT> serverCall, Metadata metadata, ServerCallHandler<ReqT, RespT> serverCallHandler) {
+        Metadata.Key<String> metaKey = Metadata.Key.of("sub", Metadata.ASCII_STRING_MARSHALLER);
+        String sub = metadata.get(metaKey);
+        return Contexts.interceptCall(Context.current().withValue(SUBCTX, sub), serverCall, metadata, serverCallHandler);
+    }
+}
 
 @GrpcService
 public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
@@ -46,6 +85,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void updateUser(UpdateUserRequest request, StreamObserver<UpdateUserResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         UpdateUserResponse response;
         if(isNullOrEmpty(request.getUsername(), request.getPassword(), request.getName(), request.getEmail(), request.getTelephoneNo(), request.getGender(), request.getDateOfBirth().toString(), request.getBiography()))
             response = UpdateUserResponse.newBuilder().setError("None of fields cannot be empty!").build();
@@ -145,6 +191,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void deleteUserById(GetUserRequest request, StreamObserver<StringResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         StringResponse stringResponse;
         if(userRepository.findById(request.getId()).isPresent()){
             userRepository.deleteById(request.getId());
@@ -179,6 +232,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void updateInterests(UpdateInterestsRequest request, StreamObserver<StringResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         StringResponse stringResponse;
         if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());
@@ -195,6 +255,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void updateSkills(UpdateSkillsRequest request, StreamObserver<StringResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         StringResponse stringResponse;
         if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());
@@ -211,6 +278,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void updateWorkExperience(UpdateWorkExperienceRequest request, StreamObserver<StringResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         StringResponse stringResponse;
         if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());
@@ -231,6 +305,13 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
 
     @Override
     public void updateEducation(UpdateEducationRequest request, StreamObserver<StringResponse> responseObserver) {
+        //Endpoint security
+        String sub = UsersInterceptor.SUBCTX.get();
+        LoginResponse response;
+        if (sub.isEmpty()){
+            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+        }
+        //Endpoint security
         StringResponse stringResponse;
         if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());

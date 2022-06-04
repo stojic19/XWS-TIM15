@@ -32,6 +32,7 @@ func NewMuxWrapper() *MuxWrapper {
 			runtime.WithMetadata(func(ctx context.Context, request *http.Request) metadata.MD {
 				header := request.Header.Get("sub")
 				md := metadata.Pairs("sub", header)
+				md.Set("apiKey", request.Header.Get("apiKey"))
 				return md
 			})),
 		middlewares: list.List{},
