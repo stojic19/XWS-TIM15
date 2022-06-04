@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Swal from "sweetalert2";
+import DatePicker from "react-datepicker";
 
 const Registration = () => {
     const [email, setEmail] = useState("");
@@ -29,8 +30,10 @@ const Registration = () => {
         return true;
     }
     const FormatDate = (date) => {
-        var list = date.split('-');
-        return list[2] + '/' + list[1] + '/' + list[0];
+        var month = date.getUTCMonth() + 1; //months from 1-12.
+        var day = date.getUTCDate() + 1;
+        var year = date.getUTCFullYear();
+        return day + '/' + month + '/' + year;
     }
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -104,7 +107,7 @@ const Registration = () => {
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Date of birth</label>
-                    <input selected={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} type="date" className="form-control" id="InputDateOfBirth" />
+                    <DatePicker dateFormat="dd/MM/yyyy" selected={dateOfBirth} onChange={(date) => setDateOfBirth(date)} className="form-control" />
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Biography</label>

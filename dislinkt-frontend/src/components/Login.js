@@ -32,10 +32,11 @@ const Login = () => {
         };
         setIsPending(true);
         axios.post(axios.defaults.baseURL + 'login', login).then(res => {
-            if (res.data.status == 200) {
+            console.log(res);
+            if (res.data.status === '200') {
                 setIsPending(false);
-                //localStorage.setItem('token', res.data.access_token);
-                //localStorage.setItem('auth_name', res.data.name);
+                localStorage.setItem('token', res.data.token);
+                localStorage.setItem('user_id', res.data.id);
                 history('/home');
             } else {
                 setIsPending(false);

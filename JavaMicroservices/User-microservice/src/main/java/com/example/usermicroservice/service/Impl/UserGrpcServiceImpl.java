@@ -48,7 +48,7 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
     public void updateUser(UpdateUserRequest request, StreamObserver<UpdateUserResponse> responseObserver) {
         UpdateUserResponse response;
         if(isNullOrEmpty(request.getUsername(), request.getPassword(), request.getName(), request.getEmail(), request.getTelephoneNo(), request.getGender(), request.getDateOfBirth().toString(), request.getBiography()))
-            response = UpdateUserResponse.newBuilder().setResponse("None of fields cannot be empty!").build();
+            response = UpdateUserResponse.newBuilder().setError("None of fields cannot be empty!").build();
         else{
             Date dateOfBirth = new Date();
             try {
@@ -58,7 +58,7 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
             }
             if(!isNullOrEmpty(request.getNewUsername())&&!request.getUsername().equals(request.getNewUsername())) {
                 if(userRepository.findUserByUsername(request.getNewUsername()) != null)
-                    response = UpdateUserResponse.newBuilder().setResponse("Username already exists!").build();
+                    response = UpdateUserResponse.newBuilder().setError("Username already exists!").build();
                 else
                 {
                     User user = userRepository.findUserByUsername(request.getUsername());
@@ -80,11 +80,19 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
         Optional<User> user = userRepository.findById(request.getId());
         if(user.isPresent()){
             User presentUser = user.get();
+            Date dateOfBirth = presentUser.getDateOfBirth();
+            String stringDate = dateOfBirth.toString();
+            try{
+            SimpleDateFormat DateFor = new SimpleDateFormat("MM/dd/yyyy");
+            stringDate= DateFor.format(dateOfBirth);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             response = GetUserResponse.newBuilder().setUser(com.example.usermicroservice.User.newBuilder().
                     setUsername(presentUser.getUsername())
                     .setEmail(presentUser.getEmail())
                     .setBiography(presentUser.getBiography())
-                    .setDateOfBirth(presentUser.getDateOfBirth().toString())
+                    .setDateOfBirth(stringDate)
                     .setGender(presentUser.getGender())
                     .setId(presentUser.getId())
                     .setTelephoneNo(presentUser.getTelephoneNo())
@@ -325,9 +333,9 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
         else{
             User user = userRepository.findUserByUsername(request.getUsername());
             if(user.getPassword().equals(request.getPassword())){
-                response = LoginResponse.newBuilder().setStatus(200).setToken(jwtTokenUtil.generateToken(user.getUsername())).build();
+                response = LoginResponse.newBuilder().setStatus(200).setToken(jwtTokenUtil.generateToken(user.getUsername())).setId(user.getId()).build();
             }else{
-                response = LoginResponse.newBuilder().setError("Invalid username/password!").build();
+                response = LoginResponse.newBuilder().setStatus(400).setError("Invalid username/password!").build();
             }
         }
         responseObserver.onNext(response);
@@ -345,6 +353,38 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
             response = ValidateResponse.newBuilder().setStatus(200).build();
         else
             response = ValidateResponse.newBuilder().setStatus(401).setError("Token authentication failed or token expired!").build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getUserForEdit(GetUserRequest request, StreamObserver<GetUserResponse> responseObserver) {
+        GetUserResponse response;
+        Optional<User> user = userRepository.findById(request.getId());
+        if(user.isPresent()){
+            User presentUser = user.get();
+            Date dateOfBirth = presentUser.getDateOfBirth();
+            String stringDate = dateOfBirth.toString();
+            try{
+                SimpleDateFormat DateFor = new SimpleDateFormat("yyyy/MM/dd");
+                stringDate= DateFor.format(dateOfBirth);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            response = GetUserResponse.newBuilder().setUser(com.example.usermicroservice.User.newBuilder().
+                    setUsername(presentUser.getUsername())
+                    .setEmail(presentUser.getEmail())
+                    .setBiography(presentUser.getBiography())
+                    .setDateOfBirth(stringDate)
+                    .setGender(presentUser.getGender())
+                    .setId(presentUser.getId())
+                    .setTelephoneNo(presentUser.getTelephoneNo())
+                    .setName(presentUser.getName())
+                    .setPassword(presentUser.getPassword())
+            ).build();
+        }else{
+            response = GetUserResponse.newBuilder().setUser(com.example.usermicroservice.User.newBuilder()).build();
+        }
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
