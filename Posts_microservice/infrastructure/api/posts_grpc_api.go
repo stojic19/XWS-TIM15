@@ -83,7 +83,7 @@ func (handler *PostsHandler) GetFromFollowed(ctx context.Context, request *posts
 	id := request.Id
 	followsClient := services.NewFollowersClient(handler.followersClientAddress)
 	followsResponse, err := followsClient.GetFollows(context.TODO(), &followers.GetFollowsRequest{Id: id})
-	var followIds []string
+	followIds := []string{}
 	for _, follow := range followsResponse.Follows {
 		followIds = append(followIds, follow.Id)
 	}
