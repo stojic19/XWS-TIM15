@@ -18,6 +18,9 @@ const UserNavbar = () => {
                 <a className="nav-link" href="/personalProfile">Profile</a>
             </li>
             <li className="nav-item" key={6}>
+                <a className="nav-link" href="/followRequests">Follow requests</a>
+            </li>
+            <li className="nav-item" key={7}>
                 <a className="nav-link disabled" href="/" aria-disabled="true">Disabled</a>
             </li>
         </ul>

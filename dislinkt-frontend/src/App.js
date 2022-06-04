@@ -14,6 +14,7 @@ import EditWorkExperience from './components/EditWorkExperience';
 import PublicProfileSearch from './components/PublicProfileSearch';
 import EditEducation from './components/EditEducation';
 import EditSkillsAndInterests from './components/EditSkillsAndInterests';
+import FollowRequestsList from './components/FollowRequestsList';
 
 import axios from 'axios';
 
@@ -47,6 +48,7 @@ function App() {
           <Route exact path="/editEducation" element={[<UserNavbar />,<EditEducation/>]}/>
           <Route exact path="/editSkillsAndInterests" element={[<UserNavbar />,<EditSkillsAndInterests/>]}/>
           <Route exact path='/personalProfile' element={[<UserNavbar />,<PersonalProfile/>]}/>
+          <Route exact path='/followRequests' element={[<UserNavbar />,<FollowRequestsList/>]}/>
           </Routes>
         </Router>
     </div>
