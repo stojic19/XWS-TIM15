@@ -10,6 +10,7 @@ const PostList = (props) => {
                         <PostCard key={index} post={post} />
                     );
                 })}
+            {props.posts.length==0 && <h3 style={{textAlign: 'center'}}>No posts to show.</h3>}
         </div>
     );
 }

@@ -14,6 +14,8 @@ import EditWorkExperience from './components/EditWorkExperience';
 import PublicProfileSearch from './components/PublicProfileSearch';
 import EditEducation from './components/EditEducation';
 import EditSkillsAndInterests from './components/EditSkillsAndInterests';
+import FollowRequestsList from './components/FollowRequestsList';
+import UserHome from './components/UserHome';
 
 import axios from 'axios';
 
@@ -22,23 +24,23 @@ axios.defaults.baseURL = "http://localhost:8000/";
 //axios.defaults.headers.post['Accept'] = 'application/json';
 //axios.defaults.headers.post['Access-Control-Allow-Origin'] = 'http://localhost:3000';
 
-/*axios.interceptors.request.use(function(config){
-  const token = localStorage.getItem('auth_token');
-  config.headers.Authorization = token ? `Bearer ${token}` : '';
+axios.interceptors.request.use(function(config){
+  const token = localStorage.getItem('token');
+  config.headers.token = token ? `${token}` : '';
   return config; 
-});*/
+});
 
 function App() {
   return (
     <div className="App">
       <Router>
       <Routes>
-          <Route exact path="/" element={[<Navbar />, <Home/>]}/>
+          <Route exact path="/" element={[<Navbar />, <PublicProfileSearch displayFollowButtons={false}/>]}/>
           <Route exact path="/login" element={[<Navbar />,<Login />]}/>
           <Route exact path="/registration" element={[<Navbar />,<Registration />]}/>
           <Route exact path="/userPosts/:id" element={[<Navbar />,<PostsByUserId />]}/>
-          <Route exact path="/home" element={[<UserNavbar />]}/>
-          <Route exact path="/publicProfiles" element={[<UserNavbar />, <PublicProfileSearch/>]}/>
+          <Route exact path="/home" element={[<UserNavbar />, <UserHome/>]}/>
+          <Route exact path="/publicProfiles" element={[<UserNavbar />, <PublicProfileSearch displayFollowButtons={true}/>]}/>
           <Route exact path="/jobOffers" element={[<UserNavbar />]}/>
           <Route exact path="/profile/:id" element={[<UserNavbar />, <UserProfile/>]}/>
           <Route exact path="/users" element={[<Navbar />,<Users/>]}/>
@@ -47,6 +49,7 @@ function App() {
           <Route exact path="/editEducation" element={[<UserNavbar />,<EditEducation/>]}/>
           <Route exact path="/editSkillsAndInterests" element={[<UserNavbar />,<EditSkillsAndInterests/>]}/>
           <Route exact path='/personalProfile' element={[<UserNavbar />,<PersonalProfile/>]}/>
+          <Route exact path='/followRequests' element={[<UserNavbar />,<FollowRequestsList/>]}/>
           </Routes>
         </Router>
     </div>

@@ -6,7 +6,7 @@ replace github.com/stojic19/XWS-TIM15/common => ../common
 
 require (
 	github.com/stojic19/XWS-TIM15/Followers_microservice v0.0.0-20220507180809-c37585bf8fbc
-	github.com/stojic19/XWS-TIM15/common v0.0.0-00010101000000-000000000000
+	github.com/stojic19/XWS-TIM15/common v0.0.0-20220604205125-99b6566ae483
 	go.mongodb.org/mongo-driver v1.9.1
 	google.golang.org/grpc v1.46.0
 	google.golang.org/protobuf v1.28.0
