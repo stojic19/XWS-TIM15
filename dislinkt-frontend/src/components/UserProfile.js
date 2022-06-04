@@ -88,7 +88,9 @@ const UserProfile = () => {
         getRelationship();
     }, [])
     const isContentHidden = (user) => {
-        if(user.isPrivate || localStorage.getItem('user_id')===''){
+        if(!localStorage.getItem('user_id').length==0)
+        return false;
+        if(user.isPrivate){
             if(relationship!=='FOLLOWING')
                 return true;
             return false;
@@ -104,7 +106,8 @@ const UserProfile = () => {
                 personalProfile={personalProfile}
                 posts={posts}
                 hiddenContent={isContentHidden(user)}
-                relationship={relationship}></Profile>}</>
+                relationship={relationship}
+                hiddenButtons={localStorage.getItem('user_id').length==0}></Profile>}</>
     );
 }
 

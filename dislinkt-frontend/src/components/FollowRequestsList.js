@@ -34,10 +34,10 @@ const FollowRequestsList = () => {
         const fetchFollowRequests = async () => {
             let id = localStorage.getItem('user_id');
             setLoading(true);
-            axios.get(axios.defaults.baseURL + 'followers/followRequests/' + id)
+            axios.get(axios.defaults.baseURL + 'followers/followerRequests/' + id)
                 .then(res => {
-                    let followRequests = res.data.followRequests;
-                    setFollowRequests(followRequests);
+                    let followerRequests = res.data.followerRequests;
+                    setFollowRequests(followerRequests);
                     setLoading(false);
                 }).catch(err => {
                     console.log(err);
@@ -60,7 +60,7 @@ const FollowRequestsList = () => {
             "followerId": localStorage.getItem('user_id'),
             "followedId": id
         };
-        axios.put(axios.defaults.baseURL + 'followers/followRequest', update)
+        axios.delete(axios.defaults.baseURL + 'followers/followRequest', update)
             .then(res => {
                 setIsPending(false);
                 Swal.fire({

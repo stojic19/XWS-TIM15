@@ -30,7 +30,7 @@ const UserList = (props) => {
     }
 
     const DisplayFollowButtons = (id) => {
-        if(displayFollowButtons){
+        if(props.displayFollowButtons){
             let userId = localStorage.getItem('user_id');
             if(id==userId)
                 return false;

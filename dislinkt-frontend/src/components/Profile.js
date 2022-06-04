@@ -2,17 +2,19 @@ import '../css/userProfile.css'
 import { useNavigate } from 'react-router-dom';
 import PostList from './PostList';
 import Swal from "sweetalert2";
+import { useState } from "react";
 
 import axios from 'axios';
 
 const Profile = (props) => {
+    const [relationship, setRelationship] = useState(props.relationship);
     const history = useNavigate();
 
     const editPersonalInfo = () => {
         history('/editProfile');
     }
 
-    const getRelationship = (relationship) => {
+    const getRelationship = () => {
         if (relationship === 'NO RELATIONSHIP')
             return true;
         return false;
@@ -33,6 +35,7 @@ const Profile = (props) => {
                     title: 'Success!',
                     text: res.data.response,
                 });
+                setRelationship('FOLLOWING');
                 window.location.reload()
             });
     }
@@ -51,6 +54,7 @@ const Profile = (props) => {
                     title: 'Success!',
                     text: res.data.response,
                 });
+                setRelationship('NO RELATIONSHIP');
                 window.location.reload()
             });
     }
@@ -69,6 +73,7 @@ const Profile = (props) => {
                     title: 'Success!',
                     text: res.data.response,
                 });
+                setRelationship('FOLLOW REQUEST');
                 window.location.reload()
             });
     }
@@ -87,6 +92,7 @@ const Profile = (props) => {
                     title: 'Success!',
                     text: res.data.response,
                 });
+                setRelationship('NO RELATIONSHIP');
                 window.location.reload()
             });
     }
@@ -108,7 +114,7 @@ const Profile = (props) => {
                                 <p className="text-muted">Software developer</p> {/* sortirati listu experience pa podesiti poslednji posao */}
                                 <p className="text-muted mb-3">@{props.user.username}</p>
                                 {
-                                    !props.personalProfile && !props.hiddenContent &&
+                                    !props.hiddenButtons && !props.personalProfile && !props.hiddenContent &&
                                     <div className="d-flex ">
                                         {getRelationship(props.relationship)
                                             && <button onClick={(e) => follow(e)} className="btn btn-primary follow me-2">Follow</button>
@@ -120,7 +126,7 @@ const Profile = (props) => {
                                     </div>
                                 }
                                 {
-                                    !props.personalProfile && props.hiddenContent &&
+                                    !props.hiddenButtons && !props.personalProfile && props.hiddenContent &&
                                     <div className="d-flex ">
                                         {getRelationship(props.relationship)
                                             && <button onClick={(e) => followRequest(e)} className="btn btn-primary follow me-2">Follow request</button>
