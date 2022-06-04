@@ -87,13 +87,12 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
     public void updateUser(UpdateUserRequest request, StreamObserver<UpdateUserResponse> responseObserver) {
         //Endpoint security
         String sub = UsersInterceptor.SUBCTX.get();
-        LoginResponse response;
+        UpdateUserResponse response;
         if (sub.isEmpty()){
-            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+            response = UpdateUserResponse.newBuilder().setError("Unauthorized").build();
         }
         //Endpoint security
-        UpdateUserResponse response;
-        if(isNullOrEmpty(request.getUsername(), request.getPassword(), request.getName(), request.getEmail(), request.getTelephoneNo(), request.getGender(), request.getDateOfBirth().toString(), request.getBiography()))
+        else if(isNullOrEmpty(request.getUsername(), request.getPassword(), request.getName(), request.getEmail(), request.getTelephoneNo(), request.getGender(), request.getDateOfBirth().toString(), request.getBiography()))
             response = UpdateUserResponse.newBuilder().setError("None of fields cannot be empty!").build();
         else{
             Date dateOfBirth = new Date();
@@ -193,13 +192,12 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
     public void deleteUserById(GetUserRequest request, StreamObserver<StringResponse> responseObserver) {
         //Endpoint security
         String sub = UsersInterceptor.SUBCTX.get();
-        LoginResponse response;
+        StringResponse stringResponse;
         if (sub.isEmpty()){
-            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+            stringResponse = StringResponse.newBuilder().setResponse("Unauthorized").build();
         }
         //Endpoint security
-        StringResponse stringResponse;
-        if(userRepository.findById(request.getId()).isPresent()){
+        else if(userRepository.findById(request.getId()).isPresent()){
             userRepository.deleteById(request.getId());
             stringResponse = StringResponse.newBuilder().setResponse("User deleted with id " + request.getId()).build();
         }else{
@@ -234,13 +232,12 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
     public void updateInterests(UpdateInterestsRequest request, StreamObserver<StringResponse> responseObserver) {
         //Endpoint security
         String sub = UsersInterceptor.SUBCTX.get();
-        LoginResponse response;
+        StringResponse stringResponse;
         if (sub.isEmpty()){
-            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+            stringResponse = StringResponse.newBuilder().setResponse("Unauthorized").build();
         }
         //Endpoint security
-        StringResponse stringResponse;
-        if(userRepository.findById(request.getUserId()).isPresent()){
+        else if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());
             User user = optionalUser.get();
             user.setInterests(request.getInterestsList());
@@ -257,13 +254,12 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
     public void updateSkills(UpdateSkillsRequest request, StreamObserver<StringResponse> responseObserver) {
         //Endpoint security
         String sub = UsersInterceptor.SUBCTX.get();
-        LoginResponse response;
+        StringResponse stringResponse;
         if (sub.isEmpty()){
-            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+            stringResponse = StringResponse.newBuilder().setResponse("Unauthorized").build();
         }
         //Endpoint security
-        StringResponse stringResponse;
-        if(userRepository.findById(request.getUserId()).isPresent()){
+        else if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());
             User user = optionalUser.get();
             user.setSkills(request.getSkillsList());
@@ -280,13 +276,12 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
     public void updateWorkExperience(UpdateWorkExperienceRequest request, StreamObserver<StringResponse> responseObserver) {
         //Endpoint security
         String sub = UsersInterceptor.SUBCTX.get();
-        LoginResponse response;
+        StringResponse stringResponse;
         if (sub.isEmpty()){
-            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+            stringResponse = StringResponse.newBuilder().setResponse("Unauthorized").build();
         }
         //Endpoint security
-        StringResponse stringResponse;
-        if(userRepository.findById(request.getUserId()).isPresent()){
+        else if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());
             User user = optionalUser.get();
             List<WorkExperience> workExperienceList = new ArrayList<>();
@@ -307,13 +302,12 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
     public void updateEducation(UpdateEducationRequest request, StreamObserver<StringResponse> responseObserver) {
         //Endpoint security
         String sub = UsersInterceptor.SUBCTX.get();
-        LoginResponse response;
+        StringResponse stringResponse;
         if (sub.isEmpty()){
-            response = LoginResponse.newBuilder().setStatus(401).setError("Unauthorized").build();
+            stringResponse = StringResponse.newBuilder().setResponse("Unauthorized").build();
         }
         //Endpoint security
-        StringResponse stringResponse;
-        if(userRepository.findById(request.getUserId()).isPresent()){
+        else if(userRepository.findById(request.getUserId()).isPresent()){
             Optional<User> optionalUser = userRepository.findById(request.getUserId());
             User user = optionalUser.get();
             List<com.example.usermicroservice.model.Education> educationList = new ArrayList<>();
