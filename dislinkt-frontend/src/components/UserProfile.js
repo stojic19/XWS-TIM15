@@ -84,7 +84,7 @@ const UserProfile = () => {
                 skills={skills} 
                 education={education} 
                 interests={interests}
-                personalProfile={personalProfile}></Profile>
+                personalProfile={personalProfile}
                 posts={posts}></Profile>}</>
     );
 }

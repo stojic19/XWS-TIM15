@@ -29,6 +29,7 @@ const EditProfile = () => {
             axios.get(axios.defaults.baseURL + 'getUserForEdit/' + id)
                 .then(res => {
                     let user = res.data.user;
+                    console.log(user);
                     setEmail(user.email);
                     setUsername(user.username);
                     setPassword(user.password);
@@ -171,8 +172,17 @@ const EditProfile = () => {
                             </div>
                             <div className="col-md-12"><label className="labels">Biography</label>
                                 <textarea type="text" className="form-control" placeholder="Enter biography" value={biography} onChange={(e) => setBiography(e.target.value)} id="InputBiography" /></div>
-                            <div className="col-md-12"><label className="labels">Private profile</label>
-                                <input value={isPrivate} onChange={(e) => setIsPrivate(!isPrivate)} type="checkbox" className="form-check-input ml-2" id="CheckIsPrivate" />
+                            <div className="col-md-12"><label className="labels">Profile visibility</label>
+                                <select id="InputVisibility"
+                                    name="visibility"
+                                    className="form-control"
+                                    value={isPrivate}
+                                    onChange={(e) => setIsPrivate(e.target.value)}
+                                >
+                                    <option value="" disabled>Choose visibility</option>
+                                    <option value="true">Private</option>
+                                    <option value="false">Public</option>
+                                </select>
                             </div>
                             <div className="col-md-12"><label className="labels">Password</label>
                                 <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="InputPassword" /></div>

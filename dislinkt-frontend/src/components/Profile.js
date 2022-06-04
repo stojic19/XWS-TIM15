@@ -2,6 +2,7 @@ import '../css/userProfile.css'
 import { useNavigate } from 'react-router-dom';
 import PostList from './PostList';
 import PostsByUserId from './PostsByUserId';
+import { Button } from 'bootstrap';
 
 const Profile = (props) => {
     const history = useNavigate();
@@ -35,14 +36,21 @@ const Profile = (props) => {
                                 {
                                     props.personalProfile &&
                                     <div className="d-flex ">
-                                        <btn onClick={(e) => editPersonalInfo(e)} className="btn btn-primary follow me-2">Edit personal info</btn>
+                                        <button onClick={(e) => editPersonalInfo(e)} className="btn btn-primary follow me-2">Edit personal info</button>
                                     </div>
                                 }
                             </div>
                         </div>
                         <div className="col-12 bg-white px-3 pb-2 ">
-                            <h6 className="d-flex align-items-center mb-3 fw-bold py-3 justify-content-center"><i
-                                className="text-info me-2">Skills</i></h6>
+                            <h6 className="d-flex align-items-center mb-3 fw-bold py-3 justify-content-center">
+                                <i className="text-info me-2">Skills</i>
+                                {props.personalProfile && <button className="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                    </svg>Edit
+                                </button>}
+                            </h6>
                             {props.skills.length === 0 && <p style={{ textAlign: "center" }}>No skills to show.</p>}
                             {
                                 props.skills.map((skill, index) => {
@@ -55,7 +63,15 @@ const Profile = (props) => {
                         </div>
                         <div className="col-12 bg-white px-3 pb-2 ">
                             <h6 className="d-flex align-items-center mb-3 fw-bold py-3 justify-content-center"><i
-                                className="text-info me-2">Interests</i></h6>
+                                className="text-info me-2">Interests</i>
+                                {props.personalProfile &&<button className="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                    </svg>Edit
+                                </button>
+                                }
+                                </h6>
                             {props.interests.length === 0 && <p style={{ textAlign: "center" }}>No interests to show.</p>}
                             {
                                 props.interests.map((interest, index) => {
@@ -99,6 +115,13 @@ const Profile = (props) => {
                         <div className="col-12 bg-white p-0 px-2 pb-3 mb-3">
                             <div className="d-flex align-items-center justify-content-between border-bottom">
                                 <h4>Work experience</h4>
+                                {props.personalProfile && <button onClick={() => history("/editWorkExperience")} className="btn btn-primary m-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                    </svg>Edit
+                                </button>
+                                }
                             </div>
                             {props.experience.length === 0 && <p style={{ textAlign: "center" }}>No work experience to show.</p>}
                             {
@@ -117,6 +140,13 @@ const Profile = (props) => {
                         <div className="col-12 bg-white px-3 mb-3 pb-3">
                             <div className="d-flex align-items-center justify-content-between border-bottom">
                                 <h4>Education</h4>
+                                {props.personalProfile && <button className="btn btn-primary m-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                    </svg>Edit
+                                </button>
+                                }
                             </div>
                             {props.education.length === 0 && <p style={{ textAlign: "center" }}>No education to show.</p>}
                             {
@@ -137,7 +167,7 @@ const Profile = (props) => {
                             </div>
                             {
                                 props.user.isPrivate ? <h3>No posts to show.</h3> :
-                                <PostList posts={props.posts}></PostList>
+                                    <PostList posts={props.posts}></PostList>
                             }
                         </div>
 

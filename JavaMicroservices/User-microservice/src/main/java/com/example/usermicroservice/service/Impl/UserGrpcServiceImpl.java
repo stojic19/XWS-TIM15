@@ -111,7 +111,9 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
                     .setGender(user.getGender())
                     .setId(user.getId())
                     .setTelephoneNo(user.getTelephoneNo())
-                    .setName(user.getName()).build();
+                    .setName(user.getName())
+                    .setIsPrivate(user.isPrivate())
+                    .build();
             users.add(protoUser);
         }
         response = GetUsersResponse.newBuilder().addAllUsers(users).build();
@@ -366,6 +368,7 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
                     .setTelephoneNo(presentUser.getTelephoneNo())
                     .setName(presentUser.getName())
                     .setPassword(presentUser.getPassword())
+                    .setIsPrivate(presentUser.isPrivate())
             ).build();
         }else{
             response = GetUserResponse.newBuilder().setUser(com.example.usermicroservice.User.newBuilder()).build();
