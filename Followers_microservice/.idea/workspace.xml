@@ -5,16 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fdae2016-0ae1-4084-8674-fe97ba3d89cd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/domain/model.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../common/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../common/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../common/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../common/go.mod" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../common/proto/followers_microservice/followers_microservice.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../common/proto/followers_microservice/google/api/annotations.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../common/proto/followers_microservice/google/api/field_behavior.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../common/proto/followers_microservice/google/api/http.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../common/proto/followers_microservice/google/api/httpbody.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Job_Offers_microservice/infrastructure/api/api_key.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infrastructure/api/followers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/api/followers_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/../Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api_gateway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../api_gateway/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api_gateway/infrastructure/api/follower_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/../api_gateway/infrastructure/api/follower_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api_gateway/startup/mux_wrapper.go" beforeDir="false" afterPath="$PROJECT_DIR$/../api_gateway/startup/mux_wrapper.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../common/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../common/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,9 +51,25 @@
     "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
-    "last_opened_file_path": "C:/Users/Aleksandar"
+    "last_opened_file_path": "D:/ftn/GODINA4/LETNJI/XML/Projekat/XWS-TIM15/Job_Offers_microservice"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="Followers_microservice" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <package value="github.com/stojic19/XWS-TIM15/Followers_microservice" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build main.go" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
