@@ -10,6 +10,8 @@ import Users from './components/Users';
 import EditProfile from './components/EditProfile';
 import UserProfile from './components/UserProfile';
 import PersonalProfile from './components/PersonalProfile';
+import EditWorkExperience from './components/EditWorkExperience';
+
 import axios from 'axios';
 
 axios.defaults.baseURL = "http://localhost:8000/";
@@ -38,6 +40,7 @@ function App() {
           <Route exact path="/profile/:id" element={[<UserNavbar />, <UserProfile/>]}/>
           <Route exact path="/users" element={[<Navbar />,<Users/>]}/>
           <Route exact path="/editProfile" element={[<UserNavbar />,<EditProfile/>]}/>
+          <Route exact path="/editWorkExperience" element={[<UserNavbar />,<EditWorkExperience/>]}/>
           <Route exact path='/personalProfile' element={[<UserNavbar />,<PersonalProfile/>]}/>
           </Routes>
         </Router>
