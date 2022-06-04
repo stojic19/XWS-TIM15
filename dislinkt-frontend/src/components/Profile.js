@@ -1,4 +1,6 @@
 import '../css/userProfile.css'
+import PostList from './PostList';
+import PostsByUserId from './PostsByUserId';
 
 const Profile = (props) => {
 
@@ -108,6 +110,15 @@ const Profile = (props) => {
                                         </div>
                                     );
                                 })
+                            }
+                        </div>
+                        <div className="col-12 bg-white px-3 mb-3 pb-3">
+                            <div className="d-flex align-items-center justify-content-between border-bottom">
+                                <h4>Posts</h4>
+                            </div>
+                            {
+                                props.user.isPrivate ? <h3>No posts to show.</h3> :
+                                <PostList posts={props.posts}></PostList>
                             }
                         </div>
                         
