@@ -30,7 +30,7 @@ const Login = () => {
             "Password": password
         };
         setIsPending(true);
-        axios.post(axios.defaults.baseURL + 'api/LogIn', {data: login}).then(res => {
+        axios.post(axios.defaults.baseURL + 'api/LogIn', login).then(res => {
             console.log(res);
             if (res.data.status === '200') {
                 setIsPending(false);

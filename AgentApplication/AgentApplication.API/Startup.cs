@@ -42,12 +42,10 @@ namespace AgentApplication.API
         public IConfiguration Configuration { get; }
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            /*services.AddCors(c =>
+            services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            });*/
-
-            services.AddCors();
+            });
 
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -91,6 +89,9 @@ namespace AgentApplication.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -101,6 +102,8 @@ namespace AgentApplication.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("AllowOrigin");
 
             app.UseAuthorization();
 
