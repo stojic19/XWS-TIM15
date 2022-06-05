@@ -18,6 +18,6 @@ namespace AgentApplication.ClassLib.Service
         ///     Logs in user, returns jwt
         /// </Summary>
         /// <exception cref="AgentApplication.ClassLib.Exceptions.LogInException">User name exists</exception>
-        public string LogIn(string username, string password);
+        public string[] LogIn(string username, string password);
     }
 }

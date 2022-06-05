@@ -31,10 +31,23 @@ const Login = () => {
         };
         setIsPending(true);
         axios.post(axios.defaults.baseURL + 'api/LogIn', login).then(res => {
-            console.log(res);
             setIsPending(false);
             localStorage.setItem('token', res.data.token);
-            history('/home');
+            if(res.data.role==='Regular'){
+                // check if owner and set localstorage variable
+                localStorage.setItem('user_id', res.data.id);
+                axios.get(axios.defaults.baseURL + 'api/Companies/User/' + res.data.id, login)
+                .then(res => {
+                    localStorage.setItem('user_id_owner', res.data.length!=0);
+                    history('/home');
+                })
+                .catch(()=>{
+                    localStorage.setItem('user_id_owner', false);
+                    history('/home');
+                })
+            }
+            else
+                history('/companyRegistrationRequests');
 
         }).catch(err => {
             setIsPending(false);

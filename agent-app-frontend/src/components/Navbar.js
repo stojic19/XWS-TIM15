@@ -6,7 +6,7 @@ const Navbar = () => {
                 <a style={{textDecoration: "none"}} href="/"><h1>Agent</h1></a>
             </li>
             <li className="nav-item" key={2}>
-                <a className="nav-link" href="/login">Login</a>
+                <a className="nav-link" href="/">Login</a>
             </li>
             <li className="nav-item" key={3}>
                 <a className="nav-link" href="/registration">Registration</a>
