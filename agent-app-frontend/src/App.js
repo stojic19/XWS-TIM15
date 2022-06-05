@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
+import Registration from './components/Registration';
 
 import axios from 'axios';
 
@@ -27,6 +28,7 @@ function App() {
       <Router>
         <Routes>
           <Route key='/' exact path="/" element={[<Navbar key='/' />, <Login key='/1' />]} />
+          <Route key='/registration' exact path="/registration" element={[<Navbar key='/registration' />, <Registration key='/registration1' />]} />
         </Routes>
       </Router>
     </div>
