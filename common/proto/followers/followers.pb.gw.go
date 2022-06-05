@@ -460,7 +460,7 @@ func RegisterFollowersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/followers.FollowersService/Follow", runtime.WithHTTPPathPattern("/followers/follow"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/followers.FollowersService/Subscribe", runtime.WithHTTPPathPattern("/followers/follow"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -508,7 +508,7 @@ func RegisterFollowersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/followers.FollowersService/Unfollow", runtime.WithHTTPPathPattern("/followers/follow"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/followers.FollowersService/Unsubscribe", runtime.WithHTTPPathPattern("/followers/follow"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -715,7 +715,7 @@ func RegisterFollowersServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/followers.FollowersService/Follow", runtime.WithHTTPPathPattern("/followers/follow"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/followers.FollowersService/Subscribe", runtime.WithHTTPPathPattern("/followers/follow"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -757,7 +757,7 @@ func RegisterFollowersServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/followers.FollowersService/Unfollow", runtime.WithHTTPPathPattern("/followers/follow"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/followers.FollowersService/Unsubscribe", runtime.WithHTTPPathPattern("/followers/follow"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return

@@ -36,13 +36,13 @@ service JobOffersService{
   }
   rpc SubscribeJobOffer(SubscribeRequest) returns(Response){
     option(google.api.http) = {
-      put: "/job_offers/follow"
+      put: "/job_offers/subscribe"
       body: "*"
     };
   }
   rpc UnsubscribeJobOffer(UnsubscribeRequest) returns(Response){
     option(google.api.http) = {
-      put: "/job_offers/unfollow"
+      put: "/job_offers/unsubscribe"
       body: "*"
     };
   }
