@@ -32,7 +32,7 @@ const UserCard = (props) => {
             "followerId": localStorage.getItem('user_id'),
             "followedId": props.user.id
         };
-        axios.delete(axios.defaults.baseURL + 'followers/follow', update)
+        axios.delete(axios.defaults.baseURL + 'followers/follow', {headers: {}, data: update})
             .then(res => {
                 Swal.fire({
                     icon: 'success',
@@ -68,7 +68,7 @@ const UserCard = (props) => {
             "followerId": localStorage.getItem('user_id'),
             "followedId": props.user.id
         };
-        axios.delete(axios.defaults.baseURL + 'followers/followRequest', update)
+        axios.delete(axios.defaults.baseURL + 'followers/followRequest', {headers: {}, data: update})
             .then(res => {
                 Swal.fire({
                     icon: 'success',
