@@ -111,7 +111,7 @@ func (handler *JobOffersHandler) Update(ctx context.Context, request *job_offers
 	}, nil
 }
 
-func (handler *JobOffersHandler) FollowJobOffer(ctx context.Context, request *job_offers.SubscribeRequest) (*job_offers.Response, error) {
+func (handler *JobOffersHandler) SubscribeJobOffer(ctx context.Context, request *job_offers.SubscribeRequest) (*job_offers.Response, error) {
 	//Endpoint protection
 	metadata, _ := metadata.FromIncomingContext(ctx)
 	sub := metadata.Get("sub")
@@ -121,7 +121,7 @@ func (handler *JobOffersHandler) FollowJobOffer(ctx context.Context, request *jo
 	//Endpoint protection
 	jobOfferId, _ := primitive.ObjectIDFromHex(request.JobOfferId)
 	user := &domain.User{Id: request.Id}
-	err := handler.service.Follow(jobOfferId, user)
+	err := handler.service.Subscribe(jobOfferId, user)
 	if err != nil {
 		return &job_offers.Response{
 			Message: "Oops, something went wrong. Try again!",
@@ -134,7 +134,7 @@ func (handler *JobOffersHandler) FollowJobOffer(ctx context.Context, request *jo
 	}, nil
 }
 
-func (handler *JobOffersHandler) UnfollowJobOffer(ctx context.Context, request *job_offers.UnsubscribeRequest) (*job_offers.Response, error) {
+func (handler *JobOffersHandler) UnsubscribeJobOffer(ctx context.Context, request *job_offers.UnsubscribeRequest) (*job_offers.Response, error) {
 	//Endpoint protection
 	metadata, _ := metadata.FromIncomingContext(ctx)
 	sub := metadata.Get("sub")
@@ -144,7 +144,7 @@ func (handler *JobOffersHandler) UnfollowJobOffer(ctx context.Context, request *
 	//Endpoint protection
 	jobOfferId, _ := primitive.ObjectIDFromHex(request.JobOfferId)
 	user := &domain.User{Id: request.Id}
-	err := handler.service.Unfollow(jobOfferId, user)
+	err := handler.service.Unsubscribe(jobOfferId, user)
 	if err != nil {
 		return &job_offers.Response{
 			Message: "Oops, something went wrong. Try again!",

@@ -1,6 +1,45 @@
 import "../css/userCard.css"
+import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+
+import axios from 'axios';
 
 const JobOfferCard = (props) => {
+
+    const subscribe = async (e) => {
+        e.preventDefault();
+
+        const update = {
+            "id": localStorage.getItem('user_id'),
+            "jobOfferId": props.jobOffer.id
+        };
+        axios.put(axios.defaults.baseURL + 'job_offers/subscribe', update)
+            .then(res => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: res.data.response,
+                });
+                window.location.reload()
+            });
+    }
+    const unsubscribe = async (e) => {
+        e.preventDefault();
+
+        const update = {
+            "id": localStorage.getItem('user_id'),
+            "jobOfferId": props.jobOffer.id
+        };
+        axios.put(axios.defaults.baseURL + 'job_offers/unsubscribe', update)
+            .then(res => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: res.data.response,
+                });
+                window.location.reload()
+            });
+    }
 
     return (
         <li className="col-12 col-md-4 col-lg-3">
@@ -16,6 +55,14 @@ const JobOfferCard = (props) => {
                     <p>{props.jobOffer.position}</p>
                     <p>Description : {props.jobOffer.description}</p>
                     <p>Requirements : {props.jobOffer.requirements}</p>
+                    {
+                        !props.jobOffer.subscribers.some(u => u.id == localStorage.getItem('user_id'))
+                        && <button onClick={(e) => subscribe(e)} type="button" className="btn btn-outline-primary">Subscribe</button>
+                    }
+                    {
+                        props.jobOffer.subscribers.some(u => u.id == localStorage.getItem('user_id'))
+                        && <button onClick={(e) => unsubscribe(e)} type="button" className="btn btn-outline-primary">Unsubscribe</button>
+                    }
                 </div>
             }
         </li>

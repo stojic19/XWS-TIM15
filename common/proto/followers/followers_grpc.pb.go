@@ -43,7 +43,7 @@ func NewFollowersServiceClient(cc grpc.ClientConnInterface) FollowersServiceClie
 
 func (c *followersServiceClient) Follow(ctx context.Context, in *FollowRequest, opts ...grpc.CallOption) (*FollowResponse, error) {
 	out := new(FollowResponse)
-	err := c.cc.Invoke(ctx, "/followers.FollowersService/Follow", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/followers.FollowersService/Subscribe", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +61,7 @@ func (c *followersServiceClient) ConfirmFollow(ctx context.Context, in *ConfirmF
 
 func (c *followersServiceClient) Unfollow(ctx context.Context, in *UnfollowRequest, opts ...grpc.CallOption) (*UnfollowResponse, error) {
 	out := new(UnfollowResponse)
-	err := c.cc.Invoke(ctx, "/followers.FollowersService/Unfollow", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/followers.FollowersService/Unsubscribe", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -143,13 +143,13 @@ type UnimplementedFollowersServiceServer struct {
 }
 
 func (UnimplementedFollowersServiceServer) Follow(context.Context, *FollowRequest) (*FollowResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Follow not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method Subscribe not implemented")
 }
 func (UnimplementedFollowersServiceServer) ConfirmFollow(context.Context, *ConfirmFollowRequest) (*ConfirmFollowResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfirmFollow not implemented")
 }
 func (UnimplementedFollowersServiceServer) Unfollow(context.Context, *UnfollowRequest) (*UnfollowResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Unfollow not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method Unsubscribe not implemented")
 }
 func (UnimplementedFollowersServiceServer) RemoveFollowRequest(context.Context, *RemoveFollowRequestRequest) (*RemoveFollowRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveFollowRequest not implemented")
@@ -192,7 +192,7 @@ func _FollowersService_Follow_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/followers.FollowersService/Follow",
+		FullMethod: "/followers.FollowersService/Subscribe",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FollowersServiceServer).Follow(ctx, req.(*FollowRequest))
@@ -228,7 +228,7 @@ func _FollowersService_Unfollow_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/followers.FollowersService/Unfollow",
+		FullMethod: "/followers.FollowersService/Unsubscribe",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FollowersServiceServer).Unfollow(ctx, req.(*UnfollowRequest))
@@ -352,7 +352,7 @@ var FollowersService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*FollowersServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Follow",
+			MethodName: "Subscribe",
 			Handler:    _FollowersService_Follow_Handler,
 		},
 		{
@@ -360,7 +360,7 @@ var FollowersService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FollowersService_ConfirmFollow_Handler,
 		},
 		{
-			MethodName: "Unfollow",
+			MethodName: "Unsubscribe",
 			Handler:    _FollowersService_Unfollow_Handler,
 		},
 		{

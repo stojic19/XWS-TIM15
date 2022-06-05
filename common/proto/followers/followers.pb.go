@@ -1170,18 +1170,18 @@ var file_followers_followers_proto_depIdxs = []int32{
 	18, // 2: followers.GetFollowRequestsResponse.followRequests:type_name -> followers.Follower
 	18, // 3: followers.GetFollowerRequestsResponse.followerRequests:type_name -> followers.Follower
 	19, // 4: followers.Follower.time:type_name -> google.protobuf.Timestamp
-	0,  // 5: followers.FollowersService.Follow:input_type -> followers.FollowRequest
+	0,  // 5: followers.FollowersService.Subscribe:input_type -> followers.FollowRequest
 	2,  // 6: followers.FollowersService.ConfirmFollow:input_type -> followers.ConfirmFollowRequest
-	4,  // 7: followers.FollowersService.Unfollow:input_type -> followers.UnfollowRequest
+	4,  // 7: followers.FollowersService.Unsubscribe:input_type -> followers.UnfollowRequest
 	6,  // 8: followers.FollowersService.RemoveFollowRequest:input_type -> followers.RemoveFollowRequestRequest
 	8,  // 9: followers.FollowersService.GetFollows:input_type -> followers.GetFollowsRequest
 	10, // 10: followers.FollowersService.GetFollowers:input_type -> followers.GetFollowersRequest
 	12, // 11: followers.FollowersService.GetFollowRequests:input_type -> followers.GetFollowRequestsRequest
 	14, // 12: followers.FollowersService.GetFollowerRequests:input_type -> followers.GetFollowerRequestsRequest
 	16, // 13: followers.FollowersService.GetRelationship:input_type -> followers.GetRelationshipRequest
-	1,  // 14: followers.FollowersService.Follow:output_type -> followers.FollowResponse
+	1,  // 14: followers.FollowersService.Subscribe:output_type -> followers.FollowResponse
 	3,  // 15: followers.FollowersService.ConfirmFollow:output_type -> followers.ConfirmFollowResponse
-	5,  // 16: followers.FollowersService.Unfollow:output_type -> followers.UnfollowResponse
+	5,  // 16: followers.FollowersService.Unsubscribe:output_type -> followers.UnfollowResponse
 	7,  // 17: followers.FollowersService.RemoveFollowRequest:output_type -> followers.RemoveFollowRequestResponse
 	9,  // 18: followers.FollowersService.GetFollows:output_type -> followers.GetFollowsResponse
 	11, // 19: followers.FollowersService.GetFollowers:output_type -> followers.GetFollowersResponse
