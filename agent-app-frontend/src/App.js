@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Registration from './components/Registration';
 import AdminNavbar from './components/AdminNavbar';
 import RegularNavbar from './components/RegularNavbar';
+import CreateCompanyRequest from './components/CreateCompanyRequest';
 
 import axios from 'axios';
 
@@ -33,6 +34,7 @@ function App() {
           <Route key='/registration' exact path="/registration" element={[<Navbar key='/registration' />, <Registration key='/registration1' />]} />
           <Route key='/companyRegistrationRequests' exact path="/companyRegistrationRequests" element={[<AdminNavbar key='/companyRegistrationRequests' />]} />
           <Route key='/home' exact path="/home" element={[<RegularNavbar key='/home' />]} />
+          <Route key='/registrationRequest' exact path="/registrationRequest" element={[<RegularNavbar key='/registrationRequest' />,<CreateCompanyRequest key='/registrationRequest1'/>]} />
         </Routes>
       </Router>
     </div>
