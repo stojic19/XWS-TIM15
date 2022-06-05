@@ -2,8 +2,10 @@ import { useState } from 'react';
 import '../css/createPost.css'
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePost = () =>{
+    const history = useNavigate()
     const [title, setTitle] = useState('')
     const [contentText, setContentText] = useState('')
 
@@ -53,6 +55,7 @@ const CreatePost = () =>{
                 .then(res => {
                     console.log(config)
                     console.log(res.data)
+                    history('/home')
                 }).catch(err => {
                     console.log(err);
                     Swal.fire({
