@@ -10,6 +10,6 @@ type JobOffersStore interface {
 	GetSubscribed(string) ([]*JobOffer, error)
 	Create(*JobOffer) error
 	Update(*JobOffer) error
-	Follow(id primitive.ObjectID, user *User) error
-	Unfollow(id primitive.ObjectID, user *User) error
+	Subscribe(id primitive.ObjectID, user *User) error
+	Unsubscribe(id primitive.ObjectID, user *User) error
 }

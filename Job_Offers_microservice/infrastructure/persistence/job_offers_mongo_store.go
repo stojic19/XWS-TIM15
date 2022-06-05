@@ -65,12 +65,12 @@ func (store *JobOffersMongoStore) Update(jobOffer *domain.JobOffer) error {
 	return nil
 }
 
-func (store *JobOffersMongoStore) Follow(jobOfferId primitive.ObjectID, user *domain.User) error {
+func (store *JobOffersMongoStore) Subscribe(jobOfferId primitive.ObjectID, user *domain.User) error {
 	_, err := store.jobOffers.UpdateOne(
 		context.TODO(),
 		bson.M{"_id": jobOfferId},
 		bson.D{
-			{"$addToSet", bson.D{{"followers", user}}},
+			{"$addToSet", bson.D{{"subscribers", user}}},
 		},
 	)
 	if err != nil {
@@ -79,12 +79,12 @@ func (store *JobOffersMongoStore) Follow(jobOfferId primitive.ObjectID, user *do
 	return nil
 }
 
-func (store *JobOffersMongoStore) Unfollow(jobOfferId primitive.ObjectID, user *domain.User) error {
+func (store *JobOffersMongoStore) Unsubscribe(jobOfferId primitive.ObjectID, user *domain.User) error {
 	_, err := store.jobOffers.UpdateOne(
 		context.TODO(),
 		bson.M{"_id": jobOfferId},
 		bson.D{
-			{"$pull", bson.D{{"followers", user}}},
+			{"$pull", bson.D{{"subscribers", user}}},
 		},
 	)
 	if err != nil {

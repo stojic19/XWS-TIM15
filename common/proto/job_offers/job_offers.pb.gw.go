@@ -422,7 +422,7 @@ func RegisterJobOffersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/job_offers.JobOffersService/SubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/follow"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/job_offers.JobOffersService/SubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/subscribe"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -446,7 +446,7 @@ func RegisterJobOffersServiceHandlerServer(ctx context.Context, mux *runtime.Ser
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/job_offers.JobOffersService/UnsubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/unfollow"))
+		ctx, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/job_offers.JobOffersService/UnsubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/unsubscribe"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -614,7 +614,7 @@ func RegisterJobOffersServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/job_offers.JobOffersService/SubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/follow"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/job_offers.JobOffersService/SubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/subscribe"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -635,7 +635,7 @@ func RegisterJobOffersServiceHandlerClient(ctx context.Context, mux *runtime.Ser
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
-		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/job_offers.JobOffersService/UnsubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/unfollow"))
+		ctx, err = runtime.AnnotateContext(ctx, mux, req, "/job_offers.JobOffersService/UnsubscribeJobOffer", runtime.WithHTTPPathPattern("/job_offers/unsubscribe"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -665,9 +665,9 @@ var (
 
 	pattern_JobOffersService_Update_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"job_offers"}, ""))
 
-	pattern_JobOffersService_SubscribeJobOffer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"job_offers", "follow"}, ""))
+	pattern_JobOffersService_SubscribeJobOffer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"job_offers", "subscribe"}, ""))
 
-	pattern_JobOffersService_UnsubscribeJobOffer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"job_offers", "unfollow"}, ""))
+	pattern_JobOffersService_UnsubscribeJobOffer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"job_offers", "unsubscribe"}, ""))
 )
 
 var (
