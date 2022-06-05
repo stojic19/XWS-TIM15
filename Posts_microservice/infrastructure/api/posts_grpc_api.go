@@ -83,6 +83,9 @@ func (handler *PostsHandler) GetFromFollowed(ctx context.Context, request *posts
 	id := request.Id
 	followsClient := services.NewFollowersClient(handler.followersClientAddress)
 	followsResponse, err := followsClient.GetFollows(context.TODO(), &followers.GetFollowsRequest{Id: id})
+	if err != nil {
+		return nil, err
+	}
 	followIds := []string{}
 	for _, follow := range followsResponse.Follows {
 		followIds = append(followIds, follow.Id)
@@ -219,7 +222,7 @@ func (handler *PostsHandler) RemoveDislike(ctx context.Context, request *posts.R
 		return nil, err
 	}
 	userId := mapNewUser(request.UserId)
-	err = handler.service.RemoveLike(postId, userId)
+	err = handler.service.RemoveDislike(postId, userId)
 	if err != nil {
 		return nil, err
 	}
