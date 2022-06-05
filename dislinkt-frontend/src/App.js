@@ -17,6 +17,7 @@ import EditSkillsAndInterests from './components/EditSkillsAndInterests';
 import FollowRequestsList from './components/FollowRequestsList';
 import UserHome from './components/UserHome';
 import AllProfiles from './components/AllProfiles';
+import AllJobOffers from './components/AllJobOffers';
 
 import axios from 'axios';
 
@@ -43,7 +44,7 @@ function App() {
           <Route key='/home' exact path="/home" element={[<UserNavbar />, <UserHome/>]}/>
           <Route key='/publicProfiles' exact path="/publicProfiles" element={[<UserNavbar />, <PublicProfileSearch displayFollowButtons={true}/>]}/>
           <Route key='/allProfiles' exact path="/allProfiles" element={[<UserNavbar />, <AllProfiles displayFollowButtons={true}/>]}/>
-          <Route key='/jobOffers' exact path="/jobOffers" element={[<UserNavbar />]}/>
+          <Route key='/jobOffers' exact path='/jobOffers' element={[<UserNavbar />,<AllJobOffers />]}/>
           <Route key='/profile' exact path="/profile/:id" element={[<UserNavbar />, <UserProfile/>]}/>
           <Route key='/publicProfile' exact path="/publicProfile/:id" element={[<Navbar />, <UserProfile/>]}/>
           <Route key='/users' exact path="/users" element={[<Navbar />,<Users/>]}/>
@@ -52,7 +53,7 @@ function App() {
           <Route key='/editEducation' exact path="/editEducation" element={[<UserNavbar />,<EditEducation/>]}/>
           <Route key='/editSkillsAndInterests' exact path="/editSkillsAndInterests" element={[<UserNavbar />,<EditSkillsAndInterests/>]}/>
           <Route key='/personalProfile' exact path='/personalProfile' element={[<UserNavbar />,<PersonalProfile/>]}/>
-          <Route key='/followRequests' exact path='/followRequests' element={[<UserNavbar />,<FollowRequestsList/>]}/>
+          <Route key='/followRequests' exact path='/followRequests' element={[<UserNavbar />,<FollowRequestsList/>]}/>      
           </Routes>
         </Router>
     </div>
