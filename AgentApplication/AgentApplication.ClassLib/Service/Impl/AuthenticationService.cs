@@ -45,7 +45,7 @@ namespace AgentApplication.ClassLib.Service.Impl
             if (user == null) throw new LogInException("User with given username not found!");
             if (user.Password != Encoder.EncodePassword(password, user.Salt)) throw new LogInException("Invalid password!");
             
-            return new String[] { _jwtGenerator.GenerateToken(user), user.GetRoleString() };
+            return new String[] { _jwtGenerator.GenerateToken(user), user.GetRoleString(), user.Id.ToString() };
         }
     }
 }
