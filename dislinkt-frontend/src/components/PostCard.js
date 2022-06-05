@@ -66,7 +66,7 @@ const PostCard = (post) => {
         };
         console.log(update)
         if (postLiked()) {
-            axios.delete(axios.defaults.baseURL + 'posts/like', update)
+            axios.delete(axios.defaults.baseURL + 'posts/like', {headers: {}, data: update})
                 .then(res => {
                     Swal.fire({
                         icon: 'success',
@@ -96,7 +96,7 @@ const PostCard = (post) => {
             "userId": localStorage.getItem('user_id')
         };
         if (postDisliked()) {
-            axios.delete(axios.defaults.baseURL + 'posts/dislike', update)
+            axios.delete(axios.defaults.baseURL + 'posts/dislike', {headers: {}, data: update})
                 .then(res => {
                     Swal.fire({
                         icon: 'success',
