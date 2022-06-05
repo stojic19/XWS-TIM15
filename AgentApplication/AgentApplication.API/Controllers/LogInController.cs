@@ -25,8 +25,8 @@ namespace AgentApplication.API.Controllers
         {
             try
             {
-                var token = _authenticationService.LogIn(dto.Username, dto.Password);
-                return Ok(token);
+                var tokenAndRole = _authenticationService.LogIn(dto.Username, dto.Password);
+                return Ok(new LogInResponseDto() { Token = tokenAndRole[0], Role = tokenAndRole[1] });
             }
             catch (Exception ex)
             {
