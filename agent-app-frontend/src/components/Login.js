@@ -32,21 +32,17 @@ const Login = () => {
         setIsPending(true);
         axios.post(axios.defaults.baseURL + 'api/LogIn', login).then(res => {
             console.log(res);
-            if (res.data.status === '200') {
-                setIsPending(false);
-                localStorage.setItem('token', res.data.token);
-                localStorage.setItem('user_id', res.data.id);
-                history('/home');
-            } else {
-                setIsPending(false);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: res.data.error,
-                });
-            }
-        }).catch(err=>{
-            console.log(err);
+            setIsPending(false);
+            localStorage.setItem('token', res.data.token);
+            history('/home');
+
+        }).catch(err => {
+            setIsPending(false);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: err.response.data,
+            });
         });
     }
 
