@@ -2,13 +2,38 @@ import { useState } from 'react';
 import '../css/createPost.css'
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePost = () =>{
+    const history = useNavigate()
     const [title, setTitle] = useState('')
     const [contentText, setContentText] = useState('')
 
+    const Validate = () => {
+        if (title === "" || contentText === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'All inputs must be filled!',
+            });
+            return false;
+        }
+        if (localStorage.getItem('user_id').length === 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'You are not logged in!',
+            });
+            return false;
+        }
+        return true;
+    }
+
     const addPost = async (e)=>{
         e.preventDefault()
+        if (!Validate())
+            return;
+
         let config={
             newPost: {
                 title: title,
@@ -30,6 +55,7 @@ const CreatePost = () =>{
                 .then(res => {
                     console.log(config)
                     console.log(res.data)
+                    history('/home')
                 }).catch(err => {
                     console.log(err);
                     Swal.fire({
