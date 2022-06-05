@@ -7,8 +7,31 @@ const CreatePost = () =>{
     const [title, setTitle] = useState('')
     const [contentText, setContentText] = useState('')
 
+    const Validate = () => {
+        if (title === "" || contentText === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'All inputs must be filled!',
+            });
+            return false;
+        }
+        if (localStorage.getItem('user_id').length === 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'You are not logged in!',
+            });
+            return false;
+        }
+        return true;
+    }
+
     const addPost = async (e)=>{
         e.preventDefault()
+        if (!Validate())
+            return;
+
         let config={
             newPost: {
                 title: title,
