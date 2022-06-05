@@ -17,6 +17,9 @@ const UserNavbar = () => {
             <li className="nav-item" key={10}>
                 <a className="nav-link" href="/createPost">New post</a>
             </li>
+            <li className="nav-item" key={10}>
+                <a className="nav-link" href="/createJobOffer">New job offer</a>
+            </li>
             <li className="nav-item" key={3}>
                 <a className="nav-link" href="/publicProfiles">Explore</a>
             </li>
