@@ -87,7 +87,8 @@ const UserCard = (props) => {
                     }
                 </h6>
                 <figure><img src={require("../images/user-avatar.png")} className="img-responsive" alt=""></img></figure>
-                <h3><a href={'/profile/' + props.user.id}>{props.user.name}</a></h3>
+                {localStorage.getItem('user_id') && <h3><a href={'/profile/' + props.user.id}>{props.user.name}</a></h3>}
+                {!localStorage.getItem('user_id') && <h3><a href={'/publicProfile/' + props.user.id}>{props.user.name}</a></h3>}
                 {/* <p>Freelance Web Developer</p> */}
                 {
                     !props.user.isPrivate && props.displayFollowButtons && !props.isFollowing 

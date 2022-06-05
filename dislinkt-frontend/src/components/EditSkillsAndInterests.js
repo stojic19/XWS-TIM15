@@ -260,7 +260,7 @@ const EditSkillsAndInterests = () => {
                         </div>
                         {interests && interests.map((inter, index) => {
                             return (
-                                <div key={index}>
+                                <div key={index+'interests'}>
                                     <div className="row mt-2">
                                         <div className="col-md-6">
                                             <input type="text" className="form-control" placeholder="Enter skill" value={inter} readOnly />
