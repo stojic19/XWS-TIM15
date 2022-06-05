@@ -56,8 +56,8 @@ function App() {
           <Route key='/editSkillsAndInterests' exact path="/editSkillsAndInterests" element={[<UserNavbar />,<EditSkillsAndInterests/>]}/>
           <Route key='/personalProfile' exact path='/personalProfile' element={[<UserNavbar />,<PersonalProfile/>]}/>
           <Route key='/followRequests' exact path='/followRequests' element={[<UserNavbar />,<FollowRequestsList/>]}/>   
-          <Route key='/followRequests' exact path='/createPost' element={[<UserNavbar />,<CreatePost/>]}/>   
-          <Route key='/followRequests' exact path='/createJobOffer' element={[<UserNavbar />,<CreateJobOffer/>]}/>     
+          <Route key='/createPost' exact path='/createPost' element={[<UserNavbar />,<CreatePost/>]}/>      
+          <Route key='/createJobOffer' exact path='/createJobOffer' element={[<UserNavbar />,<CreateJobOffer/>]}/>     
           </Routes>
         </Router>
     </div>

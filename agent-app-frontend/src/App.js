@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Login from './components/Login';
+import Registration from './components/Registration';
+
+import axios from 'axios';
 
 function App() {
+
+  useEffect(() => {
+    document.title = "Agent"
+  }, [])
+
+  axios.defaults.baseURL = "https://localhost:44316/";
+  //axios.defaults.headers.post['Content-Type'] = 'application/json';
+  //axios.defaults.headers.post['Accept'] = 'application/json';
+  //axios.defaults.headers.post['Access-Control-Allow-Origin'] = 'http://localhost:3000';
+
+  axios.interceptors.request.use(function (config) {
+    const token = localStorage.getItem('token');
+    config.headers.token = token ? `${token}` : '';
+    return config;
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <Routes>
+          <Route key='/' exact path="/" element={[<Navbar key='/' />, <Login key='/1' />]} />
+          <Route key='/registration' exact path="/registration" element={[<Navbar key='/registration' />, <Registration key='/registration1' />]} />
+        </Routes>
+      </Router>
     </div>
   );
 }

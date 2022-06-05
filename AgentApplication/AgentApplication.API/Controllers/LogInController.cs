@@ -2,6 +2,7 @@
 using AgentApplication.API.Dto;
 using AgentApplication.ClassLib.Exceptions;
 using AgentApplication.ClassLib.Service;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace AgentApplication.API.Controllers
             _authenticationService = authenticationService;
         }
 
+        [EnableCors]
         [HttpPost]
         public IActionResult LogIn(LogInDto dto)
         {

@@ -42,6 +42,11 @@ namespace AgentApplication.API
         public IConfiguration Configuration { get; }
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
+
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
@@ -84,6 +89,9 @@ namespace AgentApplication.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -95,6 +103,8 @@ namespace AgentApplication.API
 
             app.UseRouting();
 
+            app.UseCors("AllowOrigin");
+
             app.UseAuthorization();
 
             app.UseAuthorizationMiddleware();
@@ -103,6 +113,10 @@ namespace AgentApplication.API
             {
                 endpoints.MapControllers();
             });
+
+            //app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3001"));
         }
     }
 }
