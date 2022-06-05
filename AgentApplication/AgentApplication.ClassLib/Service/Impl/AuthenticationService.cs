@@ -39,12 +39,13 @@ namespace AgentApplication.ClassLib.Service.Impl
         ///     Logs in user, returns jwt
         /// </Summary>
         /// <exception cref="AgentApplication.ClassLib.Exceptions.LogInException">User name exists</exception>
-        public string LogIn(string username, string password)
+        public string[] LogIn(string username, string password)
         {
             var user = _uow.GetRepository<IUserReadRepository>().GetByUsername(username);
             if (user == null) throw new LogInException("User with given username not found!");
             if (user.Password != Encoder.EncodePassword(password, user.Salt)) throw new LogInException("Invalid password!");
-            return _jwtGenerator.GenerateToken(user);
+            
+            return new String[] { _jwtGenerator.GenerateToken(user), user.GetRoleString(), user.Id.ToString() };
         }
     }
 }
