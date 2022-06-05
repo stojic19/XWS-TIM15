@@ -67,7 +67,7 @@ const CompanyCard = (props) => {
                     props.admin &&
                     <>
                         <button onClick={(e) => accept(e)} type="button" className="btn btn-outline-primary m-1">Accept</button>
-                        <button onClick={(e) => decline(e)} type="button" className="btn btn-outline-primary m-1">Decline</button>
+                        {/*<button onClick={(e) => decline(e)} type="button" className="btn btn-outline-primary m-1">Decline</button>*/}
                     </>
                 }
             </div>
