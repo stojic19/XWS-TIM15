@@ -20,6 +20,7 @@ import AllProfiles from './components/AllProfiles';
 import AllJobOffers from './components/AllJobOffers';
 
 import axios from 'axios';
+import CreatePost from './components/CreatePost';
 
 axios.defaults.baseURL = "http://localhost:8000/";
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -53,7 +54,8 @@ function App() {
           <Route key='/editEducation' exact path="/editEducation" element={[<UserNavbar />,<EditEducation/>]}/>
           <Route key='/editSkillsAndInterests' exact path="/editSkillsAndInterests" element={[<UserNavbar />,<EditSkillsAndInterests/>]}/>
           <Route key='/personalProfile' exact path='/personalProfile' element={[<UserNavbar />,<PersonalProfile/>]}/>
-          <Route key='/followRequests' exact path='/followRequests' element={[<UserNavbar />,<FollowRequestsList/>]}/>      
+          <Route key='/followRequests' exact path='/followRequests' element={[<UserNavbar />,<FollowRequestsList/>]}/>   
+          <Route key='/followRequests' exact path='/createPost' element={[<UserNavbar />,<CreatePost/>]}/>    
           </Routes>
         </Router>
     </div>
