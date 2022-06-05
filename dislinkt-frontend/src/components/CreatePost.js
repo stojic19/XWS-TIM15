@@ -15,10 +15,10 @@ const CreatePost = () =>{
                 content: {
                     text: contentText,
                     links: [],
-                    images: [],
-                    owner: {
-                        id: '0a93d6c1-ef32-4287-b7db-8ad566481d53'
-                    }
+                    images: []
+                },
+                owner: {
+                    id: localStorage.getItem('user_id')
                 }
             }
         } 
