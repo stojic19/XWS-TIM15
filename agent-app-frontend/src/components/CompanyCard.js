@@ -53,8 +53,13 @@ const CompanyCard = (props) => {
     }
     return (
         <li className="col-12 col-md-4 col-lg-3 m-2">
-            <div className="cnt-block equal-hight" style={{ maxHeight: "120%", maxWidth:"90%" }}>
-                <h6>{props.company.companyInfo.name}</h6>
+            <div className="cnt-block equal-hight" style={{ maxHeight: "120%", maxWidth: "90%" }}>
+                {
+                    props.admin && <h6>{props.company.companyInfo.name}</h6>
+                }
+                {
+                    !props.admin &&<h6><a href={'/jobOffers/' + props.company.id}>{props.company.companyInfo.name}</a></h6>
+                }
                 <figure><img src={require("../images/user-avatar.png")} className="img-responsive" alt=""></img></figure>
                 <h3>{getFullName()}</h3>
                 <h3>{getUsernameAndEmail()}</h3>
@@ -67,7 +72,7 @@ const CompanyCard = (props) => {
                     props.admin &&
                     <>
                         <button onClick={(e) => accept(e)} type="button" className="btn btn-outline-primary m-1">Accept</button>
-                        <button onClick={(e) => decline(e)} type="button" className="btn btn-outline-primary m-1">Decline</button>
+                        {/*<button onClick={(e) => decline(e)} type="button" className="btn btn-outline-primary m-1">Decline</button>*/}
                     </>
                 }
             </div>
