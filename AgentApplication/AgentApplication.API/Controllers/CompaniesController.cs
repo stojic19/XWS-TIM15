@@ -272,7 +272,7 @@ namespace AgentApplication.API.Controllers
             var role = (HttpContext.Items["role"]?.ToString() ?? string.Empty);
             try
             {
-                Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(id, FetchType.Eager);
+                Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(id);
                 if (company == null) return NotFound("Company not found");
                 if (!role.Equals("Admin") && company.OwnerId != userId)
                 {
