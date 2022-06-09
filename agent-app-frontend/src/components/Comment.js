@@ -3,14 +3,16 @@ import axios from "axios";
 
 const Comment = (props)=>{
 
-    const[name, setName] = useState('')
+    const[firstName, setFirstName] = useState('')
+    const[lastName, setLastName] = useState('')
 
     useEffect(() => {
         const getUserNameById = async () => {
-            axios.get(axios.defaults.baseURL + '/api/Users/' + props.comment.userId)
+            axios.get(axios.defaults.baseURL + 'api/Users/' + props.comment.userId)
                     .then(res => {
-                        console.log(res.data)
-                        setName(res.data.user.name)
+                        //console.log(res.data)
+                        setFirstName(res.data.personalInfo.firstName)
+                        setLastName(res.data.personalInfo.lastName)
                     }).catch(err => {
                         console.log(err);
                     });
@@ -20,7 +22,7 @@ const Comment = (props)=>{
 
     return(
         <li key={props.index} class="list-group-item">
-            {name} : {props.comment.content}</li>
+            {firstName} {lastName} : {props.comment.content}</li>
     );
 }
 
