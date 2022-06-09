@@ -9,6 +9,7 @@ import JobOfferPostList from './JobOfferPostList';
 
 const Profile = (props) => {
     const [jobOffers, setJobOffers] = useState();
+    const history = useNavigate();
 
     const fetchJobOffers = async () => {
 
@@ -16,7 +17,6 @@ const Profile = (props) => {
             .then(res => {
                 let jobOffers = Array.from(res.data.jobOffers);
                 setJobOffers(jobOffers);
-                console.log(jobOffers)
             }).catch(err => {
                 console.log(err)
                 Swal.fire({
@@ -26,6 +26,10 @@ const Profile = (props) => {
                 });
             });
     };
+
+    const editCompanyInfo = () => {
+        history('/editCompanyInfo/' + props.company.id);
+    }
 
     useEffect(() => {
         fetchJobOffers();
@@ -44,7 +48,12 @@ const Profile = (props) => {
                                 <p className="text-muted">{props.company.owner.personalInfo.firstName} {props.company.owner.personalInfo.lastName}</p> 
                                 <p className="text-muted mb-3">@{props.company.owner.username}</p>
                                 <p className="text-muted mb-3">{props.company.owner.personalInfo.email}</p>
-                                
+                                {
+                                    props.company.ownerId === localStorage.getItem('user_id') &&
+                                    <div className="d-flex ">
+                                        <button onClick={() => editCompanyInfo()} className="btn btn-primary follow me-2">Edit company info</button>
+                                    </div>
+                                }
                             </div>
                         </div>
                        

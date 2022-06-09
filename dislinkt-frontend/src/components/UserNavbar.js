@@ -38,9 +38,6 @@ const UserNavbar = () => {
             <li className="nav-item" key={8}>
                 <a className="nav-link" href="/" onClick={(e) => logout(e)}>Logout</a>
             </li>
-            <li className="nav-item" key={9}>
-                <a className="nav-link disabled" href="/" aria-disabled="true">Disabled</a>
-            </li>
         </ul>
         <hr></hr>
     </div>
