@@ -24,8 +24,6 @@ import axios from 'axios';
 import CreatePost from './components/CreatePost';
 import CreateJobOffer from './components/CreateJobOffer';
 
-
-
 axios.defaults.baseURL = "http://localhost:8000/";
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
 //axios.defaults.headers.post['Accept'] = 'application/json';

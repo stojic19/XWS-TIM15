@@ -46,7 +46,7 @@ const CompanyCard = (props) => {
     }
 
     const getFullName = () => {
-        return props.company.owner.personalInfo.firstName + ' ' + props.company.owner.personalInfo.middleName + ' ' + props.company.owner.personalInfo.lastName
+        return props.company.owner.personalInfo.firstName + ' (' + props.company.owner.personalInfo.middleName + ') ' + props.company.owner.personalInfo.lastName
     }
     const getUsernameAndEmail = () => {
         return props.company.owner.username + ' ' + props.company.owner.personalInfo.email;
@@ -55,19 +55,24 @@ const CompanyCard = (props) => {
         <li className="col-12 col-md-4 col-lg-3 m-2">
             <div className="cnt-block equal-hight" style={{ maxHeight: "120%", maxWidth: "90%" }}>
                 {
-                    props.admin && <h6>{props.company.companyInfo.name}</h6>
+                    props.admin && <h6><a href={'/companyProfile/' + props.company.id}>{props.company.companyInfo.name}</a></h6>
                 }
                 {
                     !props.admin &&<h6><a href={'/jobOffers/' + props.company.id}>{props.company.companyInfo.name}</a></h6>
                 }
-                <figure><img src={require("../images/user-avatar.png")} className="img-responsive" alt=""></img></figure>
+                <img style={{height: "45%", width: "40%"}} src={require("../images/company-avatar.jpg")} className="img-responsive" alt=""></img>
+                <br></br>
+                <br></br>
                 <h3>{getFullName()}</h3>
-                <h3>{getUsernameAndEmail()}</h3>
+                <a>@{props.company.owner.username}</a>
+                <br></br>
+                <a>{props.company.owner.personalInfo.email}</a>
+                <br></br>
+                <br></br>
+                <h3>Company info:</h3>
                 <p>{props.company.companyInfo.address}</p>
                 <p>{props.company.companyInfo.email}</p>
                 <p>{props.company.companyInfo.phoneNumber}</p>
-                <p>Description: {props.company.companyInfo.description}</p>
-                <p>Culture: {props.company.companyInfo.culture}</p>
                 {
                     props.admin &&
                     <>
