@@ -11,6 +11,8 @@ import MyJobOffers from './components/MyJobOffers';
 import JobOffersByCompanyId from './components/JobOffersByCompanyId';
 import AllRegisteredCompanies from './components/AllRegisteredCompanies';
 import CreateJobOffer from './components/CreateJobOffer';
+import EditCompanyInfo from './components/EditCompanyInfo';
+import MyCompanies from './components/MyCompanies';
 
 import axios from 'axios';
 
@@ -43,6 +45,8 @@ function App() {
           <Route key='/myJobOffers' exact path="/myJobOffers" element={[<RegularNavbar key='/myJobOffers' />,<MyJobOffers key='/myJobOffers1'/>]} />
           <Route key='/jobOffers' exact path="/jobOffers/:id" element={[<RegularNavbar key='/jobOffers' />,<JobOffersByCompanyId key='/jobOffers1'/>]} />
           <Route key='/createJobOffer' exact path='/createJobOffer' element={[<RegularNavbar key='/createJobOffer1'/>,<CreateJobOffer key='/createJobOffer2'/>]}/>
+          <Route key='/myCompanies' exact path='/myCompanies' element={[<RegularNavbar key='/myCompanies1'/>,<MyCompanies key='/myCompanies2'/>]}/>
+          <Route key='/editCompanyInfo/:id' exact path='/editCompanyInfo/:id' element={[<RegularNavbar key='/editCompanyInfo1'/>,<EditCompanyInfo key='/editCompanyInfo2'/>]}/>
         </Routes>
       </Router>
     </div>

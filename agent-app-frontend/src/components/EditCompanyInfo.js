@@ -1,9 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Swal from "sweetalert2"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
-const CreateCompanyRequest = () => {
+const EditCompanyInfo = () => {
     const history = useNavigate();
     const [address, setAddress] = useState('');
     const [description, setDescription] = useState('');
@@ -11,6 +12,7 @@ const CreateCompanyRequest = () => {
     const [name, setName] = useState('');
     const [culture, setCulture] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const { id } = useParams();
 
     const Validate = () => {
         if (address === "" || description === "" || email === "" ||
@@ -33,12 +35,13 @@ const CreateCompanyRequest = () => {
         return true;
     }
 
-    const addRequest = async (e) => {
+    const editCompany = async (e) => {
         e.preventDefault()
         if (!Validate())
             return;
 
-        let companyInfo = {
+        let data = {
+            id: id,
             name: name,
             address: address,
             email: email,
@@ -47,15 +50,11 @@ const CreateCompanyRequest = () => {
             culture: culture,
         }
 
-        let data = {
-            companyInfo : companyInfo
-        }
-
         const headers = {
             'token': localStorage.getItem('token')
         }
 
-        axios.post(axios.defaults.baseURL + 'api/Companies', data, { headers })
+        axios.put(axios.defaults.baseURL + 'api/Companies', data, { headers })
             .then(res => {
                 console.log(res.data)
                 history('/home')
@@ -69,13 +68,38 @@ const CreateCompanyRequest = () => {
             });
     }
 
+    
+
+    useEffect(() => {
+        const fetchCompanyInfo = async () => {;
+            axios.get(axios.defaults.baseURL + 'api/Companies/' + id)
+                .then(res => {
+                    let companyInfo = res.data.companyInfo;
+                    setAddress(companyInfo.address);
+                    setCulture(companyInfo.culture);
+                    setDescription(companyInfo.description);
+                    setEmail(companyInfo.email);
+                    setName(companyInfo.name);
+                    setPhoneNumber(companyInfo.phoneNumber);
+                }).catch(err => {
+                    console.log(err)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: err.data,
+                    });
+                });
+        };
+        fetchCompanyInfo();
+    }, [])
+
     return (
         <div className="container">
             <div className="row">
                 <div className="col-md-12">
                     <div className="well well-sm">
                         <form className="form-horizontal">
-                            <legend className="text-left header">Company registration request</legend>
+                            <legend className="text-left header">Edit company info</legend>
 
                             <div className="form-group">
                                 <div className="col-md-8">
@@ -114,7 +138,7 @@ const CreateCompanyRequest = () => {
                             <div className="form-group">
                                 <div className="col-md-12 text-left">
                                     <br></br>
-                                    <button onClick={(e) => addRequest(e)} className="btn btn-primary btn-lg">Done</button>
+                                    <button onClick={(e) => editCompany(e)} className="btn btn-primary btn-lg">Done</button>
                                 </div>
                             </div>
 
@@ -125,4 +149,4 @@ const CreateCompanyRequest = () => {
         </div>
     )
 }
-export default CreateCompanyRequest;
+export default EditCompanyInfo;

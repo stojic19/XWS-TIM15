@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import Login from './components/Login';
 import Navbar from './components/Navbar';
@@ -22,6 +23,10 @@ import AllJobOffers from './components/AllJobOffers';
 import axios from 'axios';
 import CreatePost from './components/CreatePost';
 import CreateJobOffer from './components/CreateJobOffer';
+
+useEffect(() => {
+  document.title = "Dislinkt"
+}, [])
 
 axios.defaults.baseURL = "http://localhost:8000/";
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
