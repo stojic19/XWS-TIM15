@@ -1,11 +1,13 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../css/postCard.css'
 import Comment from './Comment';
 import Swal from 'sweetalert2';
+import { projectStorage, projectFirestore, timestamp } from '../firebase/config';
 
 const PostCard = (post) => {
     const [comment, setComment] = useState([])
+    const [image, setImage] = useState();
 
     const LikeCount = () => {
         return post.post.likes.length;
@@ -66,7 +68,7 @@ const PostCard = (post) => {
         };
         console.log(update)
         if (postLiked()) {
-            axios.delete(axios.defaults.baseURL + 'posts/like', {headers: {}, data: update})
+            axios.delete(axios.defaults.baseURL + 'posts/like', { headers: {}, data: update })
                 .then(res => {
                     Swal.fire({
                         icon: 'success',
@@ -96,7 +98,7 @@ const PostCard = (post) => {
             "userId": localStorage.getItem('user_id')
         };
         if (postDisliked()) {
-            axios.delete(axios.defaults.baseURL + 'posts/dislike', {headers: {}, data: update})
+            axios.delete(axios.defaults.baseURL + 'posts/dislike', { headers: {}, data: update })
                 .then(res => {
                     Swal.fire({
                         icon: 'success',
@@ -118,6 +120,23 @@ const PostCard = (post) => {
         }
     }
 
+    const getImage = () => {
+        if (image)
+            return image
+        else
+            return require("../images/user-avatar.png")
+    }
+
+    useEffect(() => {
+        const loadImage = async () => {
+            const storageRef = projectStorage.ref(post.post.content.images[0]);
+            const url = await storageRef.getDownloadURL();
+            setImage(url);
+        }
+        if(post.post.content.images.length>0)
+        loadImage();
+    }, [])
+
     return (
         <div className="container">
             <div className="row">
@@ -125,7 +144,7 @@ const PostCard = (post) => {
                     <div className="[ panel panel-default ] panel-google-plus">
 
                         <div className="panel-heading">
-                            <img className="[ img-circle pull-left ]" src={require("../images/user-avatar.png")} style={{ height: "50px" }} />
+                            <img className="[ img-circle pull-left ]" src={getImage()} style={{ height: "50px" }} />
                             <h3>{post.post.title}</h3> {/*Bolje ime korisnika umesto naslova*/}
                             <h5><span>
                                 {

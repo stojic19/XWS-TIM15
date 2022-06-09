@@ -24,10 +24,6 @@ import axios from 'axios';
 import CreatePost from './components/CreatePost';
 import CreateJobOffer from './components/CreateJobOffer';
 
-useEffect(() => {
-  document.title = "Dislinkt"
-}, [])
-
 axios.defaults.baseURL = "http://localhost:8000/";
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
 //axios.defaults.headers.post['Accept'] = 'application/json';
@@ -40,6 +36,10 @@ axios.interceptors.request.use(function(config){
 });
 
 function App() {
+  useEffect(() => {
+    document.title = "Dislinkt"
+  }, [])
+  
   return (
     <div className="App">
       <Router>
