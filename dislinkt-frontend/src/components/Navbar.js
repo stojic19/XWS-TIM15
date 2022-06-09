@@ -14,9 +14,6 @@ const Navbar = () => {
             <li className="nav-item" key={4}>
                 <a className="nav-link" href="/registration">Registration</a>
             </li>
-            <li className="nav-item" key={5}>
-                <a className="nav-link disabled" href="/" aria-disabled="true">Disabled</a>
-            </li>
         </ul>
         <hr></hr>
     </div>

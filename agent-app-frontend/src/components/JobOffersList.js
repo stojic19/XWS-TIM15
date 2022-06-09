@@ -14,6 +14,7 @@ const JobOffersList = (props) => {
                             return (
                                 <JobOfferCard key={index}
                                     jobOffer={jobOffer}
+                                    myJobOffers={props.myJobOffers}
                                 />
                             );
                         })}
