@@ -6,7 +6,7 @@ import axios from "axios";
 const CompanyProfile = () =>{
 
     const { id } = useParams();
-    const [company, setCompany] = useState({})
+    const [company, setCompany] = useState()
 
         
 

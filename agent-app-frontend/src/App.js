@@ -42,7 +42,7 @@ function App() {
           <Route key='/registrationRequest' exact path="/registrationRequest" element={[<RegularNavbar key='/registrationRequest' />,<CreateCompanyRequest key='/registrationRequest1'/>]} />
           <Route key='/myJobOffers' exact path="/myJobOffers" element={[<RegularNavbar key='/myJobOffers' />,<MyJobOffers key='/myJobOffers1'/>]} />
           <Route key='/jobOffers' exact path="/jobOffers/:id" element={[<RegularNavbar key='/jobOffers' />,<JobOffersByCompanyId key='/jobOffers1'/>]} />
-          <Route path="/companyProfile/:id" element={[<RegularNavbar/>,<CompanyProfile/>]} />
+          <Route key="/companyProfile/:id" path="/companyProfile/:id" element={[<RegularNavbar key="/companyProfile/1"/>,<CompanyProfile key="/companyProfile/2"/>]} />
         </Routes>
       </Router>
     </div>
