@@ -8,7 +8,7 @@ const JobOfferPostList = (props) => {
             {props.offers &&
                 (props.offers).map((offer, index) => {
                     return (
-                        <JobOfferCard key={index} offer={offer} />
+                        <JobOfferCard key={index} jobOffer={offer} />
                     );
                 })}
             {props.offers.length==0 && <h3 style={{textAlign: 'center'}}>No offer to show.</h3>}
