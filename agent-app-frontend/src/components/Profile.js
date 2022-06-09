@@ -16,6 +16,7 @@ const Profile = (props) => {
             .then(res => {
                 let jobOffers = Array.from(res.data.jobOffers);
                 setJobOffers(jobOffers);
+                console.log(jobOffers)
             }).catch(err => {
                 console.log(err)
                 Swal.fire({
