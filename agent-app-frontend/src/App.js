@@ -10,6 +10,7 @@ import Requests from './components/Requests';
 import MyJobOffers from './components/MyJobOffers';
 import JobOffersByCompanyId from './components/JobOffersByCompanyId';
 import AllRegisteredCompanies from './components/AllRegisteredCompanies';
+import CompanyProfile from './components/CompanyProfile';
 
 import axios from 'axios';
 
@@ -41,6 +42,7 @@ function App() {
           <Route key='/registrationRequest' exact path="/registrationRequest" element={[<RegularNavbar key='/registrationRequest' />,<CreateCompanyRequest key='/registrationRequest1'/>]} />
           <Route key='/myJobOffers' exact path="/myJobOffers" element={[<RegularNavbar key='/myJobOffers' />,<MyJobOffers key='/myJobOffers1'/>]} />
           <Route key='/jobOffers' exact path="/jobOffers/:id" element={[<RegularNavbar key='/jobOffers' />,<JobOffersByCompanyId key='/jobOffers1'/>]} />
+          <Route path="/companyProfile/:id" element={[<RegularNavbar/>,<CompanyProfile/>]} />
         </Routes>
       </Router>
     </div>
