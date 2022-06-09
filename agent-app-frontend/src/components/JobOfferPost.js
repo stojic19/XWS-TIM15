@@ -11,35 +11,34 @@ const JobOfferPost = (props) => {
 
                         <div className="panel-heading">
                             <img className="[ img-circle pull-left ]" src={require("../images/job-avatar.png")} style={{ height: "50px" }} />
-                            <h3>{props.offer.position}</h3>
+                            <h3><a href={'/jobOfferProfile/'+ props.company.id + '/' + props.offer.id}>{props.offer.position}</a></h3>
                             <h5><span>
                                 {
                                     (props.offer.timeOfCreation).split("T")[0]
                                 }</span> </h5>
                         </div>
                         <div className="panel-body">
-                            <p>{props.offer.requirements}</p>
-                            <p>{props.offer.description}</p>
+                            <p>Requirements: <br></br>{props.offer.requirements}</p>
+                            <p>Description: <br></br>{props.offer.description}</p>
                         </div>
                         <div className="panel-footer">
-                           
                             {/* <ul className="list-group list-group-flush">
-                                {
-                                    (post.post.comments).map((comment, index) => {
-                                        return (
-                                            <Comment index={index} comment={comment}></Comment>
-                                        );
-                                    })
-                                }
-                            </ul>
-                            <br></br>
-                            <input className="form-control form-control-sm" type="text" placeholder="Add comment..."
-                                onKeyPress={(ev) => {
-                                    if (ev.key === "Enter") {
-                                        ev.preventDefault();
-                                        addPost(ev.target.value);
+                                    {
+                                        (post.post.comments).map((comment, index) => {
+                                            return (
+                                                <Comment index={index} comment={comment}></Comment>
+                                            );
+                                        })
                                     }
-                                }} /> */}
+                                </ul> */}
+                                <br></br>
+                                {/* <input className="form-control form-control-sm" type="text" placeholder="Add comment..."
+                                    onKeyPress={(ev) => {
+                                        if (ev.key === "Enter") {
+                                            ev.preventDefault();
+                                            addPost(ev.target.value);
+                                        }
+                                    }} /> */}
                         </div>
                     </div>
                 </div>

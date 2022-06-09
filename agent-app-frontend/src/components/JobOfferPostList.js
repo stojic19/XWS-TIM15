@@ -9,7 +9,7 @@ const JobOfferPostList = (props) => {
                 (props.offers).map((offer, index) => {
                     return (
 
-                        <JobOfferPost key={index} offer={offer} />
+                        <JobOfferPost key={index} company={props.company} offer={offer} />
 
                     );
                 })}
