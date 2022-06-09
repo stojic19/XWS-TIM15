@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using AgentApplication.API.Attributes;
 using AgentApplication.API.Controllers.Base;
@@ -261,6 +262,29 @@ namespace AgentApplication.API.Controllers
             if (jobOffer == null) return NotFound("Job offer not found");
             company.JobOffers.Remove(jobOffer);
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));
+        }
+
+        [Authorize(new[] { "Regular", "Admin" })]
+        [HttpDelete("{id:guid}")]
+        public IActionResult DeleteCompany(Guid id)
+        {
+            Guid userId = Guid.Parse(HttpContext.Items["id"]?.ToString() ?? string.Empty);
+            var role = (HttpContext.Items["role"]?.ToString() ?? string.Empty);
+            try
+            {
+                Company company = _uow.GetRepository<ICompanyReadRepository>().GetById(id);
+                if (company == null) return NotFound("Company not found");
+                if (!role.Equals("Admin") && company.OwnerId != userId)
+                {
+                    return Unauthorized("Unauthorized access! Only owner and admins can delete company!");
+                }
+                _uow.GetRepository<ICompanyWriteRepository>().Delete(company);
+            }
+            catch (Exception ex)
+            {
+                return Problem("Oops, something went wrong! Try again later!" + ex.Message);
+            }
+            return Ok("Company deleted!");
         }
     }
 }
