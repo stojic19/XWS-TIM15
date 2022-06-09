@@ -80,7 +80,7 @@ const Profile = (props) => {
                                 </div>
                                 <br></br>
                                 <h4>Job offers</h4>
-                                <>{ jobOffers && <JobOfferPostList offers={jobOffers}></JobOfferPostList>}</>
+                                <>{ jobOffers && <JobOfferPostList company={props.company} offers={jobOffers}></JobOfferPostList>}</>
                             </div>
                         </div>
                     </div>
