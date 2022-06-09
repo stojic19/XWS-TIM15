@@ -1,4 +1,4 @@
-import JobOfferCard from "./JobOfferCard";
+import JobOfferPost from "./JobOfferPost";
 
 
 const JobOfferPostList = (props) => {
@@ -8,7 +8,7 @@ const JobOfferPostList = (props) => {
             {props.offers &&
                 (props.offers).map((offer, index) => {
                     return (
-                        <JobOfferCard key={index} offer={offer} />
+                        <JobOfferPost key={index} offer={offer} />
                     );
                 })}
             {props.offers.length==0 && <h3 style={{textAlign: 'center'}}>No offer to show.</h3>}

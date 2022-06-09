@@ -1,11 +1,7 @@
-import axios from 'axios';
-import { useState } from 'react';
+
 import '../css/postCard.css'
-import Comment from './Comment';
-import Swal from 'sweetalert2';
 
 const JobOfferPost = (props) => {
-    //const [comment, setComment] = useState([])
 
     return (
         <div className="container">
@@ -14,7 +10,7 @@ const JobOfferPost = (props) => {
                     <div className="[ panel panel-default ] panel-google-plus">
 
                         <div className="panel-heading">
-                            <img className="[ img-circle pull-left ]" src={require("../images/company-avatar.jpg")} style={{ height: "50px" }} />
+                            <img className="[ img-circle pull-left ]" src={require("../images/job-avatar.png")} style={{ height: "50px" }} />
                             <h3>{props.offer.position}</h3>
                             <h5><span>
                                 {

@@ -77,10 +77,13 @@ const Profile = (props) => {
                                     <p className="py-2">Description:</p>
                                     <p style={{marginLeft: "10%"}} className="py-2 text-muted">{props.company.companyInfo.description}</p>
                                 </div>
+                                <br></br>
+                                <h4>Job offers</h4>
+                                <>{ jobOffers && <JobOfferPostList offers={jobOffers}></JobOfferPostList>}</>
                             </div>
                         </div>
                     </div>
-                    <>{ jobOffers && <JobOfferPostList offers={jobOffers}></JobOfferPostList>}</>
+                
             </div>
         </div>
     );
