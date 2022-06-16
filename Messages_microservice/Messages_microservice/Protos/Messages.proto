@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option csharp_namespace = "Messages_microservice.Protos";
+
+package messages;
+
+service Messages{
+	rpc Get(GetRequest)returns(GetResponse);
+}
+message GetRequest{
+
+}
+
+message GetResponse{
+	string message = 1;
+}
