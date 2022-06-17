@@ -9,6 +9,7 @@ import (
 	"github.com/stojic19/XWS-TIM15/api_gateway/startup/middleware"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/job_offers"
+	"github.com/stojic19/XWS-TIM15/common/proto/messages"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"google.golang.org/grpc"
@@ -56,6 +57,11 @@ func (server *Server) initHandlers() {
 	fmt.Printf("%s:%s\n", server.config.JobOffersHost, server.config.JobOffersPort)
 	jobOffersEndpoint := fmt.Sprintf("%s:%s", server.config.JobOffersHost, server.config.JobOffersPort)
 	err = job_offers.RegisterJobOffersServiceHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, jobOffersEndpoint, opts)
+	if err != nil {
+		panic(err)
+	}
+	messagesEndpoint := fmt.Sprintf("%s:%s", server.config.MessagesHost, server.config.MessagesPort)
+	err = messages.RegisterMessagesHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, messagesEndpoint, opts)
 	if err != nil {
 		panic(err)
 	}

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option go_package = "github.com/stojic19/XWS-TIM15/common/proto/messages";
+
+package messages;
+
+import "google/api/annotations.proto";
+
+service Messages{
+  rpc Get(GetRequest) returns(GetResponse){
+    option(google.api.http) = {
+      get: "/messages"
+    };
+  }
+}
+
+message GetRequest{
+
+}
+
+message GetResponse{
+  string message = 1;
+}

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "githuv.com/stojic19/XWS-TIM15/common/proto/job_offers";
+option go_package = "github.com/stojic19/XWS-TIM15/common/proto/job_offers";
 
 package job_offers;
 
