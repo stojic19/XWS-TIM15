@@ -9,6 +9,7 @@ namespace Messages_microservice.Services
     {
         public override Task<GetResponse> Get(GetRequest request, ServerCallContext context)
         {
+            throw new RpcException(new Status(StatusCode.Unauthenticated, "Unauthorized!"));
             return Task.FromResult(new GetResponse
             {
                 Message = "Alo"
