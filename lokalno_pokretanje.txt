@@ -24,15 +24,18 @@ POSTS_SERVICE_PORT=8002
 POSTS_DB_HOST=localhost
 POSTS_DB_PORT=27017
 
-USERS_SERVICE_HOST=localhost
-USERS_SERVICE_PORT=9090 ???
-USERS_SERVICE_DB_PORT????
-USERS_SERVICE_DB_HOST?????
-
 JOB_OFFERS_SERVICE_PORT=8003
 JOB_OFFERS_SERVICE_HOST=localhost
 JOB_OFFERS_DB_HOST=localhost
 JOB_OFFERS_DB_PORT=27017
+
+MESSAGES_HOST = localhost
+MESSAGES_PORT = 8004
+
+USERS_SERVICE_HOST = localhost
+USERS_PORT = 8005
+USERS_DB_HOST = localhost
+USERS_DB_PORT = 27017
 
 Ko koristi docker desktop...postoji neki problem pri menjanju vrednosti varijabli u .env fajlu, 
 nisam jos pronasao resenje osim da se vrednosti hardkoduju u docker-compose

@@ -19,8 +19,8 @@ func NewConfig() *Config {
 		Port:          LookupEnvOrGetDefault("POSTS_SERVICE_PORT", "8002"),
 		PostsDbHost:   LookupEnvOrGetDefault("POSTS_DB_HOST", "localhost"),
 		PostsDbPort:   LookupEnvOrGetDefault("POSTS_DB_PORT", "27017"),
-		FollowersHost: LookupEnvOrGetDefault("FOLLOWERS_HOST", "localhost"),
-		FollowersPort: LookupEnvOrGetDefault("FOLLOWERS_PORT", "8001"),
+		FollowersHost: LookupEnvOrGetDefault("FOLLOWERS_SERVICE_HOST", "localhost"),
+		FollowersPort: LookupEnvOrGetDefault("FOLLOWERS_SERVICE_PORT", "8001"),
 		UsersHost:     LookupEnvOrGetDefault("USERS_SERVICE_HOST", "localhost"),
 		UsersPort:     LookupEnvOrGetDefault("USERS_PORT", "9090"),
 	}

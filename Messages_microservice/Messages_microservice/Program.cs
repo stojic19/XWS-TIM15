@@ -21,7 +21,7 @@ namespace Messages_microservice
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseUrls(@"http://localhost:" + Environment.GetEnvironmentVariable("MESSAGES_PORT"));
+                    webBuilder.UseUrls(@"http://0.0.0.0:" + Environment.GetEnvironmentVariable("MESSAGES_PORT"));
                     webBuilder.UseStartup<Startup>();
                 });
     }
