@@ -1,4 +1,5 @@
-﻿using Messages_microservice.model;
+﻿using System;
+using Messages_microservice.model;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,7 +12,9 @@ namespace Messages_microservice.Repository
 
         public MessageRepository()
         {
-            var mongoClient = new MongoClient("mongodb://localhost:27017");
+            var mongoClient = new MongoClient("mongodb://" +
+                                              Environment.GetEnvironmentVariable("MESSAGES_DB_HOST") + ":" +
+                                              Environment.GetEnvironmentVariable("MESSAGES_DB_PORT"));
             var mongoDatabase = mongoClient.GetDatabase("messages");
             _messages = mongoDatabase.GetCollection<Message>("messages");
         }

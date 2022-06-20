@@ -98,8 +98,19 @@ services:
     restart: on-failure
     environment: 
         MESSAGES_PORT: ${ENV_MESSAGES_PORT}
+        MESSAGES_DB_HOST: ${ENV_MESSAGES_DB_HOST}
+        MESSAGES_DB_PORT: ${ENV_MESSAGES_DB_PORT}
+    depends_on:
+        - messages_db
     networks:
         - network
+     
+  messages_db:
+    image: mongo
+    container_name: messages_db
+    restart: on-failure
+    networks:
+      - network
      
   users_service:
     image: users_service
