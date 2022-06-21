@@ -57,6 +57,29 @@ service FollowersService{
       get: "/followers/relationship/{followedId}/{followerId}"
     };
   }
+
+  rpc Block(Request) returns(Response){
+    option(google.api.http) = {
+      put: "/followers/block",
+      body: "*"
+    };
+  }
+
+  rpc Unblock(Request) returns(Response){
+    option(google.api.http) = {
+      delete: "/followers/block/{subjectId}/{objectId}"
+    };
+  }
+
+}
+
+message Request{
+  string subjectId = 1;
+  string objectId = 2;
+}
+
+message Response{
+  string response = 1;
 }
 
 message FollowRequest{

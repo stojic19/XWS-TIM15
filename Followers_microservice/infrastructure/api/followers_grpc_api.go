@@ -176,3 +176,35 @@ func (handler *FollowersHandler) RemoveFollowRequest(ctx context.Context, reques
 	responsePb := &followers.RemoveFollowRequestResponse{Response: response}
 	return responsePb, nil
 }
+
+func (handler *FollowersHandler) Block(ctx context.Context, request *followers.Request) (*followers.Response, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
+	response, err := handler.service.Block(request.SubjectId, request.ObjectId)
+	if err != nil {
+		return nil, err
+	}
+	responsePb := &followers.Response{Response: response}
+	return responsePb, nil
+}
+
+func (handler *FollowersHandler) Unblock(ctx context.Context, request *followers.Request) (*followers.Response, error) {
+	//Endpoint protection
+	metadata, _ := metadata.FromIncomingContext(ctx)
+	sub := metadata.Get("sub")
+	if sub == nil || sub[0] == "" {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	//Endpoint protection
+	response, err := handler.service.Unblock(request.SubjectId, request.ObjectId)
+	if err != nil {
+		return nil, err
+	}
+	responsePb := &followers.Response{Response: response}
+	return responsePb, nil
+}

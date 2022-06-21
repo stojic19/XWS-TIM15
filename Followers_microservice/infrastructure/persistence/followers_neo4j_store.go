@@ -318,11 +318,57 @@ func (store *FollowersStore) RemoveFollowRequest(followerId string, followedId s
 	return session.LastBookmark(), nil
 }
 
-func Block(blockerId string, blockedId string) (string, error) {
-	return "nil", nil
+func (store *FollowersStore) Block(blockerId string, blockedId string) (string, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeWrite,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		result, err := tx.Run(
+			"MERGE  (blocker:User {userId: $blockerId}) "+
+				"ON CREATE SET blocker.userId = $blockerId "+
+				"MERGE (blocked:User {userId: $blockedId}) "+
+				"ON CREATE SET blocked.userId = $blockedId "+
+				"WITH blocker, blocked "+
+				"OPTIONAL MATCH (blocker) - [rel] - (blocked) "+
+				"DELETE rel "+
+				"MERGE (blocker) - [b:BLOCK] -> (blocked) ON CREATE SET b.timeStarted = time()",
+			map[string]interface{}{"blockerId": blockerId, "blockedId": blockedId})
+		if err != nil {
+			return nil, err
+		}
+		return result.Consume()
+	})
+	if err != nil {
+		return "Failed to block " + blockerId + " -> " + blockedId, err
+	}
+	return "User blocked", nil
 }
-func Unblock(blockerId string, blockedId string) (string, error) {
-	return "nil", nil
+func (store *FollowersStore) Unblock(blockerId string, blockedId string) (string, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeWrite,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		result, err := tx.Run(
+			"MATCH  (blocker:User {userId: $blockerId}) "+
+				"MATCH (blocked:User {userId: $blockedId}) "+
+				"MATCH (blocker) - [block:BLOCK] -> (blocked) "+
+				"DELETE block",
+			map[string]interface{}{"blockerId": blockerId, "blockedId": blockedId})
+		if err != nil {
+			return nil, err
+		}
+		return result.Consume()
+	})
+	if err != nil {
+		return "Failed unblock: " + blockerId + " -> " + blockedId, err
+	}
+	return "User unblocked", nil
 }
 
 func unsafeClose(closeable io.Closer) {

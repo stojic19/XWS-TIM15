@@ -43,3 +43,9 @@ func (service *FollowersService) Unfollow(followerId string, followedId string) 
 func (service *FollowersService) RemoveFollowRequest(followerId string, followedId string) (string, error) {
 	return service.store.RemoveFollowRequest(followerId, followedId)
 }
+func (service *FollowersService) Block(blockerId string, blockedId string) (string, error) {
+	return service.store.Block(blockerId, blockedId)
+}
+func (service *FollowersService) Unblock(blockerId string, blockedId string) (string, error) {
+	return service.store.Unblock(blockerId, blockedId)
+}
