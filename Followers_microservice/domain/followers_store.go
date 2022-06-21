@@ -11,4 +11,6 @@ type FollowersStore interface {
 	ConfirmFollow(followerId string, followedId string) (string, error)
 	Unfollow(followerId string, followedId string) (string, error)
 	RemoveFollowRequest(followerId string, followedId string) (string, error)
+	Block(blockerId string, blockedId string) (string, error)
+	Unblock(blockerId string, blockedId string) (string, error)
 }

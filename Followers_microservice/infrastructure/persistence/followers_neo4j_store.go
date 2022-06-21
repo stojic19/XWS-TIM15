@@ -318,6 +318,13 @@ func (store *FollowersStore) RemoveFollowRequest(followerId string, followedId s
 	return session.LastBookmark(), nil
 }
 
+func Block(blockerId string, blockedId string) (string, error) {
+	return "nil", nil
+}
+func Unblock(blockerId string, blockedId string) (string, error) {
+	return "nil", nil
+}
+
 func unsafeClose(closeable io.Closer) {
 	if err := closeable.Close(); err != nil {
 		log.Fatal(fmt.Errorf("could not close resource: %w", err))
