@@ -6,11 +6,21 @@ package messages;
 
 service Messages{
 	rpc Get(GetRequest)returns(GetResponse);
+	rpc Add(NewMessage)returns(Message);
 }
 message GetRequest{
 
 }
 
 message GetResponse{
-	string message = 1;
+	repeated Message message = 1;
+}
+
+message NewMessage{
+	string text = 1;
+}
+
+message Message{
+	string id = 1;
+	string text = 2;
 }

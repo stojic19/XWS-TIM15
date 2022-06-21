@@ -98,8 +98,19 @@ services:
     restart: on-failure
     environment: 
         MESSAGES_PORT: ${ENV_MESSAGES_PORT}
+        MESSAGES_DB_HOST: ${ENV_MESSAGES_DB_HOST}
+        MESSAGES_DB_PORT: ${ENV_MESSAGES_DB_PORT}
+    depends_on:
+        - messages_db
     networks:
         - network
+     
+  messages_db:
+    image: mongo
+    container_name: messages_db
+    restart: on-failure
+    networks:
+      - network
      
   users_service:
     image: users_service
@@ -147,6 +158,57 @@ services:
       JOB_OFFERS_SERVICE_PORT:  ${ENV_JOB_OFFERS_SERVICE_PORT}
       MESSAGES_HOST:            ${ENV_MESSAGES_HOST}
       MESSAGES_PORT:            ${ENV_MESSAGES_PORT}
+    networks:
+      - network
+
+  agent_application:
+    image: agent_application
+    container_name: agent_application
+    build:
+        context: .
+        dockerfile: ./AgentApplication/Dockerfile
+    restart: on-failure
+    ports:
+      - 9000:9000
+    environment:
+      AGENT_APPLICATION_DB_CONNECTION_STRING: ${ENV_AGENT_APPLICATION_DB_CONNECTION_STRING}
+    depends_on:
+        - agent_app_db
+    networks:
+      - network
+        
+  agent_app_db:
+    image: postgres
+    container_name: agent_app_db
+    restart: on-failure
+    environment:
+        POSTGRES_PASSWORD: "root"
+        POSTGRES_USER: "postgres"
+        POSTGRES_DB: "AgentApplication"
+    networks:
+      - network
+
+  dislinkt_frontend:
+    image: dislinkt_frontend
+    container_name: dislinkt_frontend
+    build:
+        context: .
+        dockerfile: ./dislinkt-frontend/Dockerfile
+    restart: on-failure
+    ports:
+      - 3002:3000
+    networks:
+      - network
+
+  agent_frontend:
+    image: agent_frontend
+    container_name: agent_frontend
+    build:
+        context: .
+        dockerfile: ./agent-app-frontend/Dockerfile
+    restart: on-failure
+    ports:
+      - 3001:3000
     networks:
       - network
 
