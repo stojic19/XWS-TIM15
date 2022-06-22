@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -29,6 +30,8 @@ public class User {
     private List<String> interests;
     private List<String> skills;
 
+    private UUID apiKey;
+
     public User(String id, String username, String password, String name, String email, String telephoneNo, String gender, Date dateOfBirth, String biography, boolean isPrivate, List<Education> education, List<WorkExperience> workExperience, List<String> interests, List<String> skills) {
         this.id = id;
         this.username = username;
@@ -44,6 +47,11 @@ public class User {
         this.workExperience = workExperience;
         this.interests = interests;
         this.skills = skills;
+        apiKey = UUID.randomUUID();
+    }
+
+    public User(){
+
     }
 
     public boolean isPrivate() {
@@ -157,4 +165,8 @@ public class User {
     public void setBiography(String biography) {
         this.biography = biography;
     }
+
+    public UUID getApiKey(){return apiKey;}
+
+    public void setApiKey(UUID apikey){this.apiKey = apikey;}
 }

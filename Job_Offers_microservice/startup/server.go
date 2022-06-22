@@ -49,7 +49,8 @@ func (server *Server) initJobOffersService(store domain.JobOffersStore) *applica
 }
 
 func (server *Server) initJobOffersHandler(jobOffersService *application.JobOffersService) *api.JobOffersHandler {
-	return api.NewJobOffersHandler(jobOffersService)
+	usersEndpoint := fmt.Sprintf("%s:%s", server.config.UsersHost, server.config.UsersPort)
+	return api.NewJobOffersHandler(jobOffersService, usersEndpoint)
 }
 
 func (server *Server) startGrpcServer(jobOffersHandler *api.JobOffersHandler) {

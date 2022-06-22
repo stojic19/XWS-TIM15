@@ -40,6 +40,7 @@ type UsersServiceClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Validate(ctx context.Context, in *ValidateRequest, opts ...grpc.CallOption) (*ValidateResponse, error)
 	GetUserForEdit(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+	ValidateApiKey(ctx context.Context, in *ApiKey, opts ...grpc.CallOption) (*ApiKeyResponse, error)
 }
 
 type usersServiceClient struct {
@@ -212,6 +213,15 @@ func (c *usersServiceClient) GetUserForEdit(ctx context.Context, in *GetUserRequ
 	return out, nil
 }
 
+func (c *usersServiceClient) ValidateApiKey(ctx context.Context, in *ApiKey, opts ...grpc.CallOption) (*ApiKeyResponse, error) {
+	out := new(ApiKeyResponse)
+	err := c.cc.Invoke(ctx, "/users.UsersService/ValidateApiKey", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UsersServiceServer is the server API for UsersService service.
 // All implementations must embed UnimplementedUsersServiceServer
 // for forward compatibility
@@ -234,6 +244,7 @@ type UsersServiceServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Validate(context.Context, *ValidateRequest) (*ValidateResponse, error)
 	GetUserForEdit(context.Context, *GetUserRequest) (*GetUserResponse, error)
+	ValidateApiKey(context.Context, *ApiKey) (*ApiKeyResponse, error)
 	mustEmbedUnimplementedUsersServiceServer()
 }
 
@@ -294,6 +305,9 @@ func (UnimplementedUsersServiceServer) Validate(context.Context, *ValidateReques
 }
 func (UnimplementedUsersServiceServer) GetUserForEdit(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserForEdit not implemented")
+}
+func (UnimplementedUsersServiceServer) ValidateApiKey(context.Context, *ApiKey) (*ApiKeyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidateApiKey not implemented")
 }
 func (UnimplementedUsersServiceServer) mustEmbedUnimplementedUsersServiceServer() {}
 
@@ -632,6 +646,24 @@ func _UsersService_GetUserForEdit_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UsersService_ValidateApiKey_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApiKey)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UsersServiceServer).ValidateApiKey(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/users.UsersService/ValidateApiKey",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UsersServiceServer).ValidateApiKey(ctx, req.(*ApiKey))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UsersService_ServiceDesc is the grpc.ServiceDesc for UsersService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -710,6 +742,10 @@ var UsersService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserForEdit",
 			Handler:    _UsersService_GetUserForEdit_Handler,
+		},
+		{
+			MethodName: "ValidateApiKey",
+			Handler:    _UsersService_ValidateApiKey_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -3,8 +3,10 @@ package api
 import (
 	"context"
 	"github.com/stojic19/XWS-TIM15/common/proto/job_offers"
+	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/application"
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/domain"
+	"github.com/stojic19/XWS-TIM15/job_offers_microservice/infrastructure/services"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -13,12 +15,14 @@ import (
 
 type JobOffersHandler struct {
 	job_offers.UnimplementedJobOffersServiceServer
-	service *application.JobOffersService
+	service            *application.JobOffersService
+	usersClientAddress string
 }
 
-func NewJobOffersHandler(service *application.JobOffersService) *JobOffersHandler {
+func NewJobOffersHandler(service *application.JobOffersService, usersEndpoint string) *JobOffersHandler {
 	return &JobOffersHandler{
-		service: service,
+		service:            service,
+		usersClientAddress: usersEndpoint,
 	}
 }
 
@@ -71,12 +75,17 @@ func (handler *JobOffersHandler) Create(ctx context.Context, request *job_offers
 	metadata, _ := metadata.FromIncomingContext(ctx)
 	sub := metadata.Get("sub")
 	apiKey := metadata.Get("apiKey")
-	if (sub == nil || sub[0] == "") && (apiKey == nil || apiKey[0] != GetAgentAppApiKey()) {
+	userClient := services.NewUsersClient(handler.usersClientAddress)
+	response, err := userClient.ValidateApiKey(context.TODO(), &users.ApiKey{ApiKey: apiKey[0]})
+	if err != nil {
+		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	}
+	if (sub == nil || sub[0] == "") && (response.IsValid == false) {
 		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
 	}
 
 	jobOffer := mapNewJobOffer(request)
-	err := handler.service.Create(jobOffer)
+	err = handler.service.Create(jobOffer)
 	if err != nil {
 		return &job_offers.Response{
 			Message: "Oops, something went wrong. Try again!",

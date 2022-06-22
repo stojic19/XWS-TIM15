@@ -3,6 +3,8 @@ package com.example.usermicroservice.service.Impl;
 import com.example.usermicroservice.*;
 import com.example.usermicroservice.AddUserRequest;
 import com.example.usermicroservice.AddUserResponse;
+import com.example.usermicroservice.ApiKey;
+import com.example.usermicroservice.ApiKeyResponse;
 import com.example.usermicroservice.GetEducationResponse;
 import com.example.usermicroservice.GetInterestsResponse;
 import com.example.usermicroservice.GetSkillsResponse;
@@ -135,6 +137,7 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
                     .setTelephoneNo(presentUser.getTelephoneNo())
                     .setName(presentUser.getName())
                     .setIsPrivate(presentUser.isPrivate())
+                    .setApikey((presentUser.getApiKey() == null) ? "no api key" : presentUser.getApiKey().toString())
             ).build();
         }else{
             response = GetUserResponse.newBuilder().setUser(com.example.usermicroservice.User.newBuilder()).build();
@@ -158,6 +161,7 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
                     .setTelephoneNo(user.getTelephoneNo())
                     .setName(user.getName())
                     .setIsPrivate(user.isPrivate())
+                    .setApikey((user.getApiKey() == null) ? "no api key" : user.getApiKey().toString())
                     .build();
             users.add(protoUser);
         }
@@ -450,6 +454,21 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
         }
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+    }
+
+    @Override
+    public void validateApiKey(ApiKey apiKey, StreamObserver<ApiKeyResponse> observer){
+        List<User> users = userRepository.findAll();
+        boolean found = false;
+        for(User loopUpser:users){
+            if(loopUpser.getApiKey() == null)continue;
+            if(loopUpser.getApiKey().compareTo(UUID.fromString(apiKey.getApiKey())) == 0){
+                found = true;
+                break;
+            }
+        }
+        observer.onNext(ApiKeyResponse.newBuilder().setIsValid(found).build());
+        observer.onCompleted();
     }
 
     private String getFormattedDateForGetRequest(Date date){
