@@ -6,14 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="092b6a75-e4db-4b16-9c7d-774319aa8f74" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Messages_microservice/Messages_microservice/Messages_microservice.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Messages_microservice/Messages_microservice/Messages_microservice.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Messages_microservice/Messages_microservice/Protos/Messages.proto" beforeDir="false" afterPath="$PROJECT_DIR$/Messages_microservice/Messages_microservice/Protos/Messages.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Messages_microservice/Messages_microservice/Services/MessagesService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Messages_microservice/Messages_microservice/Services/MessagesService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Messages_microservice/Messages_microservice/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Messages_microservice/Messages_microservice/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/messages/messages.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/messages/messages.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/messages/messages.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/messages/messages.pb.gw.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/messages/messages.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/messages/messages.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/messages/messages_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/messages/messages_grpc.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/application/followers_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/application/followers_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/domain/followers_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/domain/followers_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/infrastructure/persistence/followers_neo4j_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/infrastructure/persistence/followers_neo4j_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.pb.gw.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers_grpc.pb.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +58,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;go.vgo&quot;
   }
 }</component>
-  <component name="RunManager" selected="Go Build.go build main.go">
+  <component name="RunManager" selected="Go Build.go build main.go (2)">
     <configuration name="go build main.go (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="XWS-TIM15" />
       <working_directory value="$PROJECT_DIR$/Posts_microservice" />
@@ -93,9 +93,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build main.go (2)" />
         <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build main.go (3)" />
-        <item itemvalue="Go Build.go build main.go (2)" />
         <item itemvalue="Go Build.go build main.go (1)" />
       </list>
     </recent_temporary>
@@ -103,6 +103,17 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
