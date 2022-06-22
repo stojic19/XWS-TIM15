@@ -71,6 +71,18 @@ service FollowersService{
     };
   }
 
+  rpc GetBlockedAccounts(Id)returns(IdList){
+    option(google.api.http) = {
+      get: "/followers/blocked/{id}"
+    };
+  }
+
+  rpc GetBlockerAccounts(Id)returns(IdList){
+    option(google.api.http) = {
+      get: "/followers/blockers/{id}"
+    };
+  }
+
 }
 
 message Request{
@@ -80,6 +92,14 @@ message Request{
 
 message Response{
   string response = 1;
+}
+
+message Id{
+  string id = 1;
+}
+
+message IdList{
+  repeated Id ids = 1;
 }
 
 message FollowRequest{

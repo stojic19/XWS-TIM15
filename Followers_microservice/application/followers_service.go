@@ -49,3 +49,9 @@ func (service *FollowersService) Block(blockerId string, blockedId string) (stri
 func (service *FollowersService) Unblock(blockerId string, blockedId string) (string, error) {
 	return service.store.Unblock(blockerId, blockedId)
 }
+func (service *FollowersService) GetBlocked(id string) ([]*domain.User, error) {
+	return service.store.GetBlocked(id)
+}
+func (service *FollowersService) GetBlockers(id string) ([]*domain.User, error) {
+	return service.store.GetBlockers(id)
+}

@@ -371,6 +371,68 @@ func (store *FollowersStore) Unblock(blockerId string, blockedId string) (string
 	return "User unblocked", nil
 }
 
+func (store *FollowersStore) GetBlocked(id string) ([]*domain.User, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeRead,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	followers, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		records, err := tx.Run(
+			"MATCH (:User {userId:$id})-[:BLOCK]->(blocked:User) RETURN blocked",
+			map[string]interface{}{"id": id})
+		if err != nil {
+			return nil, err
+		}
+		results := []*domain.User{}
+		for records.Next() {
+			record := records.Record()
+			id, _ := record.Get("blocked")
+			user := domain.User{
+				Id: id.(dbtype.Node).Props["userId"].(string),
+			}
+			results = append(results, &user)
+		}
+		return results, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return followers.([]*domain.User), nil
+}
+
+func (store *FollowersStore) GetBlockers(id string) ([]*domain.User, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeRead,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	followers, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		records, err := tx.Run(
+			"MATCH (:User {userId:$id})<-[:BLOCK]-(blocker:User) RETURN blocker",
+			map[string]interface{}{"id": id})
+		if err != nil {
+			return nil, err
+		}
+		results := []*domain.User{}
+		for records.Next() {
+			record := records.Record()
+			id, _ := record.Get("blocker")
+			user := domain.User{
+				Id: id.(dbtype.Node).Props["userId"].(string),
+			}
+			results = append(results, &user)
+		}
+		return results, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return followers.([]*domain.User), nil
+}
+
 func unsafeClose(closeable io.Closer) {
 	if err := closeable.Close(); err != nil {
 		log.Fatal(fmt.Errorf("could not close resource: %w", err))

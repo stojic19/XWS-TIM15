@@ -208,3 +208,31 @@ func (handler *FollowersHandler) Unblock(ctx context.Context, request *followers
 	responsePb := &followers.Response{Response: response}
 	return responsePb, nil
 }
+
+func (handler *FollowersHandler) GetBlockedAccounts(ctx context.Context, request *followers.Id) (*followers.IdList, error) {
+	users, err := handler.service.GetBlocked(request.Id)
+	if err != nil {
+		return nil, err
+	}
+	usersPb := &followers.IdList{
+		Ids: []*followers.Id{},
+	}
+	for _, user := range users {
+		usersPb.Ids = append(usersPb.Ids, &followers.Id{Id: user.Id})
+	}
+	return usersPb, nil
+}
+
+func (handler *FollowersHandler) GetBlockerAccounts(ctx context.Context, request *followers.Id) (*followers.IdList, error) {
+	users, err := handler.service.GetBlockers(request.Id)
+	if err != nil {
+		return nil, err
+	}
+	usersPb := &followers.IdList{
+		Ids: []*followers.Id{},
+	}
+	for _, user := range users {
+		usersPb.Ids = append(usersPb.Ids, &followers.Id{Id: user.Id})
+	}
+	return usersPb, nil
+}

@@ -7,17 +7,13 @@
     <list default="true" id="092b6a75-e4db-4b16-9c7d-774319aa8f74" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Followers_microservice/application/followers_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/application/followers_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/domain/followers_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/domain/followers_store.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Followers_microservice/infrastructure/persistence/followers_neo4j_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/infrastructure/persistence/followers_neo4j_store.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/followers/Followers.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/followers/followers.pb.gw.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.pb.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.pb.gw.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common/proto/followers/followers_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers_grpc.pb.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/proto/users/users.pb.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/proto/users/users.pb.gw.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/proto/proto/users/users_grpc.pb.go" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,26 +117,5 @@
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/Followers_microservice/infrastructure/persistence/followers_neo4j_store.go</url>
-          <line>190</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go</url>
-          <line>120</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/Followers_microservice/infrastructure/persistence/followers_neo4j_store.go</url>
-          <line>325</line>
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
