@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Text;
 using AgentApplication.ClassLib.Database.Infrastructure;
 using AutoMapper;
@@ -11,7 +12,9 @@ namespace AgentApplication.API.Controllers.Base
 {
     public class BaseApiController : ControllerBase
     {
-        protected string _dislinktApiGatewayBaseUrl => "http://localhost:8000/";
+        protected string _dislinktApiGatewayBaseUrl => "http://" +
+                                                       Environment.GetEnvironmentVariable("GATEWAY_HOST") + ":" +
+                                                       Environment.GetEnvironmentVariable("GATEWAY_PORT") + "/";
         protected static HttpClient _httpClient = new ();
         protected readonly IUnitOfWork _uow;
         protected readonly IMapper _mapper;

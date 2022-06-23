@@ -73,9 +73,11 @@ services:
         dockerfile: ./Job_Offers_microservice/Dockerfile
     restart: on-failure
     environment: 
-        JOB_OFFERS_SERVICE_PORT: ${ENV_JOB_OFFERS_SERVICE_PORT}
-        JOB_OFFERS_DB_HOST: ${ENV_JOB_OFFERS_DB_HOST}
-        JOB_OFFERS_DB_PORT: ${ENV_JOB_OFFERS_DB_PORT}
+        JOB_OFFERS_SERVICE_PORT:    ${ENV_JOB_OFFERS_SERVICE_PORT}
+        JOB_OFFERS_DB_HOST:         ${ENV_JOB_OFFERS_DB_HOST}
+        JOB_OFFERS_DB_PORT:         ${ENV_JOB_OFFERS_DB_PORT}
+        USERS_SERVICE_HOST:         ${ENV_USERS_SERVICE_HOST}
+        USERS_PORT:                 ${ENV_USERS_PORT}
     depends_on:
         - job_offers_db
     networks:
@@ -172,6 +174,8 @@ services:
       - 9000:9000
     environment:
       AGENT_APPLICATION_DB_CONNECTION_STRING: ${ENV_AGENT_APPLICATION_DB_CONNECTION_STRING}
+      GATEWAY_PORT: ${ENV_GATEWAY_PORT}
+      GATEWAY_HOST: ${ENV_GATEWAY_HOST}
     depends_on:
         - agent_app_db
     networks:
