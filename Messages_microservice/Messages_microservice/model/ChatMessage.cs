@@ -4,11 +4,11 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Messages_microservice.model
 {
-    public class Message
+    public class ChatMessage
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public Guid UserId { get; set; }
         public string Text { get; set; }
+        public DateTime CreatedDate { get; set; }
+
     }
 }
