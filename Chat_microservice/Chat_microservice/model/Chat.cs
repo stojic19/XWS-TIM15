@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Messages_microservice.model
+namespace Chat_microservice.model
 {
     public class Chat
     {

@@ -7,9 +7,9 @@ import (
 	"github.com/stojic19/XWS-TIM15/api_gateway/infrastructure/api"
 	"github.com/stojic19/XWS-TIM15/api_gateway/startup/config"
 	"github.com/stojic19/XWS-TIM15/api_gateway/startup/middleware"
+	"github.com/stojic19/XWS-TIM15/common/proto/chat"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/job_offers"
-	"github.com/stojic19/XWS-TIM15/common/proto/messages"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"google.golang.org/grpc"
@@ -60,8 +60,8 @@ func (server *Server) initHandlers() {
 	if err != nil {
 		panic(err)
 	}
-	messagesEndpoint := fmt.Sprintf("%s:%s", server.config.MessagesHost, server.config.MessagesPort)
-	err = messages.RegisterMessagesHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, messagesEndpoint, opts)
+	chatEndpoint := fmt.Sprintf("%s:%s", server.config.ChatHost, server.config.ChatPort)
+	err = chat.RegisterChatServiceGrpcHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, chatEndpoint, opts)
 	if err != nil {
 		panic(err)
 	}

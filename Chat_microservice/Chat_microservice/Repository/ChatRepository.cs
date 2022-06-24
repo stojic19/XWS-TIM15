@@ -1,21 +1,21 @@
 ﻿using System;
-using Messages_microservice.model;
+using Chat_microservice.model;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading;
 using MongoDB.Bson;
 
-namespace Messages_microservice.Repository
+namespace Chat_microservice.Repository
 {
-    public class MessageRepository : IMessageRepository
+    public class ChatRepository : IChatRepository
     {
         private readonly IMongoCollection<Chat> _chats;
 
-        public MessageRepository()
+        public ChatRepository()
         {
             var mongoClient = new MongoClient("mongodb://" +
-                                              Environment.GetEnvironmentVariable("MESSAGES_DB_HOST") + ":" +
-                                              Environment.GetEnvironmentVariable("MESSAGES_DB_PORT"));
+                                              Environment.GetEnvironmentVariable("CHAT_DB_HOST") + ":" +
+                                              Environment.GetEnvironmentVariable("CHAT_DB_PORT"));
             var mongoDatabase = mongoClient.GetDatabase("chats");
             _chats = mongoDatabase.GetCollection<Chat>("chats");
         }
@@ -38,6 +38,20 @@ namespace Messages_microservice.Repository
 
             var chat = _chats.Find(Builders<Chat>.Filter.Or(filter1, filter2)).FirstOrDefault();
             return chat;
+        }
+
+        public IEnumerable<Chat> GetForUser(Guid userId)
+        {
+            var filter11 = Builders<Chat>.Filter.Eq(c => c.FirstParticipant.UserId, userId);
+            var filter12 = Builders<Chat>.Filter.Eq(c => c.FirstParticipant.BlockedChat, false);
+
+            var filter21 = Builders<Chat>.Filter.Eq(c => c.SecondParticipant.UserId, userId);
+            var filter22 = Builders<Chat>.Filter.Eq(c => c.SecondParticipant.BlockedChat, false);
+
+            var filter1 = Builders<Chat>.Filter.And(filter11, filter12);
+            var filter2 = Builders<Chat>.Filter.And(filter21, filter22);
+
+            return _chats.Find(Builders<Chat>.Filter.Or(filter1, filter2)).ToEnumerable();
         }
 
         public Chat Add(Chat chat)

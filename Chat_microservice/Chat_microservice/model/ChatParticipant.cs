@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Messages_microservice.model
+namespace Chat_microservice.model
 {
     public class ChatParticipant
     {

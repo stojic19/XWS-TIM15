@@ -7,10 +7,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Messages_microservice.Repository;
-using Messages_microservice.Services;
+using Chat_microservice.Repository;
+using Chat_microservice.Services;
 
-namespace Messages_microservice
+namespace Chat_microservice
 {
     public class Startup
     {
@@ -19,7 +19,8 @@ namespace Messages_microservice
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc();
-            services.AddScoped<IMessageRepository, MessageRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,8 +35,7 @@ namespace Messages_microservice
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
-                endpoints.MapGrpcService<MessagesService>();
+                endpoints.MapGrpcService<ChatService>();
             });
         }
     }
