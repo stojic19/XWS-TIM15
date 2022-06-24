@@ -8,6 +8,8 @@ type Config struct {
 	Port            string
 	JobOffersDbPort string
 	JobOffersDbHost string
+	UsersHost       string
+	UsersPort       string
 }
 
 func NewConfig() *Config {
@@ -15,6 +17,8 @@ func NewConfig() *Config {
 		Port:            LookupEnvOrGetDefault("JOB_OFFERS_SERVICE_PORT", "8003"),
 		JobOffersDbHost: LookupEnvOrGetDefault("JOB_OFFERS_DB_HOST", "localhost"),
 		JobOffersDbPort: LookupEnvOrGetDefault("JOB_OFFERS_DB_PORT", "27017"),
+		UsersHost:       LookupEnvOrGetDefault("USERS_SERVICE_HOST", "localhost"),
+		UsersPort:       LookupEnvOrGetDefault("USERS_PORT", "8005"),
 	}
 }
 

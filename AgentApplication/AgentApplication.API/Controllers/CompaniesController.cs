@@ -188,7 +188,7 @@ namespace AgentApplication.API.Controllers
                 RequestUri = new Uri(_dislinktApiGatewayBaseUrl + "job_offers"),
                 Content = GetContent(_mapper.Map<NewJobOfferToDislinktDto>(jobOffer))
             };
-            request.Headers.Add("apiKey", _config["DislinktApiKey"]);
+            request.Headers.Add("apiKey", dto.ApiKey.ToString());
             var result = await _httpClient.SendAsync(request);
             if (result.StatusCode != HttpStatusCode.OK) return BadRequest(result.ToString());
             return Ok(_uow.GetRepository<ICompanyWriteRepository>().Update(company));

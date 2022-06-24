@@ -318,6 +318,121 @@ func (store *FollowersStore) RemoveFollowRequest(followerId string, followedId s
 	return session.LastBookmark(), nil
 }
 
+func (store *FollowersStore) Block(blockerId string, blockedId string) (string, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeWrite,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		result, err := tx.Run(
+			"MERGE  (blocker:User {userId: $blockerId}) "+
+				"ON CREATE SET blocker.userId = $blockerId "+
+				"MERGE (blocked:User {userId: $blockedId}) "+
+				"ON CREATE SET blocked.userId = $blockedId "+
+				"WITH blocker, blocked "+
+				"OPTIONAL MATCH (blocker) - [rel] - (blocked) "+
+				"DELETE rel "+
+				"MERGE (blocker) - [b:BLOCK] -> (blocked) ON CREATE SET b.timeStarted = time()",
+			map[string]interface{}{"blockerId": blockerId, "blockedId": blockedId})
+		if err != nil {
+			return nil, err
+		}
+		return result.Consume()
+	})
+	if err != nil {
+		return "Failed to block " + blockerId + " -> " + blockedId, err
+	}
+	return "User blocked", nil
+}
+func (store *FollowersStore) Unblock(blockerId string, blockedId string) (string, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeWrite,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		result, err := tx.Run(
+			"MATCH  (blocker:User {userId: $blockerId}) "+
+				"MATCH (blocked:User {userId: $blockedId}) "+
+				"MATCH (blocker) - [block:BLOCK] -> (blocked) "+
+				"DELETE block",
+			map[string]interface{}{"blockerId": blockerId, "blockedId": blockedId})
+		if err != nil {
+			return nil, err
+		}
+		return result.Consume()
+	})
+	if err != nil {
+		return "Failed unblock: " + blockerId + " -> " + blockedId, err
+	}
+	return "User unblocked", nil
+}
+
+func (store *FollowersStore) GetBlocked(id string) ([]*domain.User, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeRead,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	followers, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		records, err := tx.Run(
+			"MATCH (:User {userId:$id})-[:BLOCK]->(blocked:User) RETURN blocked",
+			map[string]interface{}{"id": id})
+		if err != nil {
+			return nil, err
+		}
+		results := []*domain.User{}
+		for records.Next() {
+			record := records.Record()
+			id, _ := record.Get("blocked")
+			user := domain.User{
+				Id: id.(dbtype.Node).Props["userId"].(string),
+			}
+			results = append(results, &user)
+		}
+		return results, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return followers.([]*domain.User), nil
+}
+
+func (store *FollowersStore) GetBlockers(id string) ([]*domain.User, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeRead,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	followers, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		records, err := tx.Run(
+			"MATCH (:User {userId:$id})<-[:BLOCK]-(blocker:User) RETURN blocker",
+			map[string]interface{}{"id": id})
+		if err != nil {
+			return nil, err
+		}
+		results := []*domain.User{}
+		for records.Next() {
+			record := records.Record()
+			id, _ := record.Get("blocker")
+			user := domain.User{
+				Id: id.(dbtype.Node).Props["userId"].(string),
+			}
+			results = append(results, &user)
+		}
+		return results, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return followers.([]*domain.User), nil
+}
+
 func unsafeClose(closeable io.Closer) {
 	if err := closeable.Close(); err != nil {
 		log.Fatal(fmt.Errorf("could not close resource: %w", err))

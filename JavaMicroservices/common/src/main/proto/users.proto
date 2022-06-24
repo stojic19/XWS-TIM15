@@ -44,7 +44,19 @@ service UsersService{
   }
   rpc GetUserForEdit(GetUserRequest) returns(GetUserResponse){
   }
+  rpc ValidateApiKey(ApiKey) returns(ApiKeyResponse){
+
+  }
 }
+
+message ApiKey{
+  string apiKey = 1;
+}
+
+message ApiKeyResponse{
+  bool isValid = 1;
+}
+
 message AddUserRequest{
   string username = 1;
   string password = 2;
@@ -100,6 +112,7 @@ message User{
   string dateOfBirth = 8;
   string biography = 9;
   bool isPrivate = 10;
+  string apikey = 11;
 }
 
 message GetUserByUsernameRequest{

@@ -29,12 +29,7 @@ const CompanyCard = (props) => {
 
     const decline = (e) => {
         e.preventDefault();
-        return;
-        /*const update = {
-            "followerId": localStorage.getItem('user_id'),
-            "followedId": props.user.id
-        };
-        axios.delete(axios.defaults.baseURL + 'followers/followRequest', {headers: {}, data: update})
+        axios.delete(axios.defaults.baseURL + 'api/Companies/' + props.company.id, {headers: {}})
             .then(res => {
                 Swal.fire({
                     icon: 'success',
@@ -42,7 +37,7 @@ const CompanyCard = (props) => {
                     text: res.data.response,
                 });
                 window.location.reload()
-            });*/
+            });
     }
 
     const getFullName = () => {
@@ -55,10 +50,10 @@ const CompanyCard = (props) => {
         <li className="col-12 col-md-4 col-lg-3 m-2">
             <div className="cnt-block equal-hight" style={{ maxHeight: "120%", maxWidth: "90%" }}>
                 {
-                    props.admin && <h6><a href={'/companyProfile/' + props.company.id}>{props.company.companyInfo.name}</a></h6>
+                    props.admin && <h6>{props.company.companyInfo.name}</h6>
                 }
                 {
-                    !props.admin &&<h6><a href={'/jobOffers/' + props.company.id}>{props.company.companyInfo.name}</a></h6>
+                    !props.admin && <h6><a href={'/companyProfile/' + props.company.id}>{props.company.companyInfo.name}</a></h6>
                 }
                 <img style={{height: "45%", width: "40%"}} src={require("../images/company-avatar.jpg")} className="img-responsive" alt=""></img>
                 <br></br>
@@ -77,7 +72,7 @@ const CompanyCard = (props) => {
                     props.admin &&
                     <>
                         <button onClick={(e) => accept(e)} type="button" className="btn btn-outline-primary m-1">Accept</button>
-                        {/*<button onClick={(e) => decline(e)} type="button" className="btn btn-outline-primary m-1">Decline</button>*/}
+                        <button onClick={(e) => decline(e)} type="button" className="btn btn-outline-primary m-1">Decline</button>
                     </>
                 }
             </div>

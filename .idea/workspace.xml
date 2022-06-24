@@ -6,17 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="092b6a75-e4db-4b16-9c7d-774319aa8f74" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/CreatePost.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/CreatePost.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/application/followers_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/application/followers_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/domain/followers_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/domain/followers_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/infrastructure/api/followers_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/infrastructure/persistence/followers_neo4j_store.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/infrastructure/persistence/followers_neo4j_store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.pb.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.pb.gw.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.pb.gw.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers.proto" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/proto/followers/followers_grpc.pb.go" beforeDir="false" afterPath="$PROJECT_DIR$/common/proto/followers/followers_grpc.pb.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../Program Files/Go" />
+  <component name="GOROOT" url="file://C:/Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -34,36 +38,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "configurable..is.expanded": "false",
-    "configurable.GoLibrariesConfigurable.is.expanded": "true",
-    "go.import.settings.migrated": "true",
-    "go.sdk.automatically.set": "true",
-    "last_opened_file_path": "C:/Users/Aleksa",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "go.vgo"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.go.format.on.save.advertiser.fired&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;configurable..is.expanded&quot;: &quot;false&quot;,
+    &quot;configurable.GoLibrariesConfigurable.is.expanded&quot;: &quot;true&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Aleksandar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;go.vgo&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Go Build.go build main.go (3)">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="XWS-TIM15" />
-      <working_directory value="$PROJECT_DIR$" />
-      <go_parameters value="-i" />
-      <kind value="FILE" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
+}</component>
+  <component name="RunManager" selected="Go Build.go build main.go (2)">
     <configuration name="go build main.go (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="XWS-TIM15" />
       <working_directory value="$PROJECT_DIR$/Posts_microservice" />
@@ -96,21 +91,11 @@
       <filePath value="$PROJECT_DIR$/api_gateway/main.go" />
       <method v="2" />
     </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="XWS-TIM15" />
-      <working_directory value="$PROJECT_DIR$" />
-      <go_parameters value="-i" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build main.go (3)" />
-        <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build main.go (2)" />
+        <item itemvalue="Go Build.go build main.go" />
+        <item itemvalue="Go Build.go build main.go (3)" />
         <item itemvalue="Go Build.go build main.go (1)" />
       </list>
     </recent_temporary>
@@ -118,6 +103,17 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

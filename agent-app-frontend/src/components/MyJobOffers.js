@@ -14,10 +14,22 @@ const MyJobOffers = () => {
         setLoading(true);
         axios.get(axios.defaults.baseURL + 'api/Companies/User/' + localStorage.getItem('user_id'))
             .then(res => {
-                let data = res.data;
-                console.log(data);
-                let jobOffers = Array.from(res.data[0].jobOffers)
-                setJobOffers(jobOffers);
+                let jobOffersTemp = [];
+                res.data.map((company) => {
+                    company.jobOffers.map((jobOffer) => {
+                        jobOffersTemp = jobOffersTemp.concat({
+                            companyId: company.id,
+                            description: jobOffer.description,
+                            id: jobOffer.id,
+                            isActive: jobOffer.isActive,
+                            position: jobOffer.position,
+                            requirements: jobOffer.requirements,
+                            timeOfCreation: jobOffer.timeOfCreation,
+                        })
+                    })
+                });
+                jobOffersTemp = Array.from(jobOffersTemp)
+                setJobOffers(jobOffersTemp);
                 setLoading(false);
             }).catch(err => {
                 console.log(err)
@@ -36,7 +48,7 @@ const MyJobOffers = () => {
     return (
         <div>
             {loading && <h3>Loading...</h3>}
-            {!loading && jobOffers && <JobOffersList jobOffers={jobOffers} />}
+            {!loading && jobOffers && <JobOffersList jobOffers={jobOffers} myJobOffers={true} />}
         </div>
     );
 }

@@ -24,11 +24,14 @@ const RegularNavbar = () => {
                             <a className="nav-link" href="/myCompanies">My Companies</a>
                         </li>
                         <li className="nav-item" key={5}>
+                            <a className="nav-link" href="/createJobOffer">Create job offer</a>
+                        </li>
+                        <li className="nav-item" key={6}>
                             <a className="nav-link" href="/myJobOffers">My job offers</a>
                         </li>
                     </>
                 }
-                <li className="nav-item" key={6}>
+                <li className="nav-item" key={7}>
                     <a className="nav-link" href="/" onClick={(e) => logout(e)}>Logout</a>
                 </li>
             </ul>

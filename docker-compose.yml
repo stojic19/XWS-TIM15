@@ -8,13 +8,17 @@ services:
       context: .
       dockerfile: ./Followers_microservice/Dockerfile
     restart: on-failure
+    env_file:
+      - .env
     environment:
-      FOLLOWERS_SERVICE_PORT: ${FOLLOWERS_SERVICE_PORT}
-      NEO4J_DATABASE: ${NEO4J_DATABASE}
-      FOLLOWERS_DB_HOST: ${FOLLOWERS_DB_HOST}
-      NEO4J_USER: ${NEO4J_USER}
-      NEO4J_PASSWORD: ${NEO4J_PASSWORD}
-      NEO4J_VERSION: ${NEO4J_VERSION}
+      FOLLOWERS_SERVICE_PORT:   ${ENV_FOLLOWERS_SERVICE_PORT}
+      NEO4J_DATABASE:           ${ENV_NEO4J_DATABASE}
+      FOLLOWERS_DB_HOST:        ${ENV_FOLLOWERS_DB_HOST}
+      NEO4J_USER:               ${ENV_NEO4J_USER}
+      NEO4J_PASSWORD:           ${ENV_NEO4J_PASSWORD}
+      NEO4J_VERSION:            ${ENV_NEO4J_VERSION}
+      USERS_SERVICE_HOST:       ${ENV_USERS_SERVICE_HOST}
+      USERS_PORT:               ${ENV_USERS_PORT}
     depends_on:
       - followers_db
     networks:
@@ -40,9 +44,13 @@ services:
       dockerfile: ./Posts_microservice/Dockerfile
     restart: on-failure
     environment:
-      POSTS_SERVICE_PORT: ${POSTS_SERVICE_PORT}
-      POSTS_DB_HOST: ${POSTS_DB_HOST}
-      POSTS_DB_PORT: ${POSTS_DB_PORT}
+      POSTS_SERVICE_PORT: ${ENV_POSTS_SERVICE_PORT}
+      POSTS_DB_HOST: ${ENV_POSTS_DB_HOST}
+      POSTS_DB_PORT: ${ENV_POSTS_DB_PORT}
+      FOLLOWERS_SERVICE_HOST:   ${ENV_FOLLOWERS_SERVICE_HOST}
+      FOLLOWERS_SERVICE_PORT:   ${ENV_FOLLOWERS_SERVICE_PORT}
+      USERS_SERVICE_HOST:       ${ENV_USERS_SERVICE_HOST}
+      USERS_PORT:               ${ENV_USERS_PORT}
     depends_on:
       - posts_db
     networks:
@@ -56,7 +64,81 @@ services:
       - 27017:27017
     networks:
       - network
-            
+      
+  job_offers_service:
+    image: job_offers_service
+    container_name: job_offers_service
+    build:
+        context: .
+        dockerfile: ./Job_Offers_microservice/Dockerfile
+    restart: on-failure
+    environment: 
+        JOB_OFFERS_SERVICE_PORT:    ${ENV_JOB_OFFERS_SERVICE_PORT}
+        JOB_OFFERS_DB_HOST:         ${ENV_JOB_OFFERS_DB_HOST}
+        JOB_OFFERS_DB_PORT:         ${ENV_JOB_OFFERS_DB_PORT}
+        USERS_SERVICE_HOST:         ${ENV_USERS_SERVICE_HOST}
+        USERS_PORT:                 ${ENV_USERS_PORT}
+    depends_on:
+        - job_offers_db
+    networks:
+        - network
+        
+  job_offers_db:
+    image: mongo
+    container_name: job_offers_db
+    restart: on-failure
+    networks:
+      - network
+     
+
+  messages_service:
+    image: messages_service
+    container_name: messages_service
+    build:
+        context: .
+        dockerfile: ./Messages_microservice/Dockerfile
+    restart: on-failure
+    environment: 
+        MESSAGES_PORT: ${ENV_MESSAGES_PORT}
+        MESSAGES_DB_HOST: ${ENV_MESSAGES_DB_HOST}
+        MESSAGES_DB_PORT: ${ENV_MESSAGES_DB_PORT}
+    depends_on:
+        - messages_db
+    networks:
+        - network
+     
+  messages_db:
+    image: mongo
+    container_name: messages_db
+    restart: on-failure
+    networks:
+      - network
+     
+  users_service:
+    image: users_service
+    container_name: users_service
+    build:
+        context: .
+        dockerfile: ./JavaMicroservices/User-microservice/Dockerfile
+    restart: on-failure
+    environment:
+        USERS_PORT: ${ENV_USERS_PORT}
+        USERS_DB_HOST: ${ENV_USERS_DB_HOST}
+        USERS_DB_PORT: ${ENV_USERS_DB_PORT}
+    depends_on:
+        - users_db
+    networks:
+      - network
+        
+        
+  users_db:
+    image: mongo
+    container_name: users_db
+    restart: on-failure
+    networks:
+      - network
+     
+     
   api_gateway:
     image: api_gateway
     container_name: api_gateway
@@ -65,13 +147,72 @@ services:
       dockerfile: ./api_gateway/Dockerfile
     restart: on-failure
     ports:
-      - ${GATEWAY_PORT}:${GATEWAY_PORT}
+      - ${GATEWAY_PORT}:${ENV_GATEWAY_PORT}
     environment:
-      GATEWAY_PORT: ${GATEWAY_PORT}
-      FOLLOWERS_SERVICE_HOST: ${FOLLOWERS_SERVICE_HOST}
-      FOLLOWERS_SERVICE_PORT: ${FOLLOWERS_SERVICE_PORT}
-      POSTS_SERVICE_HOST: ${POSTS_SERVICE_HOST}
-      POSTS_SERVICE_PORT: ${POSTS_SERVICE_PORT}
+      GATEWAY_PORT: ${ENV_GATEWAY_PORT}
+      FOLLOWERS_SERVICE_HOST:   ${ENV_FOLLOWERS_SERVICE_HOST}
+      FOLLOWERS_SERVICE_PORT:   ${ENV_FOLLOWERS_SERVICE_PORT}
+      POSTS_SERVICE_HOST:       ${ENV_POSTS_SERVICE_HOST}
+      POSTS_SERVICE_PORT:       ${ENV_POSTS_SERVICE_PORT}
+      USERS_SERVICE_HOST:       ${ENV_USERS_SERVICE_HOST}
+      USERS_PORT:               ${ENV_USERS_PORT}
+      JOB_OFFERS_SERVICE_HOST:  ${ENV_JOB_OFFERS_SERVICE_HOST}
+      JOB_OFFERS_SERVICE_PORT:  ${ENV_JOB_OFFERS_SERVICE_PORT}
+      MESSAGES_HOST:            ${ENV_MESSAGES_HOST}
+      MESSAGES_PORT:            ${ENV_MESSAGES_PORT}
+    networks:
+      - network
+
+  agent_application:
+    image: agent_application
+    container_name: agent_application
+    build:
+        context: .
+        dockerfile: ./AgentApplication/Dockerfile
+    restart: on-failure
+    ports:
+      - 9000:9000
+    environment:
+      AGENT_APPLICATION_DB_CONNECTION_STRING: ${ENV_AGENT_APPLICATION_DB_CONNECTION_STRING}
+      GATEWAY_PORT: ${ENV_GATEWAY_PORT}
+      GATEWAY_HOST: ${ENV_GATEWAY_HOST}
+    depends_on:
+        - agent_app_db
+    networks:
+      - network
+        
+  agent_app_db:
+    image: postgres
+    container_name: agent_app_db
+    restart: on-failure
+    environment:
+        POSTGRES_PASSWORD: "root"
+        POSTGRES_USER: "postgres"
+        POSTGRES_DB: "AgentApplication"
+    networks:
+      - network
+
+  dislinkt_frontend:
+    image: dislinkt_frontend
+    container_name: dislinkt_frontend
+    build:
+        context: .
+        dockerfile: ./dislinkt-frontend/Dockerfile
+    restart: on-failure
+    ports:
+      - 3002:3000
+    networks:
+      - network
+
+  agent_frontend:
+    image: agent_frontend
+    container_name: agent_frontend
+    build:
+        context: .
+        dockerfile: ./agent-app-frontend/Dockerfile
+    restart: on-failure
+    ports:
+      - 3001:3000
     networks:
       - network
 

@@ -31,6 +31,10 @@ type FollowersServiceClient interface {
 	GetFollowRequests(ctx context.Context, in *GetFollowRequestsRequest, opts ...grpc.CallOption) (*GetFollowRequestsResponse, error)
 	GetFollowerRequests(ctx context.Context, in *GetFollowerRequestsRequest, opts ...grpc.CallOption) (*GetFollowerRequestsResponse, error)
 	GetRelationship(ctx context.Context, in *GetRelationshipRequest, opts ...grpc.CallOption) (*GetRelationshipResponse, error)
+	Block(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	Unblock(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	GetBlockedAccounts(ctx context.Context, in *Id, opts ...grpc.CallOption) (*IdList, error)
+	GetBlockerAccounts(ctx context.Context, in *Id, opts ...grpc.CallOption) (*IdList, error)
 }
 
 type followersServiceClient struct {
@@ -43,7 +47,7 @@ func NewFollowersServiceClient(cc grpc.ClientConnInterface) FollowersServiceClie
 
 func (c *followersServiceClient) Follow(ctx context.Context, in *FollowRequest, opts ...grpc.CallOption) (*FollowResponse, error) {
 	out := new(FollowResponse)
-	err := c.cc.Invoke(ctx, "/followers.FollowersService/Subscribe", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/followers.FollowersService/Follow", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -61,7 +65,7 @@ func (c *followersServiceClient) ConfirmFollow(ctx context.Context, in *ConfirmF
 
 func (c *followersServiceClient) Unfollow(ctx context.Context, in *UnfollowRequest, opts ...grpc.CallOption) (*UnfollowResponse, error) {
 	out := new(UnfollowResponse)
-	err := c.cc.Invoke(ctx, "/followers.FollowersService/Unsubscribe", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/followers.FollowersService/Unfollow", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -122,6 +126,42 @@ func (c *followersServiceClient) GetRelationship(ctx context.Context, in *GetRel
 	return out, nil
 }
 
+func (c *followersServiceClient) Block(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/followers.FollowersService/Block", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *followersServiceClient) Unblock(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, "/followers.FollowersService/Unblock", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *followersServiceClient) GetBlockedAccounts(ctx context.Context, in *Id, opts ...grpc.CallOption) (*IdList, error) {
+	out := new(IdList)
+	err := c.cc.Invoke(ctx, "/followers.FollowersService/GetBlockedAccounts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *followersServiceClient) GetBlockerAccounts(ctx context.Context, in *Id, opts ...grpc.CallOption) (*IdList, error) {
+	out := new(IdList)
+	err := c.cc.Invoke(ctx, "/followers.FollowersService/GetBlockerAccounts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FollowersServiceServer is the server API for FollowersService service.
 // All implementations must embed UnimplementedFollowersServiceServer
 // for forward compatibility
@@ -135,6 +175,10 @@ type FollowersServiceServer interface {
 	GetFollowRequests(context.Context, *GetFollowRequestsRequest) (*GetFollowRequestsResponse, error)
 	GetFollowerRequests(context.Context, *GetFollowerRequestsRequest) (*GetFollowerRequestsResponse, error)
 	GetRelationship(context.Context, *GetRelationshipRequest) (*GetRelationshipResponse, error)
+	Block(context.Context, *Request) (*Response, error)
+	Unblock(context.Context, *Request) (*Response, error)
+	GetBlockedAccounts(context.Context, *Id) (*IdList, error)
+	GetBlockerAccounts(context.Context, *Id) (*IdList, error)
 	mustEmbedUnimplementedFollowersServiceServer()
 }
 
@@ -143,13 +187,13 @@ type UnimplementedFollowersServiceServer struct {
 }
 
 func (UnimplementedFollowersServiceServer) Follow(context.Context, *FollowRequest) (*FollowResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Subscribe not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method Follow not implemented")
 }
 func (UnimplementedFollowersServiceServer) ConfirmFollow(context.Context, *ConfirmFollowRequest) (*ConfirmFollowResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfirmFollow not implemented")
 }
 func (UnimplementedFollowersServiceServer) Unfollow(context.Context, *UnfollowRequest) (*UnfollowResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Unsubscribe not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method Unfollow not implemented")
 }
 func (UnimplementedFollowersServiceServer) RemoveFollowRequest(context.Context, *RemoveFollowRequestRequest) (*RemoveFollowRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RemoveFollowRequest not implemented")
@@ -168,6 +212,18 @@ func (UnimplementedFollowersServiceServer) GetFollowerRequests(context.Context, 
 }
 func (UnimplementedFollowersServiceServer) GetRelationship(context.Context, *GetRelationshipRequest) (*GetRelationshipResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRelationship not implemented")
+}
+func (UnimplementedFollowersServiceServer) Block(context.Context, *Request) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Block not implemented")
+}
+func (UnimplementedFollowersServiceServer) Unblock(context.Context, *Request) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Unblock not implemented")
+}
+func (UnimplementedFollowersServiceServer) GetBlockedAccounts(context.Context, *Id) (*IdList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBlockedAccounts not implemented")
+}
+func (UnimplementedFollowersServiceServer) GetBlockerAccounts(context.Context, *Id) (*IdList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBlockerAccounts not implemented")
 }
 func (UnimplementedFollowersServiceServer) mustEmbedUnimplementedFollowersServiceServer() {}
 
@@ -192,7 +248,7 @@ func _FollowersService_Follow_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/followers.FollowersService/Subscribe",
+		FullMethod: "/followers.FollowersService/Follow",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FollowersServiceServer).Follow(ctx, req.(*FollowRequest))
@@ -228,7 +284,7 @@ func _FollowersService_Unfollow_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/followers.FollowersService/Unsubscribe",
+		FullMethod: "/followers.FollowersService/Unfollow",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FollowersServiceServer).Unfollow(ctx, req.(*UnfollowRequest))
@@ -344,6 +400,78 @@ func _FollowersService_GetRelationship_Handler(srv interface{}, ctx context.Cont
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FollowersService_Block_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FollowersServiceServer).Block(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/followers.FollowersService/Block",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FollowersServiceServer).Block(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FollowersService_Unblock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Request)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FollowersServiceServer).Unblock(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/followers.FollowersService/Unblock",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FollowersServiceServer).Unblock(ctx, req.(*Request))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FollowersService_GetBlockedAccounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FollowersServiceServer).GetBlockedAccounts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/followers.FollowersService/GetBlockedAccounts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FollowersServiceServer).GetBlockedAccounts(ctx, req.(*Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FollowersService_GetBlockerAccounts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Id)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FollowersServiceServer).GetBlockerAccounts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/followers.FollowersService/GetBlockerAccounts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FollowersServiceServer).GetBlockerAccounts(ctx, req.(*Id))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FollowersService_ServiceDesc is the grpc.ServiceDesc for FollowersService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -352,7 +480,7 @@ var FollowersService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*FollowersServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Subscribe",
+			MethodName: "Follow",
 			Handler:    _FollowersService_Follow_Handler,
 		},
 		{
@@ -360,7 +488,7 @@ var FollowersService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FollowersService_ConfirmFollow_Handler,
 		},
 		{
-			MethodName: "Unsubscribe",
+			MethodName: "Unfollow",
 			Handler:    _FollowersService_Unfollow_Handler,
 		},
 		{
@@ -386,6 +514,22 @@ var FollowersService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetRelationship",
 			Handler:    _FollowersService_GetRelationship_Handler,
+		},
+		{
+			MethodName: "Block",
+			Handler:    _FollowersService_Block_Handler,
+		},
+		{
+			MethodName: "Unblock",
+			Handler:    _FollowersService_Unblock_Handler,
+		},
+		{
+			MethodName: "GetBlockedAccounts",
+			Handler:    _FollowersService_GetBlockedAccounts_Handler,
+		},
+		{
+			MethodName: "GetBlockerAccounts",
+			Handler:    _FollowersService_GetBlockerAccounts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

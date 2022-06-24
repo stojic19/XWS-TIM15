@@ -9,5 +9,6 @@ namespace AgentApplication.API.Dto
     {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
+        public Guid ApiKey { get; set; }
     }
 }
