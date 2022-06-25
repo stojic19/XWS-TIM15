@@ -6,15 +6,20 @@ const Unauthorized = () => {
     const history = useNavigate();
 
     useEffect(() => {
-        Swal.fire({
-            position: 'top-end',
-            icon: 'error',
-            title: 'Unauthorized access!',
-            showConfirmButton: false,
-            timer: 2000
-          })
-        history('/');
-      }, [])
+        if (localStorage.getItem('user_id') === '') {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Unauthorized access!',
+                showConfirmButton: false,
+                timer: 2000
+            })
+            history('/');
+        }
+        else {
+            window.location.reload();
+        }
+    }, [])
 
     return (
         <>
