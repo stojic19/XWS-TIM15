@@ -5,12 +5,14 @@ import (
 )
 
 type FollowersService struct {
-	store domain.FollowersStore
+	store        domain.FollowersStore
+	orchestrator *BlockOrchestrator
 }
 
-func NewFollowersService(store domain.FollowersStore) *FollowersService {
+func NewFollowersService(store domain.FollowersStore, orchestrator *BlockOrchestrator) *FollowersService {
 	return &FollowersService{
-		store: store,
+		store:        store,
+		orchestrator: orchestrator,
 	}
 }
 func (service *FollowersService) GetFollows(id string) ([]*domain.User, error) {
@@ -44,7 +46,17 @@ func (service *FollowersService) RemoveFollowRequest(followerId string, followed
 	return service.store.RemoveFollowRequest(followerId, followedId)
 }
 func (service *FollowersService) Block(blockerId string, blockedId string) (string, error) {
-	return service.store.Block(blockerId, blockedId)
+	//return service.store.Block(blockerId, blockedId)
+	response, err := service.store.Block(blockerId, blockedId)
+	if err != nil {
+		return "Error", err
+	}
+	err = service.orchestrator.Start(blockerId, blockedId)
+	if err != nil {
+		//revertovati block
+		return "Error during saga", err
+	}
+	return response, nil
 }
 func (service *FollowersService) Unblock(blockerId string, blockedId string) (string, error) {
 	return service.store.Unblock(blockerId, blockedId)
