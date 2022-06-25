@@ -15,7 +15,7 @@ const Users = () => {
                 let users = Array.from(res.data.users)
                 setUsers(users);
                 setLoading(false);
-                console.log(users);
+                //console.log(users);
             }).catch(err =>{
                 console.log(err)
                 Swal.fire({

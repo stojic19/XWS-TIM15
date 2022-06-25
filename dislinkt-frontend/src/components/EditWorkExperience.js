@@ -91,7 +91,6 @@ const EditWorkExperience = () => {
         let workExperiences = []
 
         workExperience.map((workExperience) => {
-            console.log(workExperience)
             workExperiences = workExperiences.concat({
                 "jobTitle": workExperience.jobTitle,
                 "companyName": workExperience.companyName,
@@ -129,7 +128,6 @@ const EditWorkExperience = () => {
         let workExperiences = []
 
         workExperience.map((workExperience, checkIndex) => {
-            console.log(workExperience)
             if (checkIndex != index)
                 workExperiences = workExperiences.concat({
                     "jobTitle": workExperience.jobTitle,

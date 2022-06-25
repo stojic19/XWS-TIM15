@@ -46,7 +46,7 @@ const CreateJobOffer =  () =>{
 
         axios.post(axios.defaults.baseURL + 'job_offers', newOffer, {headers})
                 .then(res => {
-                    console.log(res.data)
+                    //console.log(res.data)
                     history('/jobOffers')
                 }).catch(err => {
                     console.log(err);

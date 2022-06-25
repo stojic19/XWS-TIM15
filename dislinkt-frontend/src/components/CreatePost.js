@@ -56,7 +56,7 @@ const CreatePost = () => {
 
     const addPost = async (e) => {
         e.preventDefault()
-        console.log(images);
+        //console.log(images);
         if (!Validate())
             return;
 
@@ -76,11 +76,11 @@ const CreatePost = () => {
         const headers = {
             'token': localStorage.getItem('token')
         }
-        console.log(config)
+        //console.log(config)
         axios.post(axios.defaults.baseURL + 'posts/posts', config, { headers })
             .then(res => {
-                console.log(config)
-                console.log(res.data)
+                //console.log(config)
+                //console.log(res.data)
                 history('/home')
             }).catch(err => {
                 console.log(err);
@@ -140,7 +140,7 @@ const CreatePost = () => {
                             <div className="form-group">
                                 <div className="col-md-12 text-left">
                                     <br></br>
-                                    <button onClick={(e) => addPost(e)} className="btn btn-primary btn-lg">Done</button>
+                                    <button onClick={(e) => addPost(e)} className="btn btn-primary btn-lg" disabled={!images}>Done</button>
                                 </div>
                             </div>
 

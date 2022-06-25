@@ -96,7 +96,6 @@ const EditEducation = () => {
         let educationUpdate = []
 
         education.map((ed) => {
-            console.log(ed)
             educationUpdate = educationUpdate.concat({
                 "title": ed.title,
                 "gpa": ed.gpa,
@@ -138,7 +137,6 @@ const EditEducation = () => {
         let educationUpdate = []
 
         education.map((ed, checkIndex) => {
-            console.log(ed)
             if (checkIndex != index)
             educationUpdate = educationUpdate.concat({
                 "title": ed.title,
