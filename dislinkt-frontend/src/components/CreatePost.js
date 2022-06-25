@@ -140,7 +140,7 @@ const CreatePost = () => {
                             <div className="form-group">
                                 <div className="col-md-12 text-left">
                                     <br></br>
-                                    <button onClick={(e) => addPost(e)} className="btn btn-primary btn-lg">Done</button>
+                                    <button onClick={(e) => addPost(e)} className="btn btn-primary btn-lg" disabled={!images}>Done</button>
                                 </div>
                             </div>
 

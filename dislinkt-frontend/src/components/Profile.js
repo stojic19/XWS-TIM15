@@ -10,6 +10,10 @@ const Profile = (props) => {
     const [relationship, setRelationship] = useState(props.relationship);
     const history = useNavigate();
 
+    const followRequests = () => {
+        history('/followRequests');
+    }
+
     const editPersonalInfo = () => {
         history('/editProfile');
     }
@@ -47,7 +51,7 @@ const Profile = (props) => {
             "followerId": localStorage.getItem('user_id'),
             "followedId": props.user.id
         };
-        axios.delete(axios.defaults.baseURL + 'followers/follow', {headers: {}, data: update})
+        axios.delete(axios.defaults.baseURL + 'followers/follow', { headers: {}, data: update })
             .then(res => {
                 Swal.fire({
                     icon: 'success',
@@ -85,7 +89,7 @@ const Profile = (props) => {
             "followerId": localStorage.getItem('user_id'),
             "followedId": props.user.id
         };
-        axios.delete(axios.defaults.baseURL + 'followers/followRequest', {headers: {}, data: update})
+        axios.delete(axios.defaults.baseURL + 'followers/followRequest', { headers: {}, data: update })
             .then(res => {
                 Swal.fire({
                     icon: 'success',
@@ -121,7 +125,7 @@ const Profile = (props) => {
                                         }
                                         {!getRelationship(props.relationship) && <>
                                             <button onClick={(e) => unfollow(e)} className="btn btn-primary follow me-2">Unfollow</button>
-                                            <button className="btn btn-outline-primary message">Message</button>
+                                            <button onClick={() => history("/chat/" + props.user.id)} className="btn btn-outline-primary message">Message</button>
                                         </>}
                                     </div>
                                 }
@@ -138,9 +142,12 @@ const Profile = (props) => {
                                 }
                                 {
                                     props.personalProfile &&
-                                    <div className="d-flex ">
-                                        <button onClick={(e) => editPersonalInfo(e)} className="btn btn-primary follow me-2">Edit personal info</button>
-                                    </div>
+                                    <>
+                                        <div className="d-flex ">
+                                            <button onClick={(e) => editPersonalInfo(e)} className="btn btn-primary follow me-2">Edit personal info</button>
+                                            {props.user.isPrivate && <button onClick={(e) => followRequests(e)} className="btn btn-primary follow me-2">Follow requests</button>}
+                                        </div>
+                                    </>
                                 }
                             </div>
                         </div>

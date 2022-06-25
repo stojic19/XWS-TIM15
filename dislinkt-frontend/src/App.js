@@ -19,10 +19,11 @@ import FollowRequestsList from './components/FollowRequestsList';
 import UserHome from './components/UserHome';
 import AllProfiles from './components/AllProfiles';
 import AllJobOffers from './components/AllJobOffers';
-
-import axios from 'axios';
 import CreatePost from './components/CreatePost';
 import CreateJobOffer from './components/CreateJobOffer';
+import Chat from './components/Chat';
+
+import axios from 'axios';
 
 axios.defaults.baseURL = "http://localhost:8000/";
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -62,7 +63,8 @@ function App() {
           <Route key='/personalProfile' exact path='/personalProfile' element={[<UserNavbar />,<PersonalProfile/>]}/>
           <Route key='/followRequests' exact path='/followRequests' element={[<UserNavbar />,<FollowRequestsList/>]}/>   
           <Route key='/createPost' exact path='/createPost' element={[<UserNavbar />,<CreatePost/>]}/>      
-          <Route key='/createJobOffer' exact path='/createJobOffer' element={[<UserNavbar />,<CreateJobOffer/>]}/>     
+          <Route key='/createJobOffer' exact path='/createJobOffer' element={[<UserNavbar />,<CreateJobOffer/>]}/>    
+          <Route key='/chat' exact path='/chat/:id' element={[<UserNavbar />,<Chat/>]}/> 
           </Routes>
         </Router>
     </div>
