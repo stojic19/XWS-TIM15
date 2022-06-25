@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Messages_microservice
+namespace Chat_microservice
 {
     public class Program
     {

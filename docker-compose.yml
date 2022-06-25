@@ -91,25 +91,25 @@ services:
       - network
      
 
-  messages_service:
-    image: messages_service
-    container_name: messages_service
+  chat_service:
+    image: chat_service
+    container_name: chat_service
     build:
         context: .
-        dockerfile: ./Messages_microservice/Dockerfile
+        dockerfile: ./Chat_microservice/Dockerfile
     restart: on-failure
     environment: 
-        MESSAGES_PORT: ${ENV_MESSAGES_PORT}
-        MESSAGES_DB_HOST: ${ENV_MESSAGES_DB_HOST}
-        MESSAGES_DB_PORT: ${ENV_MESSAGES_DB_PORT}
+        MESSAGES_PORT: ${ENV_CHAT_PORT}
+        MESSAGES_DB_HOST: ${ENV_CHAT_DB_HOST}
+        MESSAGES_DB_PORT: ${ENV_CHAT_DB_PORT}
     depends_on:
         - messages_db
     networks:
         - network
      
-  messages_db:
+  chat_db:
     image: mongo
-    container_name: messages_db
+    container_name: chat_db
     restart: on-failure
     networks:
       - network
@@ -158,8 +158,8 @@ services:
       USERS_PORT:               ${ENV_USERS_PORT}
       JOB_OFFERS_SERVICE_HOST:  ${ENV_JOB_OFFERS_SERVICE_HOST}
       JOB_OFFERS_SERVICE_PORT:  ${ENV_JOB_OFFERS_SERVICE_PORT}
-      MESSAGES_HOST:            ${ENV_MESSAGES_HOST}
-      MESSAGES_PORT:            ${ENV_MESSAGES_PORT}
+      MESSAGES_HOST:            ${ENV_CHAT_HOST}
+      MESSAGES_PORT:            ${ENV_CHAT_PORT}
     networks:
       - network
 

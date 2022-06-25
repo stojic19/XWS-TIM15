@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+option csharp_namespace = "Chat_microservice.Protos";
+
+package chat;
+
+service ChatServiceGrpc{
+	rpc Get(GetRequest)returns(ChatsMsg);
+	rpc GetForUser(IdMessage)returns(ChatsMsg);
+	rpc Add(NewMessage)returns(ChatMsg);
+}
+message GetRequest{
+
+}
+
+message GetResponse{
+	repeated Message message = 1;
+}
+
+
+message IdMessage{
+	string id = 1;
+}
+
+message ChatMsg{
+	string firstParticipantId = 1;
+	string secondParticipantId = 2;
+	repeated Message messages = 3;
+}
+
+message ChatsMsg{
+	repeated ChatMsg chats = 1;
+}
+
+message NewMessage{
+	string senderId = 1;
+	string receiverId = 2;
+	string text = 3;
+}
+
+message Message{
+	string senderId = 1;
+	string text = 2;
+	int64 timeSent = 3;
+}
