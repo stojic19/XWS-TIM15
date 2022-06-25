@@ -36,30 +36,31 @@ func NewServer(config *config.Config) *Server {
 func (server *Server) initHandlers() {
 	server.mux.AppendMiddleware(middleware.AuthMiddleware)
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	fmt.Printf("%s:%s\n", server.config.FollowersHost, server.config.FollowersPort)
+	fmt.Printf("Followers: %s:%s\n", server.config.FollowersHost, server.config.FollowersPort)
 	followersEndpoint := fmt.Sprintf("%s:%s", server.config.FollowersHost, server.config.FollowersPort)
 	err := followers.RegisterFollowersServiceHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, followersEndpoint, opts)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%s:%s\n", server.config.PostsHost, server.config.PostsPort)
+	fmt.Printf("Posts: %s:%s\n", server.config.PostsHost, server.config.PostsPort)
 	postsEndpoint := fmt.Sprintf("%s:%s", server.config.PostsHost, server.config.PostsPort)
 	err = posts.RegisterPostsServiceHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, postsEndpoint, opts)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%s:%s\n", server.config.UsersHost, server.config.UsersPort)
+	fmt.Printf("Users: %s:%s\n", server.config.UsersHost, server.config.UsersPort)
 	usersEndpoint := fmt.Sprintf("%s:%s", server.config.UsersHost, server.config.UsersPort)
 	err = users.RegisterUsersServiceHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, usersEndpoint, opts)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("%s:%s\n", server.config.JobOffersHost, server.config.JobOffersPort)
+	fmt.Printf("Job offers: %s:%s\n", server.config.JobOffersHost, server.config.JobOffersPort)
 	jobOffersEndpoint := fmt.Sprintf("%s:%s", server.config.JobOffersHost, server.config.JobOffersPort)
 	err = job_offers.RegisterJobOffersServiceHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, jobOffersEndpoint, opts)
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("Chat: %s:%s\n", server.config.ChatHost, server.config.ChatPort)
 	chatEndpoint := fmt.Sprintf("%s:%s", server.config.ChatHost, server.config.ChatPort)
 	err = chat.RegisterChatServiceGrpcHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, chatEndpoint, opts)
 	if err != nil {

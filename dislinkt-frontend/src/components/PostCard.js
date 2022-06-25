@@ -27,10 +27,10 @@ const PostCard = (post) => {
             postId: post.post.id
 
         }
-        console.log(newComment)
+        //console.log(newComment)
         axios.post(axios.defaults.baseURL + 'posts/comment', newComment)
-            .then(res => {
-                console.log(res.data)
+            .then(() => {
+                //console.log(res.data)
             }).catch(err => {
                 console.log(err);
                 Swal.fire({
@@ -66,7 +66,7 @@ const PostCard = (post) => {
             "postId": post.post.id,
             "userId": localStorage.getItem('user_id')
         };
-        console.log(update)
+        //console.log(update)
         if (postLiked()) {
             axios.delete(axios.defaults.baseURL + 'posts/like', { headers: {}, data: update })
                 .then(res => {
@@ -129,6 +129,7 @@ const PostCard = (post) => {
 
     useEffect(() => {
         const loadImage = async () => {
+            setImage();
             const storageRef = projectStorage.ref(post.post.content.images[0]);
             const url = await storageRef.getDownloadURL();
             setImage(url);
@@ -189,7 +190,7 @@ const PostCard = (post) => {
                                 {
                                     (post.post.comments).map((comment, index) => {
                                         return (
-                                            <Comment index={index} comment={comment}></Comment>
+                                            <Comment key={index} comment={comment}></Comment>
                                         );
                                     })
                                 }
