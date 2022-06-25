@@ -8,7 +8,7 @@ const PersonalProfile = () => {
     const [experience, setExperience] = useState([])
     const [skills, setSkills] = useState([])
     const [interests, setInterests] = useState([])
-
+    const [posts, setPosts] = useState([]);
 
     useEffect(() => {
         const getUserById = async () => {
@@ -51,11 +51,21 @@ const PersonalProfile = () => {
                         console.log(err);
                     });
         };
+        const fetchPosts = async () => {
+            axios.get(axios.defaults.baseURL + 'posts/postsFromUser/' + localStorage.getItem('user_id'))
+                .then(res => {
+                    let posts = Array.from(res.data.posts)
+                    setPosts(posts);
+                }).catch(err => {
+                    console.log(err);
+                });
+        };
         getUserById();
         getWorkExperience();
         getSkills();
         getEducation();
         getInterests();
+        fetchPosts();
     }, [])
 
     return(
@@ -64,7 +74,9 @@ const PersonalProfile = () => {
                 skills={skills} 
                 education={education} 
                 interests={interests}
-                personalProfile={true}></Profile>
+                personalProfile={true}
+                posts={posts}
+                ></Profile>
     );
 }
 

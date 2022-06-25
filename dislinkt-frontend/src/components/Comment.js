@@ -18,7 +18,7 @@ const Comment = (props)=>{
     }, []);
 
     return(
-        <li key={props.index} class="list-group-item">
+        <li key={props.index} className="list-group-item">
             {name} : {props.comment.content}</li>
     );
 }

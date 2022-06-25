@@ -29,7 +29,6 @@ const EditProfile = () => {
             axios.get(axios.defaults.baseURL + 'getUserForEdit/' + id)
                 .then(res => {
                     let user = res.data.user;
-                    console.log(user);
                     setEmail(user.email);
                     setUsername(user.username);
                     setPassword(user.password);

@@ -34,7 +34,7 @@ const UserCard = (props) => {
         };
         axios.delete(axios.defaults.baseURL + 'followers/follow', {headers: {}, data: update})
             .then(res => {
-                console.log(res)
+                //console.log(res)
                 Swal.fire({
                     icon: 'success',
                     title: 'Success!',

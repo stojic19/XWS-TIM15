@@ -282,7 +282,7 @@ const Profile = (props) => {
                                     <h4>Posts</h4>
                                 </div>
                                 {
-                                    props.user.isPrivate ?
+                                    props.user.isPrivate && !props.personalProfile ?
                                         <p style={{ textAlign: "center" }}>No posts to show.</p>
                                         :
                                         (
