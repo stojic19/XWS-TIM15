@@ -7,14 +7,14 @@ ENV ASPNETCORE_URLS=http://*:8000
 EXPOSE 8000
 
 FROM mcr.microsoft.com/dotnet/sdk:${SDK_VERSION} AS build
-ENV PROJECT=Messages_microservice
+ENV PROJECT=Chat_microservice
 WORKDIR /app
-COPY ./Messages_microservice .
+COPY ./Chat_microservice .
 RUN dotnet restore "${PROJECT}/${PROJECT}.csproj" && \
     dotnet build "${PROJECT}/${PROJECT}.csproj" -c Release
 
 FROM build AS publish
-ENV PROJECT=Messages_microservice
+ENV PROJECT=Chat_microservice
 ENV PATH $PATH:/root/.dotnet/tools
 RUN dotnet tool install -g dotnet-ef --version 5.0.11 && \
     dotnet publish "${PROJECT}/${PROJECT}.csproj" -c Release -o /app/publish
@@ -23,4 +23,4 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 WORKDIR /app/publish
-ENTRYPOINT ["dotnet", "Messages_microservice.dll"]
+ENTRYPOINT ["dotnet", "Chat_microservice.dll"]

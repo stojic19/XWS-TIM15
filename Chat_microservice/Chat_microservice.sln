@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages_microservice", "Messages_microservice\Messages_microservice.csproj", "{B7757A01-E40E-44F0-AB45-FFB27F30BD71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat_microservice", "Chat_microservice\Chat_microservice.csproj", "{B7757A01-E40E-44F0-AB45-FFB27F30BD71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

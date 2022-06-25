@@ -12,8 +12,8 @@ type Config struct {
 	UsersPort     string
 	JobOffersHost string
 	JobOffersPort string
-	MessagesHost  string
-	MessagesPort  string
+	ChatHost      string
+	ChatPort      string
 }
 
 func NewConfig() *Config {
@@ -27,8 +27,8 @@ func NewConfig() *Config {
 		UsersPort:     os.Getenv("USERS_PORT"),
 		JobOffersPort: LookupEnvOrGetDefault("JOB_OFFERS_SERVICE_PORT", "8003"),
 		JobOffersHost: LookupEnvOrGetDefault("JOB_OFFERS_SERVICE_HOST", "localhost"),
-		MessagesHost:  LookupEnvOrGetDefault("MESSAGES_HOST", "localhost"),
-		MessagesPort:  LookupEnvOrGetDefault("MESSAGES_PORT", "8004"),
+		ChatHost:      LookupEnvOrGetDefault("CHAT_HOST", "localhost"),
+		ChatPort:      LookupEnvOrGetDefault("CHAT_PORT", "8004"),
 	}
 }
 
