@@ -21,7 +21,7 @@ const UserCard = (props) => {
                     title: 'Success!',
                     text: res.data.response,
                 });
-                window.location.reload()
+                props.buttonClickChanger();
             });
     }
 
@@ -34,12 +34,13 @@ const UserCard = (props) => {
         };
         axios.delete(axios.defaults.baseURL + 'followers/follow', {headers: {}, data: update})
             .then(res => {
+                //console.log(res)
                 Swal.fire({
                     icon: 'success',
                     title: 'Success!',
                     text: res.data.response,
                 });
-                window.location.reload()
+                props.buttonClickChanger();
             });
     }
 
@@ -57,7 +58,7 @@ const UserCard = (props) => {
                     title: 'Success!',
                     text: res.data.response,
                 });
-                window.location.reload()
+                props.buttonClickChanger();
             });
     }
 
@@ -75,7 +76,7 @@ const UserCard = (props) => {
                     title: 'Success!',
                     text: res.data.response,
                 });
-                window.location.reload()
+                props.buttonClickChanger();
             });
     }
     return (

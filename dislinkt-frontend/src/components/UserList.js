@@ -11,7 +11,7 @@ const UserList = (props) => {
         let isFollowing = false;
         if(follows)
         follows.map((follow) =>{
-            if(follow.id == id){
+            if(follow.id === id){
                 isFollowing = true;
             }
         })
@@ -22,7 +22,7 @@ const UserList = (props) => {
         let sentFollowRequest = false;
         if(followRequests)
         followRequests.map((follow) =>{
-            if(follow.id == id){
+            if(follow.id === id){
                 sentFollowRequest = true;
             }
         })
@@ -32,11 +32,18 @@ const UserList = (props) => {
     const DisplayFollowButtons = (id) => {
         if(props.displayFollowButtons){
             let userId = localStorage.getItem('user_id');
-            if(id==userId)
+            if(id===userId)
                 return false;
             return true;
         }
         return false;
+    }
+
+    const myProfile = (id) => {
+        let userId = localStorage.getItem('user_id');
+        if(id===userId)
+            return false;
+        return true;
     }
 
     return(
@@ -46,7 +53,7 @@ const UserList = (props) => {
             {
             (props.users).map((user, index) => {
                 return (
-                    <UserCard key={index} user={user} displayFollowButtons={DisplayFollowButtons(user.id)} isFollowing={userFollowsUser(user.id)} sentFollowRequest={userSentFollowRequest(user.id)}/>
+                    myProfile(user.id) && <UserCard key={index} user={user} displayFollowButtons={DisplayFollowButtons(user.id)} isFollowing={userFollowsUser(user.id)} sentFollowRequest={userSentFollowRequest(user.id)} buttonClickChanger={props.buttonClickChanger}/>
                 );
             })}
             </ul>
