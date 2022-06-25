@@ -12,7 +12,8 @@ const AllProfiles = (props) =>{
     const[follows, setFollows] = useState([]);
     const[followRequests, setFollowRequests] = useState();
     const[buttonClick, setButtonClick] = useState(0);
-
+    const [blocked, setBlocked] = useState();
+    const [blockers, setBlockers] = useState();
     const buttonClickChanger = () => setButtonClick(buttonClick+1);
 
     const fetchUsers = async () => {
@@ -67,11 +68,47 @@ const AllProfiles = (props) =>{
                 });
             });
     };
+    const fetchBlocked = async () => {
+        let id = localStorage.getItem('user_id');
+        setFollows();
+        axios.get(axios.defaults.baseURL + 'followers/blocked/' + id)
+            .then(res => {
+                let blocked = res.data.ids;
+                //console.log(res);
+                setBlocked(blocked);
+            }).catch(err => {
+                console.log(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.data,
+                });
+            });
+    };
+    const fetchWhoBlockedMe = async () => {
+        let id = localStorage.getItem('user_id');
+        setFollows();
+        axios.get(axios.defaults.baseURL + 'followers/blockers/' + id)
+            .then(res => {
+                let blockers = res.data.ids;
+                //console.log(res);
+                setBlockers(blockers);
+            }).catch(err => {
+                console.log(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.data,
+                });
+            });
+    };
 
     useEffect(() => {
         if(props.displayFollowButtons){
             fetchFollowRequests();
             fetchFollows();
+            fetchBlocked();
+            fetchWhoBlockedMe();
         }
     }, []);
 
@@ -86,10 +123,41 @@ const AllProfiles = (props) =>{
         fetchFollows();
     }, [buttonClick])
 
+    const getUsers = () => {
+        if (blocked && blockers) {
+            let userId = localStorage.getItem('user_id');
+            let filteredUsers = []
+            let goodToGo
+            users.forEach((user) => {
+                goodToGo = true
+                blocked.every((checkUser) => {
+                    if (checkUser.id === user.id) {        
+                        goodToGo = false;
+                        return false;
+                    }
+                    return true;
+                })
+                if (goodToGo) {
+                    blockers.every((checkUser) => {
+                        if (checkUser.id === user.id) {
+                            goodToGo = false;
+                            return false;
+                        }
+                        return true;
+                    })
+                    if (goodToGo)
+                        filteredUsers = filteredUsers.concat(user);
+                }
+            })
+            return filteredUsers;
+        }
+        return users;
+    }
+
     return(
         <div>
             {loading && <h3>Loading...</h3>}
-            {!loading && users && follows && followRequests && <UserList users={users} displayFollowButtons={props.displayFollowButtons} follows={follows} followRequests={followRequests} buttonClickChanger={buttonClickChanger} />}
+            {!loading && getUsers() && follows && followRequests && <UserList users={getUsers()} displayFollowButtons={props.displayFollowButtons} follows={follows} followRequests={followRequests} buttonClickChanger={buttonClickChanger} />}
         </div>
     );
 }
