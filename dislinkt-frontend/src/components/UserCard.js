@@ -79,6 +79,25 @@ const UserCard = (props) => {
                 props.buttonClickChanger();
             });
     }
+
+    const unblock = async (e) => {
+        e.preventDefault();
+
+        axios.delete(axios.defaults.baseURL + 'followers/block/' + localStorage.getItem('user_id') + '/' + props.user.id)
+            .then(res => {
+                console.log(res)
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: res.data.response,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                props.buttonClickChanger();
+            });
+    }
+
     return (
         <li className="col-12 col-md-4 col-lg-3">
             <div className="cnt-block equal-hight" style={{ height: "360px" }}>
@@ -106,6 +125,9 @@ const UserCard = (props) => {
                 {
                     props.user.isPrivate && props.displayFollowButtons && !props.isFollowing && props.sentFollowRequest 
                     && <button onClick={(e) => cancelFollowRequest(e)} type="button" className="btn btn-outline-primary">Cancel follow request</button>
+                }
+                {
+                    props.blocked && <button onClick={(e) => unblock(e)} type="button" className="btn btn-outline-primary">Unblock</button>
                 }
             </div>
         </li>

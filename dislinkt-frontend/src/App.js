@@ -23,6 +23,7 @@ import CreatePost from './components/CreatePost';
 import CreateJobOffer from './components/CreateJobOffer';
 import Chat from './components/Chat';
 import Unauthorized from './components/Unauthorized';
+import BlockedUsers from './components/BlockedUsers';
 
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
@@ -71,7 +72,8 @@ function App() {
           <Route key='/followRequests' exact path='/followRequests' element={authorized() ? [<UserNavbar key='/followRequests1'/>,<FollowRequestsList key='/followRequests2'/>] : <Unauthorized/>}/>   
           <Route key='/createPost' exact path='/createPost' element={authorized() ? [<UserNavbar key='/createPost1'/>,<CreatePost key='/createPost2'/>] : <Unauthorized/>}/>      
           <Route key='/createJobOffer' exact path='/createJobOffer' element={authorized() ? [<UserNavbar key='/createJobOffer1'/>,<CreateJobOffer key='/createJobOffer2'/>] : <Unauthorized/>}/>    
-          <Route key='/chat' exact path='/chat/:id' element={authorized() ? [<UserNavbar key='/chat1'/>,<Chat key='/chat2'/>] : <Unauthorized/>}/> 
+          <Route key='/chat' exact path='/chat/:id' element={authorized() ? [<UserNavbar key={uuidv4()}/>,<Chat key={uuidv4()}/>] : <Unauthorized/>}/> 
+          <Route key={uuidv4()} exact path='/blocked' element={authorized() ? [<UserNavbar key={uuidv4()}/>,<BlockedUsers key={uuidv4()}/>] : <Unauthorized/>}/> 
           </Routes>
         </Router>
     </div>
