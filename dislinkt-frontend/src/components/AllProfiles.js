@@ -70,7 +70,7 @@ const AllProfiles = (props) =>{
     };
     const fetchBlocked = async () => {
         let id = localStorage.getItem('user_id');
-        setFollows();
+        setBlocked();
         axios.get(axios.defaults.baseURL + 'followers/blocked/' + id)
             .then(res => {
                 let blocked = res.data.ids;
@@ -87,7 +87,7 @@ const AllProfiles = (props) =>{
     };
     const fetchWhoBlockedMe = async () => {
         let id = localStorage.getItem('user_id');
-        setFollows();
+        setBlockers();
         axios.get(axios.defaults.baseURL + 'followers/blockers/' + id)
             .then(res => {
                 let blockers = res.data.ids;
