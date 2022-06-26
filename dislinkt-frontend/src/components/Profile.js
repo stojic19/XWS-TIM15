@@ -18,6 +18,10 @@ const Profile = (props) => {
         history('/editProfile');
     }
 
+    const blocked = () => {
+        history('/blocked');
+    }
+
     const getRelationship = () => {
         if (relationship === 'NO RELATIONSHIP')
             return true;
@@ -101,6 +105,28 @@ const Profile = (props) => {
             });
     }
 
+    const block = async (e) => {
+        e.preventDefault();
+
+        const update = {
+            "subjectId": localStorage.getItem('user_id'),
+            "objectId": props.user.id
+        };
+        axios.put(axios.defaults.baseURL + 'followers/block', update)
+            .then(res => {
+                console.log(res)
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: res.data.response,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                history('/home');
+            });
+    }
+
     return (
         <div className="container">
             <div className="row">
@@ -145,7 +171,22 @@ const Profile = (props) => {
                                     <>
                                         <div className="d-flex ">
                                             <button onClick={(e) => editPersonalInfo(e)} className="btn btn-primary follow me-2">Edit personal info</button>
-                                            {props.user.isPrivate && <button onClick={(e) => followRequests(e)} className="btn btn-primary follow me-2">Follow requests</button>}
+                                        </div>
+                                        {
+                                            props.user.isPrivate && <div className="d-flex m-2">
+                                                <button onClick={(e) => followRequests(e)} className="btn btn-primary follow me-2">Follow requests</button>
+                                            </div>
+                                        }
+                                        <div className="d-flex m-2">
+                                            <button onClick={(e) => blocked(e)} className="btn btn-primary follow me-2">View blocked</button>
+                                        </div>
+                                    </>
+                                }
+                                {
+                                    !props.personalProfile &&
+                                    <>
+                                        <div className="d-flex m-2">
+                                            <button onClick={(e) => block(e)} className="btn btn-primary follow me-2">Block</button>
                                         </div>
                                     </>
                                 }
