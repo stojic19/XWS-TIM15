@@ -438,3 +438,11 @@ func unsafeClose(closeable io.Closer) {
 		log.Fatal(fmt.Errorf("could not close resource: %w", err))
 	}
 }
+
+/*MATCH (test1:User{username:"TEST1"}) MATCH(test2:User{username:"TEST2"})
+OPTIONAL MATCH (test1) - [fol:FOLLOWING] - (test2)
+OPTIONAL MATCH (test1) - [flr:FOLLOW_REQUEST] - (test2)
+OPTIONAL MATCH (test1) - [sub:SUBSCRIBE] - (test2)
+OPTIONAL MATCH (test1) - [blok_p:BLOCK_PEND] -> (test2)
+DELETE fol, sub, flr, blok_p
+MERGE (test1) - [blok:BLOCK] -> (test2)*/
