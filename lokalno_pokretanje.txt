@@ -16,7 +16,7 @@ NEO4J_VERSION=4
 
 
 AGENT_APPLICATION_HOST=localhost ovo jos uvek ne koristimo
-AGENT_APPLICATION_PORT=9000 ovo jos uvek ne koristimo
+AGENT_APPLICATION_PORT=9000
 AGENT_APPLICATION_DB_CONNECTION_STRING = Host=localhost;Database=AgentApplication;Username=postgres;Password=root
 
 POSTS_SERVICE_HOST=localhost
@@ -38,6 +38,13 @@ USERS_SERVICE_HOST = localhost
 USERS_PORT = 8005
 USERS_DB_HOST = localhost
 USERS_DB_PORT = 27017
+
+NATS_HOST = localhost
+NATS_PORT = 4222
+NATS_USER = ruser
+NATS_PASS = T0pS3cr3t
+BLOCK_COMMAND_SUBJECT = block.command
+BLOCK_REPLY_SUBJECT = block.reply
 
 Ko koristi docker desktop...postoji neki problem pri menjanju vrednosti varijabli u .env fajlu, 
 nisam jos pronasao resenje osim da se vrednosti hardkoduju u docker-compose

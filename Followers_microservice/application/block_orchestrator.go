@@ -32,7 +32,10 @@ func (o *BlockOrchestrator) Start(blockerId string, blockedId string) error {
 }
 
 func (o *BlockOrchestrator) handle(reply *blocking.BlockReply) {
-	command := blocking.BlockCommand{}
+	command := blocking.BlockCommand{
+		BlockerId: reply.BlockerId,
+		BlockedId: reply.BlockedId,
+	}
 	command.Type = o.nextCommandType(reply.Type)
 	if command.Type != blocking.UnknownCommand {
 		_ = o.commandPublisher.Publish(command)

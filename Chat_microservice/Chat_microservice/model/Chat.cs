@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Chat_microservice.Nats.Messages;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -15,5 +16,21 @@ namespace Chat_microservice.model
         public ChatParticipant FirstParticipant { get; set; }
         public ChatParticipant SecondParticipant { get; set; }
         public IEnumerable<ChatMessage> Messages { get; set; }
+
+        public bool SetToBlocked(Guid id)
+        {
+            if (FirstParticipant.UserId == id)
+            {
+                FirstParticipant.BlockedChat = true;
+                return true;
+            }
+
+            if (SecondParticipant.UserId == id)
+            {
+                SecondParticipant.BlockedChat = true;
+                return true;
+            }
+            return false;
+        }
     }
 }
