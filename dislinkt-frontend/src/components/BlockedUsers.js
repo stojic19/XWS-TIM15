@@ -11,23 +11,8 @@ const BlockedUsers = (props) => {
     const [loading, setLoading] = useState(true);
     const [buttonClick, setButtonClick] = useState(0);
     const [blocked, setBlocked] = useState();
-    const [blockers, setBlockers] = useState();
     const buttonClickChanger = () => setButtonClick(buttonClick + 1);
 
-    
-    const isUserUnique = (newUsers, id) =>{
-
-        if(newUsers.length != 0){
-
-            newUsers.forEach(user => {
-                if(user.id == id){
-                    return false
-                }
-            })
-            return true
-        }
-        return true
-    }
 
     const filterUsers = (users) =>{
         const uniqueIds = [];
@@ -99,9 +84,9 @@ const BlockedUsers = (props) => {
         fetchUsers();
     }, [])*/
 
-    // useEffect(() => {
-    //     fetchBlocked();
-    // }, [buttonClick])
+    useEffect(() => {
+        fetchBlocked();
+    }, [buttonClick])
 
 
     return (

@@ -66,7 +66,7 @@ const UserList = (props) => {
             {
             (props.users).map((user, index) => {
                 return (
-                    myProfile(user.id) && <UserCard key={index} user={user} displayFollowButtons={DisplayFollowButtons(user.id)} isFollowing={userFollowsUser(user.id)} sentFollowRequest={userSentFollowRequest(user.id)} buttonClickChanger={props.buttonClickChanger}/>
+                    myProfile(user.id) && <UserCard key={index} user={user} blocked={props.blocked} displayFollowButtons={DisplayFollowButtons(user.id)} isFollowing={userFollowsUser(user.id)} sentFollowRequest={userSentFollowRequest(user.id)} buttonClickChanger={props.buttonClickChanger}/>
                 );
             })}
             </ul>
