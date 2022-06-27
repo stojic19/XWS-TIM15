@@ -50,7 +50,11 @@ func (server *Server) Start() {
 	replySubscriber := server.initSubscriber(server.config.BlockReplySubject, QueueGroup)
 	blockOrchestrator := server.initBlockOrchestrator(commandPublisher, replySubscriber)
 
-	followersService := server.initFollowersService(followersStore, blockOrchestrator)
+	unblockCommandPublisher := server.initPublisher(server.config.UnblockCommandSubject)
+	unblockReplySubscriber := server.initSubscriber(server.config.UnblockReplySubject, QueueGroup)
+	unblockOrchestrator := server.initUnblockOrchestrator(unblockCommandPublisher, unblockReplySubscriber)
+
+	followersService := server.initFollowersService(followersStore, blockOrchestrator, unblockOrchestrator)
 
 	commandSubscriber := server.initSubscriber(server.config.BlockCommandSubject, QueueGroup)
 	replyPublisher := server.initPublisher(server.config.BlockReplySubject)
@@ -112,8 +116,16 @@ func (server *Server) initBlockOrchestrator(publisher saga.Publisher, subscriber
 	return orchestrator
 }
 
-func (server *Server) initFollowersService(store domain.FollowersStore, orchestrator *application.BlockOrchestrator) *application.FollowersService {
-	return application.NewFollowersService(store, orchestrator)
+func (server *Server) initUnblockOrchestrator(publisher saga.Publisher, subscriber saga.Subscriber) *application.UnblockOrchestrator {
+	orchestrator, err := application.NewUnblockOrchestrator(publisher, subscriber)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return orchestrator
+}
+
+func (server *Server) initFollowersService(store domain.FollowersStore, orchestrator *application.BlockOrchestrator, unblockOrchestrator *application.UnblockOrchestrator) *application.FollowersService {
+	return application.NewFollowersService(store, orchestrator, unblockOrchestrator)
 }
 
 func (server *Server) initBlockHandler(service *application.FollowersService, publisher saga.Publisher, subscriber saga.Subscriber) {

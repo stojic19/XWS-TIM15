@@ -9,6 +9,7 @@ namespace Chat_microservice.AutoMapperProfiles
         public NatsProfile()
         {
             CreateMap<BlockCommand, BlockReply>();
+            CreateMap<UnblockCommand, UnblockReply>();
         }
     }
 }

@@ -11,6 +11,8 @@ namespace Chat_microservice.Configuration
         public string NatsPass { get; set; }
         public string BlockCommandSubject { get; set; }
         public string BlockReplySubject { get; set; }
+        public string UnblockCommandSubject { get; set; }
+        public string UnblockReplySubject { get; set; }
         public string QueueName { get; set; }
 
         public EnvironmentConfiguration()
@@ -22,6 +24,8 @@ namespace Chat_microservice.Configuration
             NatsPass = GetEnvironmentVarOrDefault("NATS_PASS", "T0pS3cr3t");
             BlockCommandSubject = GetEnvironmentVarOrDefault("BLOCK_COMMAND_SUBJECT", "block.command");
             BlockReplySubject = GetEnvironmentVarOrDefault("BLOCK_REPLY_SUBJECT", "block.reply");
+            UnblockCommandSubject = GetEnvironmentVarOrDefault("UNBLOCK_COMMAND_SUBJECT", "unblock.command");
+            UnblockReplySubject = GetEnvironmentVarOrDefault("UNBLOCK_REPLY_SUBJECT", "unblock.reply");
             QueueName = "chat_service";
         }
 

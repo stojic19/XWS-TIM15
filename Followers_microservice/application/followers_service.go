@@ -5,14 +5,16 @@ import (
 )
 
 type FollowersService struct {
-	store        domain.FollowersStore
-	orchestrator *BlockOrchestrator
+	store               domain.FollowersStore
+	orchestrator        *BlockOrchestrator
+	unblockOrchestrator *UnblockOrchestrator
 }
 
-func NewFollowersService(store domain.FollowersStore, orchestrator *BlockOrchestrator) *FollowersService {
+func NewFollowersService(store domain.FollowersStore, orchestrator *BlockOrchestrator, unblockOrchestrator *UnblockOrchestrator) *FollowersService {
 	return &FollowersService{
-		store:        store,
-		orchestrator: orchestrator,
+		store:               store,
+		orchestrator:        orchestrator,
+		unblockOrchestrator: unblockOrchestrator,
 	}
 }
 func (service *FollowersService) GetFollows(id string) ([]*domain.User, error) {

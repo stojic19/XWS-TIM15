@@ -24,6 +24,7 @@ namespace Chat_microservice
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddHostedService<NatsBlockSubscriber>();
+            services.AddHostedService<NatsUnblockSubscriber>();
             services.AddGrpc();
             List<Assembly> assemblies = new List<Assembly> { typeof(ChatProfile).Assembly };
             var containerBuilder = new ContainerBuilder();

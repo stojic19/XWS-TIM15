@@ -45,6 +45,8 @@ NATS_USER = ruser
 NATS_PASS = T0pS3cr3t
 BLOCK_COMMAND_SUBJECT = block.command
 BLOCK_REPLY_SUBJECT = block.reply
+UNBLOCK_COMMAND_SUBJECT = unblock.command
+UNBLOCK_REPLY_SUBJECT = unblock.command
 
 Ko koristi docker desktop...postoji neki problem pri menjanju vrednosti varijabli u .env fajlu, 
 nisam jos pronasao resenje osim da se vrednosti hardkoduju u docker-compose
