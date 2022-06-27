@@ -2,6 +2,7 @@
 using Chat_microservice.model;
 using MongoDB.Driver;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using MongoDB.Bson;
 
@@ -51,7 +52,11 @@ namespace Chat_microservice.Repository
             var filter1 = Builders<Chat>.Filter.And(filter11, filter12);
             var filter2 = Builders<Chat>.Filter.And(filter21, filter22);
 
-            return _chats.Find(Builders<Chat>.Filter.Or(filter1, filter2)).ToEnumerable();
+            var filter3 = Builders<Chat>.Filter.SizeGt(c => c.Messages, 0);
+
+            var filter4 = Builders<Chat>.Filter.Or(filter1, filter2);
+
+            return _chats.Find(Builders<Chat>.Filter.And(filter3, filter4)).ToEnumerable();
         }
 
         public Chat Add(Chat chat)

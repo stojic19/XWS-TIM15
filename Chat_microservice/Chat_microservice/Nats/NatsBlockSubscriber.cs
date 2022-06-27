@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Chat_microservice.Configuration;
+using Chat_microservice.model;
 using Chat_microservice.Nats.Messages;
 using Chat_microservice.Repository;
 using Chat_microservice.Utilities;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.Extensions.Hosting;
 using NATS.Client;
 
@@ -46,8 +49,17 @@ namespace Chat_microservice.Nats
                     var chat = _chatRepository.GetByParticipants(Guid.Parse(command.BlockerId), Guid.Parse(command.BlockedId));
                     if (chat == null)
                     {
+                        chat = new Chat
+                        {
+                            FirstParticipant = new ChatParticipant
+                                { BlockedChat = true, UserId = Guid.Parse(command.BlockerId) },
+                            SecondParticipant = new ChatParticipant
+                                { BlockedChat = false, UserId = Guid.Parse(command.BlockedId) },
+                            Messages = new List<ChatMessage>()
+                        };
+                        _chatRepository.Add(chat);
                         var notBlockedBlockReply = _mapper.Map<BlockReply>(command);
-                        notBlockedBlockReply.Type = BlockReplyType.ChatNotBlocked;
+                        notBlockedBlockReply.Type = BlockReplyType.ChatBlocked;
                         Publish(_config.BlockReplySubject, ConversionUtilities.SerializeBinary(notBlockedBlockReply));
                         return;
                     }

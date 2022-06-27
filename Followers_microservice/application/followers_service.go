@@ -47,7 +47,7 @@ func (service *FollowersService) RemoveFollowRequest(followerId string, followed
 }
 func (service *FollowersService) Block(blockerId string, blockedId string) (string, error) {
 	//return service.store.Block(blockerId, blockedId)
-	response, err := service.store.Block(blockerId, blockedId)
+	response, err := service.store.BlockPending(blockerId, blockedId)
 	if err != nil {
 		return "Error", err
 	}
@@ -58,6 +58,23 @@ func (service *FollowersService) Block(blockerId string, blockedId string) (stri
 	}
 	return response, nil
 }
+
+func (service *FollowersService) ConfirmBlock(blockerId string, blockedId string) (string, error) {
+	response, err := service.store.ConfirmBlock(blockerId, blockedId)
+	if err != nil {
+		return "Error", err
+	}
+	return response, nil
+}
+
+func (service *FollowersService) RevertBlock(blockerId string, blockedId string) (string, error) {
+	response, err := service.store.RevertPendingBlock(blockerId, blockedId)
+	if err != nil {
+		return "Error", err
+	}
+	return response, nil
+}
+
 func (service *FollowersService) Unblock(blockerId string, blockedId string) (string, error) {
 	return service.store.Unblock(blockerId, blockedId)
 }
