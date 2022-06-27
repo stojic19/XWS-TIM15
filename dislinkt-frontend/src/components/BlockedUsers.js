@@ -14,32 +14,51 @@ const BlockedUsers = (props) => {
     const [blockers, setBlockers] = useState();
     const buttonClickChanger = () => setButtonClick(buttonClick + 1);
 
+    
+    const isUserUnique = (newUsers, id) =>{
 
-    const uniqueId = (id) => {
-        let goodToGo = true
-        if (users)
-            users.every((user) => {
-                if (id === user.id) {
-                    goodToGo = false;
-                    return false;
+        if(newUsers.length != 0){
+
+            newUsers.forEach(user => {
+                if(user.id == id){
+                    return false
                 }
-                return true;
             })
-        return goodToGo;
+            return true
+        }
+        return true
     }
 
-    const fetchUsers = async (blocked) => {
-        setUsers();
+    const filterUsers = (users) =>{
+        const uniqueIds = [];
+
+        const unique = users.filter(element => {
+        const isDuplicate = uniqueIds.includes(element.id);
+
+        if (!isDuplicate) {
+            uniqueIds.push(element.id);
+
+            return true;
+        }
+
+        return false;
+        });
+
+        console.log(unique)
+        setUsers(unique)
+    }
+
+    const fetchUsers = async (blockedList) => {
+        setUsers()
         setLoading(true);
-        blocked.forEach(user => {
+        blockedList.forEach(user => {
             axios.get(axios.defaults.baseURL + 'users/' + user.id)
                 .then(res => {
                     let newUsers = users
-                    if (uniqueId()) {
-                        newUsers = newUsers.concat(res.data.user);
-                        setUsers(Array.from(newUsers));
-                    }
-                    //console.log(users);
+                    newUsers.push(res.data.user);
+                    setUsers(Array.from(newUsers));
+                    filterUsers(users);
+
                 }).catch(err => {
                     console.log(err)
                     Swal.fire({
@@ -60,6 +79,7 @@ const BlockedUsers = (props) => {
                 let blocked = res.data.ids;
                 //console.log(res);
                 setBlocked(blocked);
+                //console.log(blocked)
                 fetchUsers(blocked);
             }).catch(err => {
                 console.log(err);
@@ -79,33 +99,16 @@ const BlockedUsers = (props) => {
         fetchUsers();
     }, [])*/
 
-    useEffect(() => {
-        fetchBlocked();
-    }, [buttonClick])
+    // useEffect(() => {
+    //     fetchBlocked();
+    // }, [buttonClick])
 
-    const getUsers = () => {
-        console.log(users);
-        let filteredUsers = []
-        let goodToGo
-        users.forEach((user) => {
-            goodToGo = true
-            filteredUsers.every((checkUser) => {
-                if (checkUser.id === user.id) {
-                    goodToGo = false;
-                    return false;
-                }
-                return true;
-            })
-            if (goodToGo)
-                filteredUsers = filteredUsers.concat(user);
-        })
-        return Array.from(filteredUsers);
-    }
 
     return (
         <div>
+            {<h2 style={{ textAlign: "center" }}>Blocked users</h2>}
             {loading && <h3>Loading...</h3>}
-            {!loading && users && <UserList users={getUsers()} buttonClickChanger={buttonClickChanger} blocked={true} />}
+            {!loading && users && <UserList users={users} buttonClickChanger={buttonClickChanger} blocked={true} />}
             {!users && <h3 style={{ textAlign: "center" }}>No blocked users.</h3>}
         </div>
     );

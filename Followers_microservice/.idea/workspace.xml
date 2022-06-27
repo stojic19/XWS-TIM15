@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fdae2016-0ae1-4084-8674-fe97ba3d89cd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Job_Offers_microservice/infrastructure/api/api_key.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/infrastructure/api/followers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/infrastructure/api/followers_grpc_api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/../Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../api_gateway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../api_gateway/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../api_gateway/infrastructure/api/follower_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/../api_gateway/infrastructure/api/follower_handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../api_gateway/startup/mux_wrapper.go" beforeDir="false" afterPath="$PROJECT_DIR$/../api_gateway/startup/mux_wrapper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../common/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../common/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dislinkt-frontend/src/components/PublicProfileSearch.js" beforeDir="false" afterPath="$PROJECT_DIR$/../dislinkt-frontend/src/components/PublicProfileSearch.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +21,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file://C:/Program Files/Go" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../../../Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -51,7 +46,7 @@
     "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
-    "last_opened_file_path": "D:/ftn/GODINA4/LETNJI/XML/Projekat/XWS-TIM15/Job_Offers_microservice"
+    "last_opened_file_path": "C:/Users/Anja/Desktop/FAX/4. GODINA/XML/XWS-TIM15/Job_Offers_microservice"
   }
 }]]></component>
   <component name="RunManager">

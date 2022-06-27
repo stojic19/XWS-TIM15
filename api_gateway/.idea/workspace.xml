@@ -5,25 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b432fc6b-4262-4b80-8f8a-e67bdf5d7cf1" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../AgentApplication/AgentApplication.API/AgentApplication.API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../AgentApplication/AgentApplication.API/AgentApplication.API.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AgentApplication/AgentApplication.API/Controllers/Base/BaseApiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../AgentApplication/AgentApplication.API/Controllers/Base/BaseApiController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AgentApplication/AgentApplication.API/Controllers/CompaniesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../AgentApplication/AgentApplication.API/Controllers/CompaniesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AgentApplication/AgentApplication.API/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../AgentApplication/AgentApplication.API/Startup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../AgentApplication/AgentApplication.API/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../AgentApplication/AgentApplication.API/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/../Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Followers_microservice/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Followers_microservice/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../common/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../common/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dislinkt-frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../dislinkt-frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dislinkt-frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../dislinkt-frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dislinkt-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../dislinkt-frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../dislinkt-frontend/src/components/UserProfile.js" beforeDir="false" afterPath="$PROJECT_DIR$/../dislinkt-frontend/src/components/UserProfile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../dislinkt-frontend/src/components/PublicProfileSearch.js" beforeDir="false" afterPath="$PROJECT_DIR$/../dislinkt-frontend/src/components/PublicProfileSearch.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="GOROOT" url="file://C:/Program Files/Go" />
+  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../../../../../Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
@@ -36,18 +27,6 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.format.on.save.advertiser.fired": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "go.import.settings.migrated": "true",
-    "last_opened_file_path": "D:/ftn/GODINA4/LETNJI/XML/Projekat/XWS-TIM15/Posts_microservice"
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -59,9 +38,21 @@
     &quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Anja/Desktop/FAX/4. GODINA/XML/XWS-TIM15/api_gateway&quot;
+    &quot;last_opened_file_path&quot;: &quot;D:/ftn/GODINA4/LETNJI/XML/Projekat/XWS-TIM15/Posts_microservice&quot;
+  &lt;component name=&quot;PropertiesComponent&quot;&gt;{
+  &amp;quot;keyToString&amp;quot;: {
+    &amp;quot;RunOnceActivity.OpenProjectViewOnStart&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;RunOnceActivity.ShowReadmeOnStart&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;RunOnceActivity.go.format.on.save.advertiser.fired&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;RunOnceActivity.go.formatter.settings.were.checked&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;RunOnceActivity.go.migrated.go.modules.settings&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;WebServerToolWindowFactoryState&amp;quot;: &amp;quot;false&amp;quot;,
+    &amp;quot;go.import.settings.migrated&amp;quot;: &amp;quot;true&amp;quot;,
+    &amp;quot;last_opened_file_path&amp;quot;: &amp;quot;C:/Users/Anja/Desktop/FAX/4. GODINA/XML/XWS-TIM15/api_gateway&amp;quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Go Build.go build main.go">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="api_gateway" />
