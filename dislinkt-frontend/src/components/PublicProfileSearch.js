@@ -119,8 +119,14 @@ const PublicProfileSearch = (props) => {
     useEffect(() => {
         //console.log(buttonClick)
         fetchUsers();
-        fetchFollowRequests();
-        fetchFollows();
+        if (props.displayFollowButtons) {
+            fetchFollowRequests();
+            fetchFollows();
+        }
+        else{
+            setFollows([]);
+            setFollowRequests([]);
+        }
     }, [buttonClick])
 
     const getUsers = () => {
