@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using Chat_microservice.Configuration;
+using Chat_microservice.Nats.Messages;
 using Chat_microservice.Repository;
+using Chat_microservice.Utilities;
 using Microsoft.Extensions.Hosting;
 using NATS.Client;
 
@@ -33,12 +36,33 @@ namespace Chat_microservice.Nats
         {
             EventHandler<MsgHandlerEventArgs> h = (e, args) =>
             {
-
+                try
+                {
+                    var command = ConversionUtilities.DeserializeBinary<UnblockCommand>(args.Message.Data);
+                    if (!command.IsRelevant()) return;
+                    var chat = _chatRepository.GetByParticipants(Guid.Parse(command.BlockerId), Guid.Parse(command.BlockedId));
+                    if (chat != null)
+                    {
+                        if (!chat.Messages.Any()) _chatRepository.Delete(chat);
+                        else chat.SetToUnblocked(Guid.Parse(command.BlockerId));
+                    }
+                    var unblockedReply = _mapper.Map<UnblockReply>(command);
+                    unblockedReply.Type = UnblockReplyType.ChatUnblocked;
+                    Publish(_config.UnblockReplySubject, ConversionUtilities.SerializeBinary(unblockedReply));
+                }
+                catch
+                {
+                    var command = ConversionUtilities.DeserializeBinary<UnblockCommand>(args.Message.Data);
+                    var notUnblockedReply = _mapper.Map<UnblockReply>(command);
+                    notUnblockedReply.Type = UnblockReplyType.ChatNotUnblocked;
+                    Publish(_config.UnblockReplySubject, ConversionUtilities.SerializeBinary(notUnblockedReply));
+                }
             };
             _subscription.MessageHandler += h;
             _subscription.Start();
             return Task.CompletedTask;
         }
+        private void Publish(string subject, byte[] data) => _connection.Publish(subject, data);
         public override void Dispose()
         {
             _subscription.Unsubscribe();

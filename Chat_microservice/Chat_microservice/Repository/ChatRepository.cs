@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Chat_microservice.Configuration;
 using MongoDB.Bson;
 
 namespace Chat_microservice.Repository
@@ -14,9 +15,10 @@ namespace Chat_microservice.Repository
 
         public ChatRepository()
         {
+            var cfg = new EnvironmentConfiguration();
             var mongoClient = new MongoClient("mongodb://" +
-                                              Environment.GetEnvironmentVariable("CHAT_DB_HOST") + ":" +
-                                              Environment.GetEnvironmentVariable("CHAT_DB_PORT"));
+                                              cfg.ChatDbHost + ":" +
+                                              cfg.ChatDbPort);
             var mongoDatabase = mongoClient.GetDatabase("chats");
             _chats = mongoDatabase.GetCollection<Chat>("chats");
         }
@@ -69,6 +71,13 @@ namespace Chat_microservice.Repository
         {
             var filter = Builders<Chat>.Filter.Eq(c => c.Id, chat.Id);
             _chats.ReplaceOne(filter, chat);
+            return chat;
+        }
+
+        public Chat Delete(Chat chat)
+        {
+            var filter = Builders<Chat>.Filter.Eq(c => c.Id, chat.Id);
+            _chats.DeleteOne(filter);
             return chat;
         }
     }

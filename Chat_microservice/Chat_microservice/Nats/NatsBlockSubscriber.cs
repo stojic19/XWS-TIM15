@@ -58,9 +58,9 @@ namespace Chat_microservice.Nats
                             Messages = new List<ChatMessage>()
                         };
                         _chatRepository.Add(chat);
-                        var notBlockedBlockReply = _mapper.Map<BlockReply>(command);
-                        notBlockedBlockReply.Type = BlockReplyType.ChatBlocked;
-                        Publish(_config.BlockReplySubject, ConversionUtilities.SerializeBinary(notBlockedBlockReply));
+                        var blockedBlockReply = _mapper.Map<BlockReply>(command);
+                        blockedBlockReply.Type = BlockReplyType.ChatBlocked;
+                        Publish(_config.BlockReplySubject, ConversionUtilities.SerializeBinary(blockedBlockReply));
                         return;
                     }
                     chat.SetToBlocked(Guid.Parse(command.BlockerId));

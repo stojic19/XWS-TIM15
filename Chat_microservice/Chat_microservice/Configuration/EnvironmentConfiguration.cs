@@ -5,6 +5,8 @@ namespace Chat_microservice.Configuration
     public class EnvironmentConfiguration
     {
         public string Port { get; set; }
+        public string ChatDbHost { get; set; }
+        public string ChatDbPort { get; set; }
         public string NatsHost { get; set; }
         public string NatsPort { get; set; }
         public string NatsUser { get; set; }
@@ -18,6 +20,8 @@ namespace Chat_microservice.Configuration
         public EnvironmentConfiguration()
         {
             Port = GetEnvironmentVarOrDefault("CHAT_PORT", "8004");
+            ChatDbHost = GetEnvironmentVarOrDefault("CHAT_DB_HOST", "localhost");
+            ChatDbPort = GetEnvironmentVarOrDefault("CHAT_DB_PORT", "27017");
             NatsHost = GetEnvironmentVarOrDefault("NATS_HOST", "localhost");
             NatsPort = GetEnvironmentVarOrDefault("NATS_PORT", "4222");
             NatsUser = GetEnvironmentVarOrDefault("NATS_USER", "ruser");

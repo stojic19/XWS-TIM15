@@ -12,5 +12,6 @@ namespace Chat_microservice.Repository
         public IEnumerable<Chat> GetForUser(Guid userId);
         public Chat Add(Chat chat);
         public Chat Update(Chat chat);
+        public Chat Delete(Chat chat);
     }
 }

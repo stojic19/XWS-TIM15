@@ -32,5 +32,21 @@ namespace Chat_microservice.model
             }
             return false;
         }
+
+        public bool SetToUnblocked(Guid id)
+        {
+            if (FirstParticipant.UserId == id)
+            {
+                FirstParticipant.BlockedChat = false;
+                return true;
+            }
+
+            if (SecondParticipant.UserId == id)
+            {
+                SecondParticipant.BlockedChat = false;
+                return true;
+            }
+            return false;
+        }
     }
 }

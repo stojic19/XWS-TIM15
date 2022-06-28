@@ -14,7 +14,9 @@ type FollowersStore interface {
 	BlockPending(blockerId string, blockedId string) (string, error)
 	ConfirmBlock(blockerId string, blockedId string) (string, error)
 	RevertPendingBlock(blockerId string, blockedId string) (string, error)
-	Unblock(blockerId string, blockedId string) (string, error)
+	UnblockPending(blockerId string, blockedId string) (string, error)
+	ConfirmUnblock(blockerId string, blockedId string) (string, error)
+	RevertPendingUnblock(blockerId string, blockedId string) (string, error)
 	GetBlocked(id string) ([]*User, error)
 	GetBlockers(id string) ([]*User, error)
 }

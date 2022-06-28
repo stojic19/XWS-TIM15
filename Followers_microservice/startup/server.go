@@ -60,6 +60,10 @@ func (server *Server) Start() {
 	replyPublisher := server.initPublisher(server.config.BlockReplySubject)
 	server.initBlockHandler(followersService, replyPublisher, commandSubscriber)
 
+	unblockCommandSubscriber := server.initSubscriber(server.config.UnblockCommandSubject, QueueGroup)
+	unblockReplyPublisher := server.initPublisher(server.config.UnblockReplySubject)
+	server.initUnblockHandler(followersService, unblockReplyPublisher, unblockCommandSubscriber)
+
 	followersHandler := server.initFollowersHandler(followersService)
 
 	server.startGrpcServer(followersHandler)
@@ -130,6 +134,13 @@ func (server *Server) initFollowersService(store domain.FollowersStore, orchestr
 
 func (server *Server) initBlockHandler(service *application.FollowersService, publisher saga.Publisher, subscriber saga.Subscriber) {
 	_, err := api.NewBlockCommandHandler(service, publisher, subscriber)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (server *Server) initUnblockHandler(service *application.FollowersService, publisher saga.Publisher, subscriber saga.Subscriber) {
+	_, err := api.NewUnblockCommandHandler(service, publisher, subscriber)
 	if err != nil {
 		log.Fatal(err)
 	}
