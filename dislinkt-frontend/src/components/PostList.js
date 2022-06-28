@@ -7,7 +7,7 @@ const PostList = (props) => {
             {props.posts &&
                 (props.posts).map((post, index) => {
                     return (
-                        <PostCard key={index} post={post} />
+                        <PostCard key={index} post={post} buttonClickChanger={props.buttonClickChanger}/>
                     );
                 })}
             {props.posts.length==0 && <h3 style={{textAlign: 'center'}}>No posts to show.</h3>}

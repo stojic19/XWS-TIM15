@@ -39,6 +39,7 @@ const PostCard = (post) => {
                     text: err.data,
                 });
             });
+            post.buttonClickChanger();
     }
 
     const postLiked = () => {
@@ -75,7 +76,7 @@ const PostCard = (post) => {
                         title: 'Success!',
                         text: res.data.response,
                     });
-                    window.location.reload()
+                    post.buttonClickChanger();
                 });
         } else {
             axios.put(axios.defaults.baseURL + 'posts/like', update)
@@ -85,7 +86,7 @@ const PostCard = (post) => {
                         title: 'Success!',
                         text: res.data.response,
                     });
-                    window.location.reload()
+                    post.buttonClickChanger();
                 });
         }
     }
@@ -105,7 +106,7 @@ const PostCard = (post) => {
                         title: 'Success!',
                         text: res.data.response,
                     });
-                    window.location.reload()
+                    post.buttonClickChanger();
                 });
         } else {
             axios.put(axios.defaults.baseURL + 'posts/dislike', update)
@@ -115,7 +116,7 @@ const PostCard = (post) => {
                         title: 'Success!',
                         text: res.data.response,
                     });
-                    window.location.reload()
+                    post.buttonClickChanger();
                 });
         }
     }

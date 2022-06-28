@@ -80,10 +80,6 @@ const BlockedUsers = (props) => {
         fetchBlocked();
     }, []);
 
-    /*useEffect(() => {
-        fetchUsers();
-    }, [])*/
-
     useEffect(() => {
         fetchBlocked();
     }, [buttonClick])
