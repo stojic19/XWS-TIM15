@@ -20,6 +20,23 @@ const PostCard = (post) => {
         return localStorage.getItem('user_id').length != 0;
     }
 
+    // const fetchUser = async (id)  => {
+    //     let name = id
+    //     axios.get(axios.defaults.baseURL + 'users/', id)
+    //         .then((res) => {
+    //             console.log(res.data.user)
+    //             name = res.data.user.name
+    //         }).catch(err => {
+    //             console.log(err);
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: 'Oops...',
+    //                 text: err.data,
+    //             });
+    //         });
+    //     return name
+    // }
+
     const addPost = async (newContent) => {
         let newComment = {
             userId: localStorage.getItem('user_id'),
@@ -147,7 +164,7 @@ const PostCard = (post) => {
 
                         <div className="panel-heading">
                             <img className="[ img-circle pull-left ]" src={getImage()} style={{ height: "50px" }} />
-                            <h3>{post.post.title}</h3> {/*Bolje ime korisnika umesto naslova*/}
+                            <h3>{post.post.owner.id}:{post.post.title}</h3> {/*Bolje ime korisnika umesto naslova*/}
                             <h5><span>
                                 {
                                     (post.post.createTime).split("T")[0]
