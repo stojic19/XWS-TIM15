@@ -4,6 +4,7 @@ import '../css/postCard.css'
 import Comment from './Comment';
 import Swal from 'sweetalert2';
 import { projectStorage, projectFirestore, timestamp } from '../firebase/config';
+import PostOwner from './PostOwner';
 
 const PostCard = (post) => {
     const [comment, setComment] = useState([])
@@ -19,6 +20,23 @@ const PostCard = (post) => {
     const showButtons = () => {
         return localStorage.getItem('user_id').length != 0;
     }
+
+    // const fetchUser = async (id)  => {
+    //     let name = id
+    //     axios.get(axios.defaults.baseURL + 'users/', id)
+    //         .then((res) => {
+    //             console.log(res.data.user)
+    //             name = res.data.user.name
+    //         }).catch(err => {
+    //             console.log(err);
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: 'Oops...',
+    //                 text: err.data,
+    //             });
+    //         });
+    //     return name
+    // }
 
     const addPost = async (newContent) => {
         let newComment = {
@@ -39,6 +57,7 @@ const PostCard = (post) => {
                     text: err.data,
                 });
             });
+            post.buttonClickChanger();
     }
 
     const postLiked = () => {
@@ -75,7 +94,7 @@ const PostCard = (post) => {
                         title: 'Success!',
                         text: res.data.response,
                     });
-                    window.location.reload()
+                    post.buttonClickChanger();
                 });
         } else {
             axios.put(axios.defaults.baseURL + 'posts/like', update)
@@ -85,7 +104,7 @@ const PostCard = (post) => {
                         title: 'Success!',
                         text: res.data.response,
                     });
-                    window.location.reload()
+                    post.buttonClickChanger();
                 });
         }
     }
@@ -105,7 +124,7 @@ const PostCard = (post) => {
                         title: 'Success!',
                         text: res.data.response,
                     });
-                    window.location.reload()
+                    post.buttonClickChanger();
                 });
         } else {
             axios.put(axios.defaults.baseURL + 'posts/dislike', update)
@@ -115,7 +134,7 @@ const PostCard = (post) => {
                         title: 'Success!',
                         text: res.data.response,
                     });
-                    window.location.reload()
+                    post.buttonClickChanger();
                 });
         }
     }
@@ -146,7 +165,8 @@ const PostCard = (post) => {
 
                         <div className="panel-heading">
                             <img className="[ img-circle pull-left ]" src={getImage()} style={{ height: "50px" }} />
-                            <h3>{post.post.title}</h3> {/*Bolje ime korisnika umesto naslova*/}
+                            <PostOwner id= {post.post.owner.id}></PostOwner>
+                            <h4>{post.post.title}</h4> 
                             <h5><span>
                                 {
                                     (post.post.createTime).split("T")[0]
