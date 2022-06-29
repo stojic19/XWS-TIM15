@@ -19,4 +19,5 @@ type FollowersStore interface {
 	RevertPendingUnblock(blockerId string, blockedId string) (string, error)
 	GetBlocked(id string) ([]*User, error)
 	GetBlockers(id string) ([]*User, error)
+	GetRecommended(id string) ([]*User, error)
 }

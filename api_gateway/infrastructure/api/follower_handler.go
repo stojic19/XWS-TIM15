@@ -41,6 +41,10 @@ func (handler *FollowersHandler) Init(mux *runtime.ServeMux) {
 	if err != nil {
 		panic(err)
 	}
+	err = mux.HandlePath("GET", "/followers/recommended/{userId}/details", handler.GetRecommended)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (handler *FollowersHandler) GetFollowersDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
@@ -117,6 +121,36 @@ func (handler *FollowersHandler) GetFollowRequestsDetails(w http.ResponseWriter,
 	}
 
 	finishFollowers(w, err, followersInfo)
+}
+
+func (handler *FollowersHandler) GetRecommended(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	followersClient := services.NewFollowersClient(handler.followersClientAddress)
+	ids, err := followersClient.GetRecommendedUsers(context.TODO(), &followers.Id{Id: pathParams["userId"]})
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	usersClient := services.NewUsersClient(handler.usersClientAddress)
+	retVal := []*domain.User{}
+	for _, id := range ids.Ids {
+		info, err := usersClient.GetUser(context.TODO(), &users.GetUserRequest{Id: id.Id})
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		retVal = append(retVal, &domain.User{
+			Id:       id.Id,
+			Username: info.User.Username,
+		})
+	}
+	retValByte, err := json.Marshal(retVal)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	w.Write(retValByte)
 }
 
 func (handler *FollowersHandler) addFollowerInfo(followersInfo *domain.UserFollowerInfoList, id string) error {
