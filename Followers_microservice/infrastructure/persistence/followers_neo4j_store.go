@@ -571,3 +571,7 @@ OPTIONAL MATCH (test1) - [sub:SUBSCRIBE] - (test2)
 OPTIONAL MATCH (test1) - [blok_p:BLOCK_PEND] -> (test2)
 DELETE fol, sub, flr, blok_p
 MERGE (test1) - [blok:BLOCK] -> (test2)*/
+
+/*MATCH r = (ralo:User{username:"Ralo"}) - [:FOLLOWING * 2..3] -> (followed:User)
+WHERE NOT exists((ralo) - [:FOLLOWING] -> (followed)) AND  NOT exists((ralo) - [:BLOCK] -> (followed))
+RETURN followed*/
