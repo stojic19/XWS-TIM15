@@ -558,6 +558,40 @@ func (store *FollowersStore) GetBlockers(id string) ([]*domain.User, error) {
 	return followers.([]*domain.User), nil
 }
 
+func (store *FollowersStore) GetRecommended(id string) ([]*domain.User, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeRead,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+	followers, err := session.ReadTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		records, err := tx.Run(
+			"MATCH r = (u1:User{userId:$id}) - [f1:FOLLOWING] -> (u2:User) - [f2:FOLLOWING] -> (u3:User) "+
+				"WHERE NOT exists((u1) - [:FOLLOWING] -> (u3)) AND  NOT exists((u1) - [:BLOCK] -> (u3)) "+
+				"RETURN u3, count(f2) as fol_num "+
+				"ORDER BY fol_num DESC "+
+				"LIMIT 10",
+			map[string]interface{}{"id": id})
+		if err != nil {
+			return nil, err
+		}
+		results := []*domain.User{}
+		for records.Next() {
+			record := records.Record()
+			id, _ := record.Get("u3")
+			user := domain.User{
+				Id: id.(dbtype.Node).Props["userId"].(string),
+			}
+			results = append(results, &user)
+		}
+		return results, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return followers.([]*domain.User), nil
+}
+
 func unsafeClose(closeable io.Closer) {
 	if err := closeable.Close(); err != nil {
 		log.Fatal(fmt.Errorf("could not close resource: %w", err))
@@ -571,3 +605,14 @@ OPTIONAL MATCH (test1) - [sub:SUBSCRIBE] - (test2)
 OPTIONAL MATCH (test1) - [blok_p:BLOCK_PEND] -> (test2)
 DELETE fol, sub, flr, blok_p
 MERGE (test1) - [blok:BLOCK] -> (test2)*/
+
+/*MATCH r = (ralo:User{username:"Ralo"}) - [:FOLLOWING * 2..3] -> (followed:User)
+WHERE NOT exists((ralo) - [:FOLLOWING] -> (followed)) AND  NOT exists((ralo) - [:BLOCK] -> (followed))
+RETURN followed*/
+
+/*MATCH r = (ralo:User{username:"Ralo"}) - [f1:FOLLOWING] -> (followed:User) - [f2:FOLLOWING] -> (followed2:User)
+WHERE NOT exists((ralo) - [:FOLLOWING] -> (followed2)) AND  NOT exists((ralo) - [:BLOCK] -> (followed2))
+RETURN followed2, count(f2) as fol_num
+ORDER BY fol_num DESC
+LIMIT 10
+*/

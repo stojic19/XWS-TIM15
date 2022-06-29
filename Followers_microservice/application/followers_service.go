@@ -115,3 +115,6 @@ func (service *FollowersService) GetBlocked(id string) ([]*domain.User, error) {
 func (service *FollowersService) GetBlockers(id string) ([]*domain.User, error) {
 	return service.store.GetBlockers(id)
 }
+func (service *FollowersService) GetRecommendedUsers(id string) ([]*domain.User, error) {
+	return service.store.GetRecommended(id)
+}
