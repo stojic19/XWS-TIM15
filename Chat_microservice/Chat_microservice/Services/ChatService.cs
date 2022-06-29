@@ -9,6 +9,7 @@ using Chat_microservice.Protos;
 using Chat_microservice.Repository;
 using Google.Protobuf.Collections;
 using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Chat_microservice.Services
@@ -26,7 +27,6 @@ namespace Chat_microservice.Services
 
         public override Task<ChatsMsg> Get(GetRequest request, ServerCallContext context)
         {
-            //throw new RpcException(new Status(StatusCode.Unauthenticated, "Unauthorized!"));
             var chats = _chatRepository.GetAll();
             return Task.FromResult(_mapper.Map<ChatsMsg>(chats));
         }
@@ -39,6 +39,7 @@ namespace Chat_microservice.Services
 
         public override Task<ChatMsg> Add(NewMessage message, ServerCallContext context)
         {
+            Authorize(context);
             var chat = _chatRepository.GetByParticipants(Guid.Parse(message.SenderId),
                 Guid.Parse(message.ReceiverId));
             if (chat == null)
@@ -52,6 +53,13 @@ namespace Chat_microservice.Services
             chat.Messages = chat.Messages.Append(chatMessage);
             _chatRepository.Update(chat);
             return Task.FromResult(_mapper.Map<ChatMsg>(chat));
+        }
+
+        private void Authorize(ServerCallContext context)
+        {
+            string sub = context.RequestHeaders.Get("sub").Value;
+            if (sub is null or "")
+                throw new RpcException(new Status(StatusCode.Unauthenticated, "Unauthorized"));
         }
     }
 }
