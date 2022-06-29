@@ -318,7 +318,7 @@ func (store *FollowersStore) RemoveFollowRequest(followerId string, followedId s
 	return session.LastBookmark(), nil
 }
 
-func (store *FollowersStore) Block(blockerId string, blockedId string) (string, error) {
+func (store *FollowersStore) BlockPending(blockerId string, blockedId string) (string, error) {
 	session := store.driver.NewSession(neo4j.SessionConfig{
 		AccessMode:   neo4j.AccessModeWrite,
 		DatabaseName: store.databaseName,
@@ -332,9 +332,7 @@ func (store *FollowersStore) Block(blockerId string, blockedId string) (string, 
 				"MERGE (blocked:User {userId: $blockedId}) "+
 				"ON CREATE SET blocked.userId = $blockedId "+
 				"WITH blocker, blocked "+
-				"OPTIONAL MATCH (blocker) - [rel] - (blocked) "+
-				"DELETE rel "+
-				"MERGE (blocker) - [b:BLOCK] -> (blocked) ON CREATE SET b.timeStarted = time()",
+				"MERGE (blocker) - [:PENDING_BLOCK] -> (blocked) ",
 			map[string]interface{}{"blockerId": blockerId, "blockedId": blockedId})
 		if err != nil {
 			return nil, err
@@ -344,9 +342,10 @@ func (store *FollowersStore) Block(blockerId string, blockedId string) (string, 
 	if err != nil {
 		return "Failed to block " + blockerId + " -> " + blockedId, err
 	}
-	return "User blocked", nil
+	return "User block pending", nil
 }
-func (store *FollowersStore) Unblock(blockerId string, blockedId string) (string, error) {
+
+func (store *FollowersStore) ConfirmBlock(blockerId string, blockedId string) (string, error) {
 	session := store.driver.NewSession(neo4j.SessionConfig{
 		AccessMode:   neo4j.AccessModeWrite,
 		DatabaseName: store.databaseName,
@@ -355,10 +354,18 @@ func (store *FollowersStore) Unblock(blockerId string, blockedId string) (string
 
 	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
 		result, err := tx.Run(
-			"MATCH  (blocker:User {userId: $blockerId}) "+
-				"MATCH (blocked:User {userId: $blockedId}) "+
-				"MATCH (blocker) - [block:BLOCK] -> (blocked) "+
-				"DELETE block",
+			"MERGE  (blocker:User {userId: $blockerId}) "+
+				"ON CREATE SET blocker.userId = $blockerId "+
+				"MERGE (blocked:User {userId: $blockedId}) "+
+				"ON CREATE SET blocked.userId = $blockedId "+
+				"WITH blocker, blocked "+
+				"OPTIONAL MATCH (blocker) -[fol:FOLLOWING]-(blocked) "+
+				"OPTIONAL MATCH (blocker) -[fr:REQUESTING_FOLLOW]-(blocked) "+
+				"OPTIONAL MATCH (blocker) -[pending:PENDING_BLOCK]->(blocked) "+
+				"DELETE fol "+
+				"DELETE fr "+
+				"DELETE pending "+
+				"MERGE (blocker) - [:BLOCK] -> (blocked)",
 			map[string]interface{}{"blockerId": blockerId, "blockedId": blockedId})
 		if err != nil {
 			return nil, err
@@ -366,9 +373,127 @@ func (store *FollowersStore) Unblock(blockerId string, blockedId string) (string
 		return result.Consume()
 	})
 	if err != nil {
-		return "Failed unblock: " + blockerId + " -> " + blockedId, err
+		return "Failed to block " + blockerId + " -> " + blockedId, err
+	}
+	return "User bloc confirmed", nil
+}
+
+func (store *FollowersStore) RevertPendingBlock(blockerId string, blockedId string) (string, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeWrite,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		result, err := tx.Run(
+			"MERGE  (blocker:User {userId: $blockerId}) "+
+				"ON CREATE SET blocker.userId = $blockerId "+
+				"MERGE (blocked:User {userId: $blockedId}) "+
+				"ON CREATE SET blocked.userId = $blockedId "+
+				"WITH blocker, blocked "+
+				"OPTIONAL MATCH (blocker) -[pending:PENDING_BLOCK]->(blocked) "+
+				"DELETE pending",
+			map[string]interface{}{"blockerId": blockerId, "blockedId": blockedId})
+		if err != nil {
+			return nil, err
+		}
+		return result.Consume()
+	})
+	if err != nil {
+		return "Failed to block " + blockerId + " -> " + blockedId, err
+	}
+	return "Block reverted", nil
+}
+
+func (store *FollowersStore) UnblockPending(blockerId string, blockedId string) (string, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeWrite,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	result, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		result, err := tx.Run(
+			"MERGE  (blocker:User {userId: $blockerId}) "+
+				"ON CREATE SET blocker.userId = $blockerId "+
+				"MERGE (blocked:User {userId: $blockedId}) "+
+				"ON CREATE SET blocked.userId = $blockedId "+
+				"WITH blocker, blocked "+
+				"MATCH(blocker) - [b:BLOCK] -> (blocked) "+
+				"MERGE (blocker) -[pending:UNBLOCK_PENDING] -> (blocked) "+
+				"RETURN pending",
+			map[string]interface{}{"blockerId": blockerId, "blockedId": blockedId})
+		if err != nil {
+			return nil, err
+		}
+		for result.Next() {
+			return "User unblock pending", nil
+		}
+		return "failed to unblock, user is not blocked", nil
+	})
+	if err != nil {
+		return "Failed to unblock " + blockerId + " -> " + blockedId, err
+	}
+	return result.(string), nil
+}
+
+func (store *FollowersStore) ConfirmUnblock(blockerId string, blockedId string) (string, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeWrite,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		result, err := tx.Run(
+			"MERGE  (blocker:User {userId: $blockerId}) "+
+				"ON CREATE SET blocker.userId = $blockerId "+
+				"MERGE (blocked:User {userId: $blockedId}) "+
+				"ON CREATE SET blocked.userId = $blockedId "+
+				"WITH blocker, blocked "+
+				"OPTIONAL MATCH (blocker) -[bl:BLOCK]->(blocked) "+
+				"OPTIONAL MATCH (blocker) -[pending:UNBLOCK_PENDING]->(blocked) "+
+				"DELETE bl "+
+				"DELETE pending",
+			map[string]interface{}{"blockerId": blockerId, "blockedId": blockedId})
+		if err != nil {
+			return nil, err
+		}
+		return result.Consume()
+	})
+	if err != nil {
+		return "Failed to block " + blockerId + " -> " + blockedId, err
 	}
 	return "User unblocked", nil
+}
+
+func (store *FollowersStore) RevertPendingUnblock(blockerId string, blockedId string) (string, error) {
+	session := store.driver.NewSession(neo4j.SessionConfig{
+		AccessMode:   neo4j.AccessModeWrite,
+		DatabaseName: store.databaseName,
+	})
+	defer unsafeClose(session)
+
+	_, err := session.WriteTransaction(func(tx neo4j.Transaction) (interface{}, error) {
+		result, err := tx.Run(
+			"MERGE  (blocker:User {userId: $blockerId}) "+
+				"ON CREATE SET blocker.userId = $blockerId "+
+				"MERGE (blocked:User {userId: $blockedId}) "+
+				"ON CREATE SET blocked.userId = $blockedId "+
+				"WITH blocker, blocked "+
+				"OPTIONAL MATCH (blocker) -[pending:UNBLOCK_PENDING]->(blocked) "+
+				"DELETE pending",
+			map[string]interface{}{"blockerId": blockerId, "blockedId": blockedId})
+		if err != nil {
+			return nil, err
+		}
+		return result.Consume()
+	})
+	if err != nil {
+		return "Failed to block " + blockerId + " -> " + blockedId, err
+	}
+	return "Block reverted", nil
 }
 
 func (store *FollowersStore) GetBlocked(id string) ([]*domain.User, error) {
@@ -438,3 +563,11 @@ func unsafeClose(closeable io.Closer) {
 		log.Fatal(fmt.Errorf("could not close resource: %w", err))
 	}
 }
+
+/*MATCH (test1:User{username:"TEST1"}) MATCH(test2:User{username:"TEST2"})
+OPTIONAL MATCH (test1) - [fol:FOLLOWING] - (test2)
+OPTIONAL MATCH (test1) - [flr:FOLLOW_REQUEST] - (test2)
+OPTIONAL MATCH (test1) - [sub:SUBSCRIBE] - (test2)
+OPTIONAL MATCH (test1) - [blok_p:BLOCK_PEND] -> (test2)
+DELETE fol, sub, flr, blok_p
+MERGE (test1) - [blok:BLOCK] -> (test2)*/

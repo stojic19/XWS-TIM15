@@ -9,10 +9,16 @@ import (
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/infrastructure/persistence"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/startup/config"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
+	saga "github.com/stojic19/XWS-TIM15/common/saga/messaging"
+	"github.com/stojic19/XWS-TIM15/common/saga/messaging/nats"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 	"strings"
+)
+
+const (
+	QueueGroup = "followers_service"
 )
 
 type Server struct {
@@ -40,7 +46,24 @@ func (server *Server) Start() {
 	}
 	followersStore := server.initFollowersStore(&driver, configuration.Database)
 
-	followersService := server.initFollowersService(followersStore)
+	commandPublisher := server.initPublisher(server.config.BlockCommandSubject)
+	replySubscriber := server.initSubscriber(server.config.BlockReplySubject, QueueGroup)
+	blockOrchestrator := server.initBlockOrchestrator(commandPublisher, replySubscriber)
+
+	unblockCommandPublisher := server.initPublisher(server.config.UnblockCommandSubject)
+	unblockReplySubscriber := server.initSubscriber(server.config.UnblockReplySubject, QueueGroup)
+	unblockOrchestrator := server.initUnblockOrchestrator(unblockCommandPublisher, unblockReplySubscriber)
+
+	followersService := server.initFollowersService(followersStore, blockOrchestrator, unblockOrchestrator)
+
+	commandSubscriber := server.initSubscriber(server.config.BlockCommandSubject, QueueGroup)
+	replyPublisher := server.initPublisher(server.config.BlockReplySubject)
+	server.initBlockHandler(followersService, replyPublisher, commandSubscriber)
+
+	unblockCommandSubscriber := server.initSubscriber(server.config.UnblockCommandSubject, QueueGroup)
+	unblockReplyPublisher := server.initPublisher(server.config.UnblockReplySubject)
+	server.initUnblockHandler(followersService, unblockReplyPublisher, unblockCommandSubscriber)
+
 	followersHandler := server.initFollowersHandler(followersService)
 
 	server.startGrpcServer(followersHandler)
@@ -69,8 +92,58 @@ func (server *Server) initFollowersStore(driver *neo4j.Driver, dbName string) do
 	return persistence.NewFollowersStore(driver, dbName)
 }
 
-func (server *Server) initFollowersService(store domain.FollowersStore) *application.FollowersService {
-	return application.NewFollowersService(store)
+func (server *Server) initPublisher(subject string) saga.Publisher {
+	publisher, err := nats.NewNATSPublisher(
+		server.config.NatsHost, server.config.NatsPort,
+		server.config.NatsUser, server.config.NatsPass, subject)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return publisher
+}
+
+func (server *Server) initSubscriber(subject, queueGroup string) saga.Subscriber {
+	subscriber, err := nats.NewNATSSubscriber(
+		server.config.NatsHost, server.config.NatsPort,
+		server.config.NatsUser, server.config.NatsPass, subject, queueGroup)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return subscriber
+}
+
+func (server *Server) initBlockOrchestrator(publisher saga.Publisher, subscriber saga.Subscriber) *application.BlockOrchestrator {
+	orchestrator, err := application.NewBlockOrchestrator(publisher, subscriber)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return orchestrator
+}
+
+func (server *Server) initUnblockOrchestrator(publisher saga.Publisher, subscriber saga.Subscriber) *application.UnblockOrchestrator {
+	orchestrator, err := application.NewUnblockOrchestrator(publisher, subscriber)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return orchestrator
+}
+
+func (server *Server) initFollowersService(store domain.FollowersStore, orchestrator *application.BlockOrchestrator, unblockOrchestrator *application.UnblockOrchestrator) *application.FollowersService {
+	return application.NewFollowersService(store, orchestrator, unblockOrchestrator)
+}
+
+func (server *Server) initBlockHandler(service *application.FollowersService, publisher saga.Publisher, subscriber saga.Subscriber) {
+	_, err := api.NewBlockCommandHandler(service, publisher, subscriber)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func (server *Server) initUnblockHandler(service *application.FollowersService, publisher saga.Publisher, subscriber saga.Subscriber) {
+	_, err := api.NewUnblockCommandHandler(service, publisher, subscriber)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (server *Server) initFollowersHandler(followersService *application.FollowersService) *api.FollowersHandler {

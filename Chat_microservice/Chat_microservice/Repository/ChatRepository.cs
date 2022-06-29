@@ -2,7 +2,9 @@
 using Chat_microservice.model;
 using MongoDB.Driver;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using Chat_microservice.Configuration;
 using MongoDB.Bson;
 
 namespace Chat_microservice.Repository
@@ -13,9 +15,10 @@ namespace Chat_microservice.Repository
 
         public ChatRepository()
         {
+            var cfg = new EnvironmentConfiguration();
             var mongoClient = new MongoClient("mongodb://" +
-                                              Environment.GetEnvironmentVariable("CHAT_DB_HOST") + ":" +
-                                              Environment.GetEnvironmentVariable("CHAT_DB_PORT"));
+                                              cfg.ChatDbHost + ":" +
+                                              cfg.ChatDbPort);
             var mongoDatabase = mongoClient.GetDatabase("chats");
             _chats = mongoDatabase.GetCollection<Chat>("chats");
         }
@@ -51,7 +54,11 @@ namespace Chat_microservice.Repository
             var filter1 = Builders<Chat>.Filter.And(filter11, filter12);
             var filter2 = Builders<Chat>.Filter.And(filter21, filter22);
 
-            return _chats.Find(Builders<Chat>.Filter.Or(filter1, filter2)).ToEnumerable();
+            var filter3 = Builders<Chat>.Filter.SizeGt(c => c.Messages, 0);
+
+            var filter4 = Builders<Chat>.Filter.Or(filter1, filter2);
+
+            return _chats.Find(Builders<Chat>.Filter.And(filter3, filter4)).ToEnumerable();
         }
 
         public Chat Add(Chat chat)
@@ -64,6 +71,13 @@ namespace Chat_microservice.Repository
         {
             var filter = Builders<Chat>.Filter.Eq(c => c.Id, chat.Id);
             _chats.ReplaceOne(filter, chat);
+            return chat;
+        }
+
+        public Chat Delete(Chat chat)
+        {
+            var filter = Builders<Chat>.Filter.Eq(c => c.Id, chat.Id);
+            _chats.DeleteOne(filter);
             return chat;
         }
     }
