@@ -4,6 +4,7 @@ import '../css/postCard.css'
 import Comment from './Comment';
 import Swal from 'sweetalert2';
 import { projectStorage, projectFirestore, timestamp } from '../firebase/config';
+import PostOwner from './PostOwner';
 
 const PostCard = (post) => {
     const [comment, setComment] = useState([])
@@ -164,7 +165,8 @@ const PostCard = (post) => {
 
                         <div className="panel-heading">
                             <img className="[ img-circle pull-left ]" src={getImage()} style={{ height: "50px" }} />
-                            <h3>{post.post.owner.id}:{post.post.title}</h3> {/*Bolje ime korisnika umesto naslova*/}
+                            <PostOwner id= {post.post.owner.id}></PostOwner>
+                            <h4>{post.post.title}</h4> 
                             <h5><span>
                                 {
                                     (post.post.createTime).split("T")[0]
