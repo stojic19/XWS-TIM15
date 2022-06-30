@@ -238,7 +238,9 @@ func (handler *FollowersHandler) Block(ctx context.Context, request *followers.R
 		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
 	}
 	//Endpoint protection
+	span1 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "Neo4jWriteBlock")
 	response, err := handler.service.Block(request.SubjectId, request.ObjectId)
+	span1.Finish()
 	if err != nil {
 		return nil, err
 	}
@@ -257,7 +259,9 @@ func (handler *FollowersHandler) Unblock(ctx context.Context, request *followers
 		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
 	}
 	//Endpoint protection
+	span1 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "Neo4jWriteUnblock")
 	response, err := handler.service.Unblock(request.SubjectId, request.ObjectId)
+	span1.Finish()
 	if err != nil {
 		return nil, err
 	}
@@ -269,7 +273,9 @@ func (handler *FollowersHandler) GetBlockedAccounts(ctx context.Context, request
 	span := tracer.StartSpanFromContextMetadata(ctx, "GetBlockedAccounts")
 	defer span.Finish()
 
+	span1 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "Neo4jReadBlock")
 	users, err := handler.service.GetBlocked(request.Id)
+	span1.Finish()
 	if err != nil {
 		return nil, err
 	}
@@ -286,7 +292,9 @@ func (handler *FollowersHandler) GetBlockerAccounts(ctx context.Context, request
 	span := tracer.StartSpanFromContextMetadata(ctx, "GetBlockerAccounts")
 	defer span.Finish()
 
+	span1 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "Neo4jReadBlock")
 	users, err := handler.service.GetBlockers(request.Id)
+	span1.Finish()
 	if err != nil {
 		return nil, err
 	}
@@ -303,7 +311,10 @@ func (handler *FollowersHandler) GetRecommendedUsers(ctx context.Context, reques
 	span := tracer.StartSpanFromContextMetadata(ctx, "GetRecommendedUsers")
 	defer span.Finish()
 
+	span1 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "Neo4jReadRecommended")
 	users, err := handler.service.GetRecommendedUsers(request.Id)
+	span1.Finish()
+
 	if err != nil {
 		return nil, err
 	}
