@@ -3,6 +3,7 @@ package startup
 import (
 	"fmt"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
+	otgo "github.com/opentracing/opentracing-go"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/application"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/domain"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/infrastructure/api"
@@ -11,7 +12,9 @@ import (
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	saga "github.com/stojic19/XWS-TIM15/common/saga/messaging"
 	"github.com/stojic19/XWS-TIM15/common/saga/messaging/nats"
+	"github.com/stojic19/XWS-TIM15/common/tracer"
 	"google.golang.org/grpc"
+	"io"
 	"log"
 	"net"
 	"strings"
@@ -19,10 +22,13 @@ import (
 
 const (
 	QueueGroup = "followers_service"
+	Name       = "Followers service"
 )
 
 type Server struct {
 	config *config.Config
+	Tracer otgo.Tracer
+	Closer io.Closer
 }
 
 type Neo4jConfiguration struct {
@@ -33,8 +39,12 @@ type Neo4jConfiguration struct {
 }
 
 func NewServer(config *config.Config) *Server {
+	tracer, closer := tracer.Init(Name)
+	otgo.SetGlobalTracer(tracer)
 	return &Server{
 		config: config,
+		Tracer: tracer,
+		Closer: closer,
 	}
 }
 
