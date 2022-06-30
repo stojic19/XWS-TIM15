@@ -12,6 +12,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
 using Chat_microservice.AutoMapperProfiles;
+using Chat_microservice.Configuration;
 using Chat_microservice.Nats;
 using Chat_microservice.Repository;
 using Chat_microservice.Services;
@@ -36,11 +37,12 @@ namespace Chat_microservice
             services.AddGrpc();
             services.AddSingleton<ITracer>(sp =>
             {
+                var config = new EnvironmentConfiguration();
                 var loggerFactory = sp.GetRequiredService<ILoggerFactory>();
                 var sampler = new ConstSampler(sample: true);
                 var reporter = new RemoteReporter.Builder()
                     .WithLoggerFactory(loggerFactory)
-                    .WithSender(new UdpSender("localhost", int.Parse("6831"), 0))
+                    .WithSender(new UdpSender(config.JaegerAgentHost, int.Parse(config.JaegerAgentPort), 0))
                     .Build();
                 var tracer = new Tracer.Builder("Chat service")
                     .WithLoggerFactory(loggerFactory)
