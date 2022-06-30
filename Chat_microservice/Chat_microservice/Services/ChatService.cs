@@ -10,6 +10,7 @@ using Chat_microservice.Repository;
 using Google.Protobuf.Collections;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
+using OpenTracing;
 
 
 namespace Chat_microservice.Services
@@ -18,16 +19,20 @@ namespace Chat_microservice.Services
     {
         private readonly IChatRepository _chatRepository;
         private readonly IMapper _mapper;
+        private readonly ITracer _tracer;
 
-        public ChatService(IChatRepository chatRepository, IMapper mapper)
+        public ChatService(IChatRepository chatRepository, IMapper mapper, ITracer tracer)
         {
             _chatRepository = chatRepository;
             _mapper = mapper;
+            _tracer = tracer;
         }
 
         public override Task<ChatsMsg> Get(GetRequest request, ServerCallContext context)
         {
+            var scope = _tracer.BuildSpan("Get").StartActive(true);
             var chats = _chatRepository.GetAll();
+            scope.Span.Finish();
             return Task.FromResult(_mapper.Map<ChatsMsg>(chats));
         }
 

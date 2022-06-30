@@ -6,15 +6,19 @@ using System.Linq;
 using System.Threading;
 using Chat_microservice.Configuration;
 using MongoDB.Bson;
+using OpenTracing;
 
 namespace Chat_microservice.Repository
 {
     public class ChatRepository : IChatRepository
     {
+        private readonly ITracer _tracer;
+
         private readonly IMongoCollection<Chat> _chats;
 
-        public ChatRepository()
+        public ChatRepository(ITracer tracer)
         {
+            _tracer = tracer;
             var cfg = new EnvironmentConfiguration();
             var mongoClient = new MongoClient("mongodb://" +
                                               cfg.ChatDbHost + ":" +
@@ -24,8 +28,11 @@ namespace Chat_microservice.Repository
         }
 
         public IEnumerable<Chat> GetAll()
-        { 
-            return _chats.Find(_ => true).ToList();
+        {
+            var span1 = _tracer.BuildSpan("MongoRead").Start();
+            var retVal = _chats.Find(_ => true).ToList();
+            span1.Finish();
+            return retVal;
         }
 
         public Chat GetByParticipants(Guid first, Guid second)
