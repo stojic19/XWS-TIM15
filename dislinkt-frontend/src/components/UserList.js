@@ -1,11 +1,14 @@
 import "../css/userCard.css"
 import UserCard from "./UserCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const UserList = (props) => {
     const[follows, setFollows] = useState(props.follows);
     const[followRequests, setFollowRequests] = useState(props.followRequests);
     const[displayFollowButtons, setDisplayFollowButtons] = useState(props.displayFollowButtons);
+    //const[blockedUsers, setBlockedUsers] = useState([])
 
     const userFollowsUser = (id) => {
         let isFollowing = false;
@@ -46,6 +49,16 @@ const UserList = (props) => {
         return true;
     }
 
+    const getUserById = async (id) => {
+        axios.get(axios.defaults.baseURL + 'users/' + id)
+                .then(res => {
+                    console.log(res.data.user)
+                    return res.data.user
+                }).catch(err => {
+                    console.log(err);
+                });
+    };
+
     return(
         <section className="our-webcoderskull padding-lg">
             <ul className="row">
@@ -53,7 +66,7 @@ const UserList = (props) => {
             {
             (props.users).map((user, index) => {
                 return (
-                    myProfile(user.id) && <UserCard key={index} user={user} displayFollowButtons={DisplayFollowButtons(user.id)} isFollowing={userFollowsUser(user.id)} sentFollowRequest={userSentFollowRequest(user.id)} buttonClickChanger={props.buttonClickChanger}/>
+                    myProfile(user.id) && <UserCard key={index} user={user} blocked={props.blocked} displayFollowButtons={DisplayFollowButtons(user.id)} isFollowing={userFollowsUser(user.id)} sentFollowRequest={userSentFollowRequest(user.id)} buttonClickChanger={props.buttonClickChanger}/>
                 );
             })}
             </ul>

@@ -236,3 +236,17 @@ func (handler *FollowersHandler) GetBlockerAccounts(ctx context.Context, request
 	}
 	return usersPb, nil
 }
+
+func (handler *FollowersHandler) GetRecommendedUsers(ctx context.Context, request *followers.Id) (*followers.IdList, error) {
+	users, err := handler.service.GetRecommendedUsers(request.Id)
+	if err != nil {
+		return nil, err
+	}
+	retVal := &followers.IdList{
+		Ids: []*followers.Id{},
+	}
+	for _, user := range users {
+		retVal.Ids = append(retVal.Ids, &followers.Id{Id: user.Id})
+	}
+	return retVal, nil
+}

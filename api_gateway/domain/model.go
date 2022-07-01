@@ -4,6 +4,11 @@ import (
 	"time"
 )
 
+type User struct {
+	Id       string
+	Username string
+}
+
 type UserFollowerInfoList struct {
 	Users []*UserFollowerInfo
 }

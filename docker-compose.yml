@@ -19,8 +19,18 @@ services:
       NEO4J_VERSION:            ${ENV_NEO4J_VERSION}
       USERS_SERVICE_HOST:       ${ENV_USERS_SERVICE_HOST}
       USERS_PORT:               ${ENV_USERS_PORT}
+      NATS_HOST:                ${ENV_NATS_HOST}
+      NATS_PORT:                ${ENV_NATS_PORT}
+      NATS_USER:                ${ENV_NATS_USER}
+      NATS_PASS:                ${ENV_NATS_PASS}
+      BLOCK_COMMAND_SUBJECT:    ${ENV_BLOCK_COMMAND_SUBJECT}
+      BLOCK_REPLY_SUBJECT:      ${ENV_BLOCK_REPLY_SUBJECT}
+      UNBLOCK_COMMAND_SUBJECT:  ${ENV_UNBLOCK_COMMAND_SUBJECT}
+      UNBLOCK_REPLY_SUBJECT:    ${ENV_UNBLOCK_REPLY_SUBJECT}
+      
     depends_on:
       - followers_db
+      - nats
     networks:
       - network
 
@@ -99,11 +109,20 @@ services:
         dockerfile: ./Chat_microservice/Dockerfile
     restart: on-failure
     environment: 
-        MESSAGES_PORT: ${ENV_CHAT_PORT}
-        MESSAGES_DB_HOST: ${ENV_CHAT_DB_HOST}
-        MESSAGES_DB_PORT: ${ENV_CHAT_DB_PORT}
+        CHAT_PORT:                  ${ENV_CHAT_PORT}
+        CHAT_DB_HOST:               ${ENV_CHAT_DB_HOST}
+        CHAT_DB_PORT:               ${ENV_CHAT_DB_PORT}
+        NATS_HOST:                  ${ENV_NATS_HOST}
+        NATS_PORT:                  ${ENV_NATS_PORT}
+        NATS_USER:                  ${ENV_NATS_USER}
+        NATS_PASS:                  ${ENV_NATS_PASS}
+        BLOCK_COMMAND_SUBJECT:      ${ENV_BLOCK_COMMAND_SUBJECT}
+        BLOCK_REPLY_SUBJECT:        ${ENV_BLOCK_REPLY_SUBJECT}
+        UNBLOCK_COMMAND_SUBJECT:    ${ENV_UNBLOCK_COMMAND_SUBJECT}
+        UNBLOCK_REPLY_SUBJECT:      ${ENV_UNBLOCK_REPLY_SUBJECT}
     depends_on:
-        - messages_db
+        - chat_db
+        - nats
     networks:
         - network
      
@@ -213,6 +232,13 @@ services:
     restart: on-failure
     ports:
       - 3001:3000
+    networks:
+      - network
+
+  nats:
+    image: nats
+    container_name: nats
+    restart: on-failure
     networks:
       - network
 

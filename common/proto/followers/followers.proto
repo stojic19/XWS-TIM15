@@ -83,6 +83,12 @@ service FollowersService{
     };
   }
 
+  rpc GetRecommendedUsers(Id)returns(IdList){
+    option(google.api.http) = {
+      get: "/followers/recommended/{id}"
+    };
+  }
+
 }
 
 message Request{

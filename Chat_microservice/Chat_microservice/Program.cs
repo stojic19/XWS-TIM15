@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Chat_microservice.Configuration;
+using Microsoft.AspNetCore;
 
 namespace Chat_microservice
 {
@@ -12,17 +14,13 @@ namespace Chat_microservice
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Run();
         }
 
-        // Additional configuration is required to successfully run gRPC on macOS.
-        // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseUrls(@"http://0.0.0.0:" + Environment.GetEnvironmentVariable("MESSAGES_PORT"));
-                    webBuilder.UseStartup<Startup>();
-                });
+        public static IWebHost CreateHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseUrls(@"http://0.0.0.0:" + new EnvironmentConfiguration().Port)
+                .UseStartup<Startup>()
+                .Build();
     }
 }
