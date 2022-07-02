@@ -4,8 +4,11 @@ import (
 	"fmt"
 	opentracing "github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/ext"
+	"github.com/opentracing/opentracing-go/log"
 	"github.com/uber/jaeger-client-go"
 	"github.com/uber/jaeger-client-go/config"
+	"google.golang.org/grpc/metadata"
+
 	// "github.com/uber/jaeger-lib/metrics"
 
 	"context"
@@ -96,4 +99,20 @@ func StartSpanFromContextMetadata(ctx context.Context, name string) opentracing.
 		opentracing.ChildOf(spanContext),
 	)
 	return span
+}
+
+func InjectToMetadata(ctx context.Context, tracer opentracing.Tracer, clientSpan opentracing.Span) context.Context {
+	md, ok := metadata.FromOutgoingContext(ctx)
+	if !ok {
+		md = metadata.New(nil)
+	} else {
+		md = md.Copy()
+	}
+	mdWriter := metadataTextMap{}
+	err := tracer.Inject(clientSpan.Context(), opentracing.HTTPHeaders, mdWriter)
+	// We have no better place to record an error than the Span itself :-/
+	if err != nil {
+		clientSpan.LogFields(log.String("event", "Tracer.Inject() failed"), log.Error(err))
+	}
+	return metadata.NewOutgoingContext(ctx, metadata.Join(md, metadata.MD(mdWriter)))
 }

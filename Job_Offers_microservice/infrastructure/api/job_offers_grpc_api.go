@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	otgo "github.com/opentracing/opentracing-go"
 	"github.com/stojic19/XWS-TIM15/common/proto/job_offers"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"github.com/stojic19/XWS-TIM15/common/tracer"
@@ -93,8 +94,10 @@ func (handler *JobOffersHandler) Create(ctx context.Context, request *job_offers
 	metadata, _ := metadata.FromIncomingContext(ctx)
 	sub := metadata.Get("sub")
 	apiKey := metadata.Get("apiKey")
+
+	ctx1 := tracer.InjectToMetadata(ctx, otgo.GlobalTracer(), span)
 	userClient := services.NewUsersClient(handler.usersClientAddress)
-	response, err := userClient.ValidateApiKey(context.TODO(), &users.ApiKey{ApiKey: apiKey[0]})
+	response, err := userClient.ValidateApiKey(ctx1, &users.ApiKey{ApiKey: apiKey[0]})
 	if err != nil {
 		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
 	}

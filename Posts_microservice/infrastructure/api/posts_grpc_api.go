@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	otgo "github.com/opentracing/opentracing-go"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
@@ -100,8 +101,9 @@ func (handler *PostsHandler) GetFromFollowed(ctx context.Context, request *posts
 	defer span.Finish()
 
 	id := request.Id
+	ctx1 := tracer.InjectToMetadata(ctx, otgo.GlobalTracer(), span)
 	followsClient := services.NewFollowersClient(handler.followersClientAddress)
-	followsResponse, err := followsClient.GetFollows(context.TODO(), &followers.GetFollowsRequest{Id: id})
+	followsResponse, err := followsClient.GetFollows(ctx1, &followers.GetFollowsRequest{Id: id})
 	if err != nil {
 		return nil, err
 	}
@@ -129,8 +131,9 @@ func (handler *PostsHandler) GetFromPublic(ctx context.Context, request *posts.G
 	span := tracer.StartSpanFromContextMetadata(ctx, "GetFromPublic")
 	defer span.Finish()
 
+	ctx1 := tracer.InjectToMetadata(ctx, otgo.GlobalTracer(), span)
 	usersClient := services.NewUsersClient(handler.usersClientAddress)
-	publicResponse, err := usersClient.SearchPublicUsers(context.TODO(), &users.SearchRequest{SearchTerm: ""})
+	publicResponse, err := usersClient.SearchPublicUsers(ctx1, &users.SearchRequest{SearchTerm: ""})
 	var publicIds []string
 	for _, user := range publicResponse.Users {
 		publicIds = append(publicIds, user.Id)

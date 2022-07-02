@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	otgo "github.com/opentracing/opentracing-go"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/application"
 	"github.com/stojic19/XWS-TIM15/Followers_microservice/infrastructure/services"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
@@ -155,7 +156,7 @@ func (handler *FollowersHandler) Follow(ctx context.Context, request *followers.
 	followerId := request.FollowerId
 	followedId := request.FollowedId
 
-	ctx = tracer.ContextWithSpan(ctx, span)
+	ctx = tracer.InjectToMetadata(ctx, otgo.GlobalTracer(), span)
 	userClient := services.NewUsersClient(handler.usersClientAddress)
 	userResponse, err := userClient.GetUser(ctx, &users.GetUserRequest{Id: followedId})
 	if err != nil {
