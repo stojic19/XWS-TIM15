@@ -56,7 +56,7 @@ REACT_APP_BASE_URL_DISLINKT = "http://localhost:8000/"
 REACT_APP_BASE_URL_AGENT = "http://localhost:9000/"
 // Varijable koje koristi na lokalu
 REACT_APP_BASEURL_DISLINKT = "http://localhost:8000/"
-REACT_APP_BASEURL_AGENT = "http://localhost:44316/"
+REACT_APP_BASEURL_AGENT = "http://localhost:9000/"
 
 Ko koristi docker desktop...postoji neki problem pri menjanju vrednosti varijabli u .env fajlu, 
 nisam jos pronasao resenje osim da se vrednosti hardkoduju u docker-compose
