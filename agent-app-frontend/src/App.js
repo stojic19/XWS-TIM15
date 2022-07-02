@@ -25,7 +25,7 @@ function App() {
     document.title = "Agent"
   }, [])
 
-  axios.defaults.baseURL = "https://localhost:44316/";
+  axios.defaults.baseURL = process.env.REACT_APP_BASEURL_AGENT;
   //axios.defaults.headers.post['Content-Type'] = 'application/json';
   //axios.defaults.headers.post['Accept'] = 'application/json';
   //axios.defaults.headers.post['Access-Control-Allow-Origin'] = 'http://localhost:3000';
