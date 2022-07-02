@@ -6,15 +6,19 @@ using System.Linq;
 using System.Threading;
 using Chat_microservice.Configuration;
 using MongoDB.Bson;
+using OpenTracing;
 
 namespace Chat_microservice.Repository
 {
     public class ChatRepository : IChatRepository
     {
+        private readonly ITracer _tracer;
+
         private readonly IMongoCollection<Chat> _chats;
 
-        public ChatRepository()
+        public ChatRepository(ITracer tracer)
         {
+            _tracer = tracer;
             var cfg = new EnvironmentConfiguration();
             var mongoClient = new MongoClient("mongodb://" +
                                               cfg.ChatDbHost + ":" +
@@ -24,8 +28,20 @@ namespace Chat_microservice.Repository
         }
 
         public IEnumerable<Chat> GetAll()
-        { 
-            return _chats.Find(_ => true).ToList();
+        {
+            var span1 = _tracer.BuildSpan("MongoGetAll").Start();
+            IEnumerable<Chat> retVal;
+            try
+            {
+                retVal = _chats.Find(_ => true).ToList();
+            }
+            catch
+            {
+                span1.Finish();
+                throw;
+            }
+            span1.Finish();
+            return retVal;
         }
 
         public Chat GetByParticipants(Guid first, Guid second)
@@ -38,8 +54,18 @@ namespace Chat_microservice.Repository
 
             var filter1 = Builders<Chat>.Filter.And(filter11, filter12);
             var filter2 = Builders<Chat>.Filter.And(filter21, filter22);
-
-            var chat = _chats.Find(Builders<Chat>.Filter.Or(filter1, filter2)).FirstOrDefault();
+            Chat chat;
+            var span1 = _tracer.BuildSpan("MongoGetByParticipants").Start();
+            try
+            {
+                chat = _chats.Find(Builders<Chat>.Filter.Or(filter1, filter2)).FirstOrDefault();
+            }
+            catch
+            {
+                span1.Finish();
+                throw;
+            }
+            span1.Finish();
             return chat;
         }
 
@@ -58,26 +84,68 @@ namespace Chat_microservice.Repository
 
             var filter4 = Builders<Chat>.Filter.Or(filter1, filter2);
 
-            return _chats.Find(Builders<Chat>.Filter.And(filter3, filter4)).ToEnumerable();
+            var span1 = _tracer.BuildSpan("MongoGetForUser").Start();
+            IEnumerable<Chat> chats;
+            try
+            {
+                chats = _chats.Find(Builders<Chat>.Filter.And(filter3, filter4)).ToEnumerable();
+            }
+            catch
+            {
+                span1.Finish();
+                throw;
+            }
+            span1.Finish();
+            return chats;
         }
 
         public Chat Add(Chat chat)
-        { 
-            _chats.InsertOne(chat);
+        {
+            var span1 = _tracer.BuildSpan("MongoAdd").Start();
+            try
+            {
+                _chats.InsertOne(chat);
+            }
+            catch
+            {
+                span1.Finish();
+                throw;
+            }
+            span1.Finish();
             return chat;
         }
 
         public Chat Update(Chat chat)
         {
             var filter = Builders<Chat>.Filter.Eq(c => c.Id, chat.Id);
-            _chats.ReplaceOne(filter, chat);
+            var span1 = _tracer.BuildSpan("MongoUpdate").Start();
+            try
+            {
+                _chats.ReplaceOne(filter, chat);
+            }
+            catch
+            {
+                span1.Finish();
+                throw;
+            }
+            span1.Finish();
             return chat;
         }
 
         public Chat Delete(Chat chat)
         {
             var filter = Builders<Chat>.Filter.Eq(c => c.Id, chat.Id);
-            _chats.DeleteOne(filter);
+            var span1 = _tracer.BuildSpan("MongoDelete").Start();
+            try
+            {
+                _chats.DeleteOne(filter);
+            }
+            catch
+            {
+                span1.Finish();
+                throw;
+            }
+            span1.Finish();
             return chat;
         }
     }

@@ -10,6 +10,7 @@ using Chat_microservice.Repository;
 using Google.Protobuf.Collections;
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
+using OpenTracing;
 
 
 namespace Chat_microservice.Services
@@ -18,41 +19,72 @@ namespace Chat_microservice.Services
     {
         private readonly IChatRepository _chatRepository;
         private readonly IMapper _mapper;
+        private readonly ITracer _tracer;
 
-        public ChatService(IChatRepository chatRepository, IMapper mapper)
+        public ChatService(IChatRepository chatRepository, IMapper mapper, ITracer tracer)
         {
             _chatRepository = chatRepository;
             _mapper = mapper;
+            _tracer = tracer;
         }
 
         public override Task<ChatsMsg> Get(GetRequest request, ServerCallContext context)
         {
-            var chats = _chatRepository.GetAll();
-            return Task.FromResult(_mapper.Map<ChatsMsg>(chats));
+            var scope = _tracer.BuildSpan("Get").StartActive(true);
+            try
+            {
+                var chats = _chatRepository.GetAll();
+                scope.Span.Finish();
+                return Task.FromResult(_mapper.Map<ChatsMsg>(chats));
+            }
+            catch
+            {
+                scope.Span.Finish();
+                throw;
+            }
         }
 
         public override Task<ChatsMsg> GetForUser(IdMessage id, ServerCallContext context)
         {
-            var chats = _chatRepository.GetForUser(Guid.Parse(id.Id)).ToList();
-            return Task.FromResult(_mapper.Map<ChatsMsg>(chats));
+            var scope = _tracer.BuildSpan("Get").StartActive(true);
+            try
+            {
+                var chats = _chatRepository.GetForUser(Guid.Parse(id.Id)).ToList();
+                scope.Span.Finish();
+                return Task.FromResult(_mapper.Map<ChatsMsg>(chats));
+            }
+            catch
+            {
+                scope.Span.Finish();
+                throw;
+            }
         }
 
         public override Task<ChatMsg> Add(NewMessage message, ServerCallContext context)
         {
-            Authorize(context);
-            var chat = _chatRepository.GetByParticipants(Guid.Parse(message.SenderId),
-                Guid.Parse(message.ReceiverId));
-            if (chat == null)
+            var scope = _tracer.BuildSpan("Get").StartActive(true);
+            try
             {
-                chat = _mapper.Map<Chat>(message);
-                _chatRepository.Add(chat);
+                Authorize(context);
+                var chat = _chatRepository.GetByParticipants(Guid.Parse(message.SenderId),
+                    Guid.Parse(message.ReceiverId));
+                if (chat == null)
+                {
+                    chat = _mapper.Map<Chat>(message);
+                    _chatRepository.Add(chat);
+                    return Task.FromResult(_mapper.Map<ChatMsg>(chat));
+                }
+
+                var chatMessage = _mapper.Map<ChatMessage>(message);
+                chat.Messages = chat.Messages.Append(chatMessage);
+                _chatRepository.Update(chat);
                 return Task.FromResult(_mapper.Map<ChatMsg>(chat));
             }
-
-            var chatMessage = _mapper.Map<ChatMessage>(message); 
-            chat.Messages = chat.Messages.Append(chatMessage);
-            _chatRepository.Update(chat);
-            return Task.FromResult(_mapper.Map<ChatMsg>(chat));
+            catch
+            {
+                scope.Span.Finish();
+                throw;
+            }
         }
 
         private void Authorize(ServerCallContext context)

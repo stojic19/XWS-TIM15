@@ -16,6 +16,10 @@ namespace Chat_microservice.Configuration
         public string UnblockCommandSubject { get; set; }
         public string UnblockReplySubject { get; set; }
         public string QueueName { get; set; }
+        public string JaegerAgentHost { get; set; }
+        public string JaegerAgentPort { get; set; }
+        public string JaegerSamplerParam { get; set; }
+        public string JaegerSamplerType { get; set; }
 
         public EnvironmentConfiguration()
         {
@@ -31,6 +35,10 @@ namespace Chat_microservice.Configuration
             UnblockCommandSubject = GetEnvironmentVarOrDefault("UNBLOCK_COMMAND_SUBJECT", "unblock.command");
             UnblockReplySubject = GetEnvironmentVarOrDefault("UNBLOCK_REPLY_SUBJECT", "unblock.reply");
             QueueName = "chat_service";
+            JaegerAgentHost = GetEnvironmentVarOrDefault("JAEGER_AGENT_HOST", "localhost");
+            JaegerAgentPort = GetEnvironmentVarOrDefault("JAEGER_AGENT_PORT", "6831");
+            JaegerSamplerParam = GetEnvironmentVarOrDefault("JAEGER_SAMPLER_PARAM", "1");
+            JaegerSamplerType = GetEnvironmentVarOrDefault("JAEGER_SAMPLER_TYPE", "const");
         }
 
         private string GetEnvironmentVarOrDefault(string var, string def) => Environment.GetEnvironmentVariable(var) ?? def;
