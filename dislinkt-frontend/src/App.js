@@ -28,7 +28,7 @@ import BlockedUsers from './components/BlockedUsers';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-axios.defaults.baseURL = "http://localhost:8000/";
+axios.defaults.baseURL = process.env.REACT_APP_BASEURL_DISLINKT;
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
 //axios.defaults.headers.post['Accept'] = 'application/json';
 //axios.defaults.headers.post['Access-Control-Allow-Origin'] = 'http://localhost:3000';

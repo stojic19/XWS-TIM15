@@ -48,6 +48,16 @@ BLOCK_REPLY_SUBJECT = block.reply
 UNBLOCK_COMMAND_SUBJECT = unblock.command
 UNBLOCK_REPLY_SUBJECT = unblock.command
 
+// Kod react-a je citanje env varijabla drugacije, ili se cita direkt iz env fajla(sto radi kada se pokrece na lokalu),
+// ili se specificiraju varijable u docker-compose.yml i Dosker fajlu i onda njih koristi, zbog toga se u lokalu pokrece sa npm run start
+// a preko docker-a se pokrece sa npm run start-prod
+// Varijable koje koristi docker
+REACT_APP_BASE_URL_DISLINKT = "http://localhost:8000/"
+REACT_APP_BASE_URL_AGENT = "http://localhost:9000/"
+// Varijable koje koristi na lokalu
+REACT_APP_BASEURL_DISLINKT = "http://localhost:8000/"
+REACT_APP_BASEURL_AGENT = "http://localhost:44316/"
+
 Ko koristi docker desktop...postoji neki problem pri menjanju vrednosti varijabli u .env fajlu, 
 nisam jos pronasao resenje osim da se vrednosti hardkoduju u docker-compose
 
