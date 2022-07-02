@@ -4,11 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	otgo "github.com/opentracing/opentracing-go"
 	"github.com/stojic19/XWS-TIM15/api_gateway/domain"
 	"github.com/stojic19/XWS-TIM15/api_gateway/infrastructure/services"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
+	"github.com/stojic19/XWS-TIM15/common/tracer"
 	"net/http"
 	"time"
 )
@@ -51,97 +53,117 @@ func (handler *PostsHandler) Init(mux *runtime.ServeMux) {
 }
 
 func (handler *PostsHandler) GetAllPostsDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	span := tracer.StartSpanFromRequest("GetAllPostsDetails", otgo.GlobalTracer(), r)
+	defer span.Finish()
+	ctx := tracer.InjectToMetadata(context.TODO(), otgo.GlobalTracer(), span)
+
 	postsInfo, error := initializePosts(w, pathParams)
 	if error {
 		return
 	}
 
-	err := handler.addPosts(postsInfo)
+	err := handler.addPosts(postsInfo, ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	for _, postInfo := range postsInfo.Posts {
-		insertSideInfo(handler, postInfo)
+		insertSideInfo(handler, postInfo, ctx)
 	}
 
 	finishPosts(w, err, postsInfo)
 }
 
 func (handler *PostsHandler) GetPostFromUserDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	span := tracer.StartSpanFromRequest("GetPostFromUserDetails", otgo.GlobalTracer(), r)
+	defer span.Finish()
+	ctx := tracer.InjectToMetadata(context.TODO(), otgo.GlobalTracer(), span)
+
 	userId, postsInfo, error := initializePostsWithParam(w, pathParams)
 	if error {
 		return
 	}
 
-	err := handler.addPostsFromUser(postsInfo, userId)
+	err := handler.addPostsFromUser(postsInfo, userId, ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	for _, postInfo := range postsInfo.Posts {
-		insertSideInfo(handler, postInfo)
+		insertSideInfo(handler, postInfo, ctx)
 	}
 
 	finishPosts(w, err, postsInfo)
 }
 
 func (handler *PostsHandler) GetPostFromFollowedDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	span := tracer.StartSpanFromRequest("GetPostFromFollowedDetails", otgo.GlobalTracer(), r)
+	defer span.Finish()
+	ctx := tracer.InjectToMetadata(context.TODO(), otgo.GlobalTracer(), span)
+
 	userId, postsInfo, error := initializePostsWithParam(w, pathParams)
 	if error {
 		return
 	}
 
-	err := handler.addPostsFromFollows(postsInfo, userId)
+	err := handler.addPostsFromFollows(postsInfo, userId, ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	for _, postInfo := range postsInfo.Posts {
-		insertSideInfo(handler, postInfo)
+		insertSideInfo(handler, postInfo, ctx)
 	}
 
 	finishPosts(w, err, postsInfo)
 }
 
 func (handler *PostsHandler) GetPostDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	span := tracer.StartSpanFromRequest("GetPostDetails", otgo.GlobalTracer(), r)
+	defer span.Finish()
+	ctx := tracer.InjectToMetadata(context.TODO(), otgo.GlobalTracer(), span)
+
 	postId, postInfo, error := initializePost(w, pathParams)
 	if error {
 		return
 	}
 
-	err := handler.addPost(postInfo, postId)
+	err := handler.addPost(postInfo, postId, ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	handler.addUserInfo(postInfo.Owner)
-	insertSideInfo(handler, postInfo)
+	handler.addUserInfo(postInfo.Owner, ctx)
+	insertSideInfo(handler, postInfo, ctx)
 
 	finishPost(w, err, postInfo)
 }
 
 func (handler *PostsHandler) GetPostsFromPublicDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	span := tracer.StartSpanFromRequest("GetPostsFromPublicDetails", otgo.GlobalTracer(), r)
+	defer span.Finish()
+	ctx := tracer.InjectToMetadata(context.TODO(), otgo.GlobalTracer(), span)
+
 	postsInfo, error := initializePosts(w, pathParams)
 	if error {
 		return
 	}
 
-	err := handler.addPublicPosts(postsInfo)
+	err := handler.addPublicPosts(postsInfo, ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	for _, postInfo := range postsInfo.Posts {
-		insertSideInfo(handler, postInfo)
+		insertSideInfo(handler, postInfo, ctx)
 	}
 
 	finishPosts(w, err, postsInfo)
 }
 
-func (handler *PostsHandler) addPosts(postsInfo *domain.PostUsersInfoList) error {
+func (handler *PostsHandler) addPosts(postsInfo *domain.PostUsersInfoList, ctx context.Context) error {
 	postsClient := services.NewPostsClient(handler.postsClientAddress)
-	postsList, err := postsClient.GetAll(context.TODO(), &posts.GetAllRequest{})
+	postsList, err := postsClient.GetAll(ctx, &posts.GetAllRequest{})
 	if err != nil {
 		return err
 	}
@@ -152,9 +174,9 @@ func (handler *PostsHandler) addPosts(postsInfo *domain.PostUsersInfoList) error
 	return nil
 }
 
-func (handler *PostsHandler) addPublicPosts(postsInfo *domain.PostUsersInfoList) error {
+func (handler *PostsHandler) addPublicPosts(postsInfo *domain.PostUsersInfoList, ctx context.Context) error {
 	postsClient := services.NewPostsClient(handler.postsClientAddress)
-	postsList, err := postsClient.GetFromPublic(context.TODO(), &posts.GetPublicRequest{})
+	postsList, err := postsClient.GetFromPublic(ctx, &posts.GetPublicRequest{})
 	if err != nil {
 		return err
 	}
@@ -165,9 +187,9 @@ func (handler *PostsHandler) addPublicPosts(postsInfo *domain.PostUsersInfoList)
 	return nil
 }
 
-func (handler *PostsHandler) addPostsFromUser(postsInfo *domain.PostUsersInfoList, userId string) error {
+func (handler *PostsHandler) addPostsFromUser(postsInfo *domain.PostUsersInfoList, userId string, ctx context.Context) error {
 	postsClient := services.NewPostsClient(handler.postsClientAddress)
-	postsList, err := postsClient.GetFromUser(context.TODO(), &posts.GetFromUserRequest{Id: userId})
+	postsList, err := postsClient.GetFromUser(ctx, &posts.GetFromUserRequest{Id: userId})
 	if err != nil {
 		return err
 	}
@@ -178,9 +200,9 @@ func (handler *PostsHandler) addPostsFromUser(postsInfo *domain.PostUsersInfoLis
 	return nil
 }
 
-func (handler *PostsHandler) addPostsFromFollows(postsInfo *domain.PostUsersInfoList, userId string) error {
+func (handler *PostsHandler) addPostsFromFollows(postsInfo *domain.PostUsersInfoList, userId string, ctx context.Context) error {
 	postsClient := services.NewPostsClient(handler.postsClientAddress)
-	postsList, err := postsClient.GetFromFollowed(context.TODO(), &posts.GetFollowedRequest{Id: userId})
+	postsList, err := postsClient.GetFromFollowed(ctx, &posts.GetFollowedRequest{Id: userId})
 	if err != nil {
 		return err
 	}
@@ -191,9 +213,9 @@ func (handler *PostsHandler) addPostsFromFollows(postsInfo *domain.PostUsersInfo
 	return nil
 }
 
-func (handler *PostsHandler) addPost(postInfo *domain.PostUsersInfo, postId string) error {
+func (handler *PostsHandler) addPost(postInfo *domain.PostUsersInfo, postId string, ctx context.Context) error {
 	postsClient := services.NewPostsClient(handler.postsClientAddress)
-	postResponse, err := postsClient.Get(context.TODO(), &posts.GetRequest{Id: postId})
+	postResponse, err := postsClient.Get(ctx, &posts.GetRequest{Id: postId})
 	if err != nil {
 		return err
 	}
@@ -201,9 +223,9 @@ func (handler *PostsHandler) addPost(postInfo *domain.PostUsersInfo, postId stri
 	return nil
 }
 
-func (handler *PostsHandler) addUserInfo(userInfo *domain.UserPostInfo) error {
+func (handler *PostsHandler) addUserInfo(userInfo *domain.UserPostInfo, ctx context.Context) error {
 	userClient := services.NewUsersClient(handler.usersClientAddress)
-	userResponse, err := userClient.GetUser(context.TODO(), &users.GetUserRequest{Id: userInfo.Id})
+	userResponse, err := userClient.GetUser(ctx, &users.GetUserRequest{Id: userInfo.Id})
 	if err != nil {
 		return err
 	}
@@ -214,13 +236,13 @@ func (handler *PostsHandler) addUserInfo(userInfo *domain.UserPostInfo) error {
 	return nil
 }
 
-func (handler *PostsHandler) addRelationships(userInfo *domain.UserPostInfo, ownerId string) error {
+func (handler *PostsHandler) addRelationships(userInfo *domain.UserPostInfo, ownerId string, ctx context.Context) error {
 	followersClient := services.NewFollowersClient(handler.followersClientAddress)
-	outgoingRelationship, err := followersClient.GetRelationship(context.TODO(), &followers.GetRelationshipRequest{FollowedId: userInfo.Id, FollowerId: ownerId})
+	outgoingRelationship, err := followersClient.GetRelationship(ctx, &followers.GetRelationshipRequest{FollowedId: userInfo.Id, FollowerId: ownerId})
 	if err != nil {
 		return err
 	}
-	ingoingRelationship, err := followersClient.GetRelationship(context.TODO(), &followers.GetRelationshipRequest{FollowedId: ownerId, FollowerId: userInfo.Id})
+	ingoingRelationship, err := followersClient.GetRelationship(ctx, &followers.GetRelationshipRequest{FollowedId: ownerId, FollowerId: userInfo.Id})
 	if err != nil {
 		return err
 	}
@@ -229,19 +251,19 @@ func (handler *PostsHandler) addRelationships(userInfo *domain.UserPostInfo, own
 	return nil
 }
 
-func insertSideInfo(handler *PostsHandler, postInfo *domain.PostUsersInfo) {
-	handler.addUserInfo(postInfo.Owner)
+func insertSideInfo(handler *PostsHandler, postInfo *domain.PostUsersInfo, ctx context.Context) {
+	handler.addUserInfo(postInfo.Owner, ctx)
 	for _, comment := range postInfo.Comments {
-		handler.addUserInfo(comment.Owner)
-		handler.addRelationships(comment.Owner, postInfo.Owner.Id)
+		handler.addUserInfo(comment.Owner, ctx)
+		handler.addRelationships(comment.Owner, postInfo.Owner.Id, ctx)
 	}
 	for _, userInfo := range postInfo.Likes {
-		handler.addUserInfo(userInfo)
-		handler.addRelationships(userInfo, postInfo.Owner.Id)
+		handler.addUserInfo(userInfo, ctx)
+		handler.addRelationships(userInfo, postInfo.Owner.Id, ctx)
 	}
 	for _, userInfo := range postInfo.Dislikes {
-		handler.addUserInfo(userInfo)
-		handler.addRelationships(userInfo, postInfo.Owner.Id)
+		handler.addUserInfo(userInfo, ctx)
+		handler.addRelationships(userInfo, postInfo.Owner.Id, ctx)
 	}
 }
 

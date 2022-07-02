@@ -3,6 +3,7 @@ package startup
 import (
 	"context"
 	"fmt"
+	otgo "github.com/opentracing/opentracing-go"
 	"github.com/rs/cors"
 	"github.com/stojic19/XWS-TIM15/api_gateway/infrastructure/api"
 	"github.com/stojic19/XWS-TIM15/api_gateway/startup/config"
@@ -12,21 +13,33 @@ import (
 	"github.com/stojic19/XWS-TIM15/common/proto/job_offers"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
+	"github.com/stojic19/XWS-TIM15/common/tracer"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"io"
 	"log"
 	"net/http"
 )
 
 type Server struct {
 	config *config.Config
+	Tracer otgo.Tracer
+	Closer io.Closer
 	mux    *MuxWrapper
 }
 
+const (
+	Name = "Api-composition"
+)
+
 func NewServer(config *config.Config) *Server {
+	tracer, closer := tracer.Init(Name)
+	otgo.SetGlobalTracer(tracer)
 	server := &Server{
 		config: config,
 		mux:    NewMuxWrapper(),
+		Tracer: tracer,
+		Closer: closer,
 	}
 	server.initHandlers()
 	server.initCustomHandlers()

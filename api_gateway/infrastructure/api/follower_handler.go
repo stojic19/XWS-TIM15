@@ -4,10 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	otgo "github.com/opentracing/opentracing-go"
 	"github.com/stojic19/XWS-TIM15/api_gateway/domain"
 	"github.com/stojic19/XWS-TIM15/api_gateway/infrastructure/services"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
+	"github.com/stojic19/XWS-TIM15/common/tracer"
 	"google.golang.org/grpc/metadata"
 	"net/http"
 )
@@ -48,84 +50,104 @@ func (handler *FollowersHandler) Init(mux *runtime.ServeMux) {
 }
 
 func (handler *FollowersHandler) GetFollowersDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	span := tracer.StartSpanFromRequest("GetFollowersDetails", otgo.GlobalTracer(), r)
+	defer span.Finish()
+	ctx := tracer.InjectToMetadata(context.TODO(), otgo.GlobalTracer(), span)
+
 	userId, followersInfo, error := initializeFollowers(w, pathParams)
 	if error {
 		return
 	}
 
-	err := handler.addFollowerInfo(followersInfo, userId)
+	err := handler.addFollowerInfo(followersInfo, userId, ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	for _, followerInfo := range followersInfo.Users {
-		handler.addUserInfo(followerInfo)
-		handler.addFollowedRelationship(followerInfo, userId)
+		handler.addUserInfo(followerInfo, ctx)
+		handler.addFollowedRelationship(followerInfo, userId, ctx)
 	}
 
 	finishFollowers(w, err, followersInfo)
 }
 
 func (handler *FollowersHandler) GetFollowsDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	span := tracer.StartSpanFromRequest("GetFollowsDetails", otgo.GlobalTracer(), r)
+	defer span.Finish()
+	ctx := tracer.InjectToMetadata(context.TODO(), otgo.GlobalTracer(), span)
+
 	userId, followersInfo, error := initializeFollowers(w, pathParams)
 	if error {
 		return
 	}
 
-	err := handler.addFollowInfo(followersInfo, userId)
+	err := handler.addFollowInfo(followersInfo, userId, ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	for _, followerInfo := range followersInfo.Users {
-		handler.addUserInfo(followerInfo)
-		handler.addFollowerRelationship(followerInfo, userId)
+		handler.addUserInfo(followerInfo, ctx)
+		handler.addFollowerRelationship(followerInfo, userId, ctx)
 	}
 
 	finishFollowers(w, err, followersInfo)
 }
 
 func (handler *FollowersHandler) GetFollowerRequestsDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	span := tracer.StartSpanFromRequest("GetFollowerRequestsDetails", otgo.GlobalTracer(), r)
+	defer span.Finish()
+	ctx := tracer.InjectToMetadata(context.TODO(), otgo.GlobalTracer(), span)
+
 	userId, followersInfo, error := initializeFollowers(w, pathParams)
 	if error {
 		return
 	}
 
-	err := handler.addFollowerRequestInfo(followersInfo, userId)
+	err := handler.addFollowerRequestInfo(followersInfo, userId, ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	for _, followerInfo := range followersInfo.Users {
-		handler.addUserInfo(followerInfo)
-		handler.addFollowedRelationship(followerInfo, userId)
+		handler.addUserInfo(followerInfo, ctx)
+		handler.addFollowedRelationship(followerInfo, userId, ctx)
 	}
 
 	finishFollowers(w, err, followersInfo)
 }
 
 func (handler *FollowersHandler) GetFollowRequestsDetails(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	span := tracer.StartSpanFromRequest("GetFollowRequestsDetails", otgo.GlobalTracer(), r)
+	defer span.Finish()
+	ctx := tracer.InjectToMetadata(context.TODO(), otgo.GlobalTracer(), span)
+
 	userId, followersInfo, error := initializeFollowers(w, pathParams)
 	if error {
 		return
 	}
 
-	err := handler.addFollowRequestInfo(followersInfo, userId)
+	err := handler.addFollowRequestInfo(followersInfo, userId, ctx)
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
 	for _, followerInfo := range followersInfo.Users {
-		handler.addUserInfo(followerInfo)
-		handler.addFollowerRelationship(followerInfo, userId)
+		handler.addUserInfo(followerInfo, ctx)
+		handler.addFollowerRelationship(followerInfo, userId, ctx)
 	}
 
 	finishFollowers(w, err, followersInfo)
 }
 
 func (handler *FollowersHandler) GetRecommended(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
+	span := tracer.StartSpanFromRequest("GetRecommended", otgo.GlobalTracer(), r)
+	defer span.Finish()
+
+	ctx := tracer.InjectToMetadata(context.TODO(), otgo.GlobalTracer(), span)
 	followersClient := services.NewFollowersClient(handler.followersClientAddress)
-	ids, err := followersClient.GetRecommendedUsers(context.TODO(), &followers.Id{Id: pathParams["userId"]})
+	ids, err := followersClient.GetRecommendedUsers(ctx, &followers.Id{Id: pathParams["userId"]})
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -134,7 +156,7 @@ func (handler *FollowersHandler) GetRecommended(w http.ResponseWriter, r *http.R
 	usersClient := services.NewUsersClient(handler.usersClientAddress)
 	retVal := []*domain.User{}
 	for _, id := range ids.Ids {
-		info, err := usersClient.GetUser(context.TODO(), &users.GetUserRequest{Id: id.Id})
+		info, err := usersClient.GetUser(ctx, &users.GetUserRequest{Id: id.Id})
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			return
@@ -153,9 +175,9 @@ func (handler *FollowersHandler) GetRecommended(w http.ResponseWriter, r *http.R
 	w.Write(retValByte)
 }
 
-func (handler *FollowersHandler) addFollowerInfo(followersInfo *domain.UserFollowerInfoList, id string) error {
+func (handler *FollowersHandler) addFollowerInfo(followersInfo *domain.UserFollowerInfoList, id string, context context.Context) error {
 	followersClient := services.NewFollowersClient(handler.followersClientAddress)
-	followersIds, err := followersClient.GetFollowers(context.TODO(), &followers.GetFollowersRequest{Id: id})
+	followersIds, err := followersClient.GetFollowers(context, &followers.GetFollowersRequest{Id: id})
 	if err != nil {
 		return err
 	}
@@ -169,9 +191,9 @@ func (handler *FollowersHandler) addFollowerInfo(followersInfo *domain.UserFollo
 	return nil
 }
 
-func (handler *FollowersHandler) addFollowInfo(followersInfo *domain.UserFollowerInfoList, id string) error {
+func (handler *FollowersHandler) addFollowInfo(followersInfo *domain.UserFollowerInfoList, id string, context context.Context) error {
 	followersClient := services.NewFollowersClient(handler.followersClientAddress)
-	followsIds, err := followersClient.GetFollows(context.TODO(), &followers.GetFollowsRequest{Id: id})
+	followsIds, err := followersClient.GetFollows(context, &followers.GetFollowsRequest{Id: id})
 	if err != nil {
 		return err
 	}
@@ -185,9 +207,9 @@ func (handler *FollowersHandler) addFollowInfo(followersInfo *domain.UserFollowe
 	return nil
 }
 
-func (handler *FollowersHandler) addFollowerRequestInfo(followersInfo *domain.UserFollowerInfoList, id string) error {
+func (handler *FollowersHandler) addFollowerRequestInfo(followersInfo *domain.UserFollowerInfoList, id string, context context.Context) error {
 	followersClient := services.NewFollowersClient(handler.followersClientAddress)
-	followerRequestsIds, err := followersClient.GetFollowerRequests(context.TODO(), &followers.GetFollowerRequestsRequest{Id: id})
+	followerRequestsIds, err := followersClient.GetFollowerRequests(context, &followers.GetFollowerRequestsRequest{Id: id})
 	if err != nil {
 		return err
 	}
@@ -201,13 +223,13 @@ func (handler *FollowersHandler) addFollowerRequestInfo(followersInfo *domain.Us
 	return nil
 }
 
-func (handler *FollowersHandler) addFollowRequestInfo(followersInfo *domain.UserFollowerInfoList, id string) error {
+func (handler *FollowersHandler) addFollowRequestInfo(followersInfo *domain.UserFollowerInfoList, id string, ctx context.Context) error {
 	followersClient := services.NewFollowersClient(handler.followersClientAddress)
 	metadata1 := metadata.MD{}
 	metadata1.Set("proba", "1")
 	context1 := context.TODO()
 	context1 = metadata.NewOutgoingContext(context1, metadata1)
-	followRequestsIds, err := followersClient.GetFollowRequests(context1, &followers.GetFollowRequestsRequest{Id: id})
+	followRequestsIds, err := followersClient.GetFollowRequests(ctx, &followers.GetFollowRequestsRequest{Id: id})
 	if err != nil {
 		return err
 	}
@@ -221,9 +243,9 @@ func (handler *FollowersHandler) addFollowRequestInfo(followersInfo *domain.User
 	return nil
 }
 
-func (handler *FollowersHandler) addUserInfo(followerInfo *domain.UserFollowerInfo) {
+func (handler *FollowersHandler) addUserInfo(followerInfo *domain.UserFollowerInfo, context context.Context) {
 	usersClient := services.NewUsersClient(handler.usersClientAddress)
-	userInfo, err := usersClient.GetUser(context.TODO(), &users.GetUserRequest{Id: followerInfo.Id})
+	userInfo, err := usersClient.GetUser(context, &users.GetUserRequest{Id: followerInfo.Id})
 	if err != nil {
 		return
 	}
@@ -232,18 +254,18 @@ func (handler *FollowersHandler) addUserInfo(followerInfo *domain.UserFollowerIn
 	followerInfo.Gender = userInfo.User.Gender
 }
 
-func (handler *FollowersHandler) addFollowerRelationship(followerInfo *domain.UserFollowerInfo, mainId string) {
+func (handler *FollowersHandler) addFollowerRelationship(followerInfo *domain.UserFollowerInfo, mainId string, context context.Context) {
 	followersClient := services.NewFollowersClient(handler.followersClientAddress)
-	relationship, err := followersClient.GetRelationship(context.TODO(), &followers.GetRelationshipRequest{FollowedId: mainId, FollowerId: followerInfo.Id})
+	relationship, err := followersClient.GetRelationship(context, &followers.GetRelationshipRequest{FollowedId: mainId, FollowerId: followerInfo.Id})
 	if err != nil {
 		return
 	}
 	followerInfo.ReverseRelationship = relationship.Relationship
 }
 
-func (handler *FollowersHandler) addFollowedRelationship(followedInfo *domain.UserFollowerInfo, mainId string) {
+func (handler *FollowersHandler) addFollowedRelationship(followedInfo *domain.UserFollowerInfo, mainId string, context context.Context) {
 	followersClient := services.NewFollowersClient(handler.followersClientAddress)
-	relationship, err := followersClient.GetRelationship(context.TODO(), &followers.GetRelationshipRequest{FollowedId: followedInfo.Id, FollowerId: mainId})
+	relationship, err := followersClient.GetRelationship(context, &followers.GetRelationshipRequest{FollowedId: followedInfo.Id, FollowerId: mainId})
 	if err != nil {
 		return
 	}
