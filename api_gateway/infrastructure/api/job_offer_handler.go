@@ -68,7 +68,7 @@ func initializeJobOffers(w http.ResponseWriter, pathParams map[string]string) (*
 
 func (handler *JobOffersHandler) addJobOffersInfo(jobOffersInfoList *domain.JobOffersUsersInfoList, ctx context.Context) error {
 	jobOffersClient := services.NewJobOffersClient(handler.jobOffersClientAddress)
-	jobOffers, err := jobOffersClient.GetAll(context.TODO(), &job_offers.GetAllRequest{})
+	jobOffers, err := jobOffersClient.GetAll(ctx, &job_offers.GetAllRequest{})
 	if err != nil {
 		return err
 	}
