@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+package notifications;
+
+option java_multiple_files = true;
+option java_package = "com.example.notificationmicroservice";
+
+option go_package = "github.com/stojic19/XWS-TIM15/JavaMicroservices/common/src/main/proto";
+
+service NotificationsService{
+  rpc SaveNotification(SaveNotificationRequest) returns(StringResponse){
+  }
+  rpc GetNotifications(GetNotificationsRequest) returns(GetNotificationsResponse){
+  }
+  rpc GetOneNotification(GetByIdRequest) returns(GetOneNotificationResponse){
+  }
+  rpc GetAllNotificationsByFollowerId(GetByIdRequest) returns(GetNotificationsResponse){
+  }
+  rpc deleteNotification(DeleteByIdRequest) returns(StringResponse){
+  }
+  rpc SaveNotificationSettings(SaveNotificationSettingsRequest) returns(StringResponse){
+  }
+  rpc GetSettingsByUserId(GetByIdRequest) returns(GetSettingsByUserIdResponse){
+  }
+  rpc DeleteNotificationSettings(DeleteByIdRequest) returns(StringResponse){
+  }
+  rpc UpdateSettings(UpdateSettingsRequest) returns(StringResponse){
+  }
+  rpc UpdateMessagesSettings(UpdateMessagesSettingsRequest) returns(StringResponse){
+  }
+  rpc UpdatePostsSettings(UpdatePostsSettingsRequest) returns(StringResponse){
+  }
+}
+
+message Notification{
+  string id = 1;
+  string type = 2;
+  string action = 3;
+  string followerId = 4;
+  string time = 5;
+}
+message SaveNotificationRequest{
+  Notification notification = 1;
+}
+message StringResponse{
+  string response = 1;
+}
+
+message GetNotificationsRequest{
+}
+message GetNotificationsResponse{
+  repeated Notification notifications = 1;
+}
+
+message GetByIdRequest{
+  string id = 1;
+}
+message GetOneNotificationResponse{
+  Notification notification = 1;
+}
+
+message DeleteByIdRequest{
+  string id = 1;
+}
+
+message NotificationSettings{
+  string id = 1;
+  string userId = 2;
+  repeated string followerIdsForPosts = 3;
+  repeated string followerIdsForMessages = 4;
+  bool getNotificationsForMyPosts = 5;
+}
+message SaveNotificationSettingsRequest{
+  NotificationSettings notificationSettings = 1;
+}
+
+message GetSettingsByUserIdResponse{
+  NotificationSettings notificationSettings = 1;
+}
+
+message UpdateSettingsRequest{
+  NotificationSettings notificationSettings = 1;
+}
+
+message UpdateMessagesSettingsRequest{
+  string userId = 1;
+  repeated string followerIdsForMessages = 2;
+}
+
+message UpdatePostsSettingsRequest{
+  string userId = 1;
+  repeated string followerIdsForPosts = 2;
+}
