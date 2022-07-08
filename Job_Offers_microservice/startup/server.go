@@ -2,7 +2,9 @@ package startup
 
 import (
 	"fmt"
+	otgo "github.com/opentracing/opentracing-go"
 	"github.com/stojic19/XWS-TIM15/common/proto/job_offers"
+	"github.com/stojic19/XWS-TIM15/common/tracer"
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/application"
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/domain"
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/infrastructure/api"
@@ -10,17 +12,28 @@ import (
 	"github.com/stojic19/XWS-TIM15/job_offers_microservice/startup/config"
 	"go.mongodb.org/mongo-driver/mongo"
 	"google.golang.org/grpc"
+	"io"
 	"log"
 	"net"
 )
 
+const (
+	Name = "Job offers service"
+)
+
 type Server struct {
 	config *config.Config
+	Tracer otgo.Tracer
+	Closer io.Closer
 }
 
 func NewServer(config *config.Config) *Server {
+	tracer, closer := tracer.Init(Name)
+	otgo.SetGlobalTracer(tracer)
 	return &Server{
 		config: config,
+		Tracer: tracer,
+		Closer: closer,
 	}
 }
 

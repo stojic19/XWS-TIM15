@@ -5,12 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="092b6a75-e4db-4b16-9c7d-774319aa8f74" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Chat_microservice/Chat_microservice/Nats/NatsBlockSubscriber.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Followers_microservice/application/block_orchestrator.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/saga/blocking/block_event.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/saga/messaging/messaging.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/saga/messaging/nats/connection.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/saga/messaging/nats/nats_publisher.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/common/saga/messaging/nats/nats_subscriber.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chat_microservice/Chat_microservice/Chat_microservice.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Chat_microservice/Chat_microservice/Chat_microservice.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Chat_microservice/Chat_microservice/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Chat_microservice/Chat_microservice/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/application/followers_service.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/application/followers_service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/startup/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/startup/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Followers_microservice/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/Followers_microservice/startup/server.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/common/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/common/go.sum" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,7 +35,7 @@
       </list>
     </option>
   </component>
-  <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../Program Files/Go" />
+  <component name="GOROOT" url="file://C:/Program Files/Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -57,7 +68,7 @@
     &quot;configurable.GoLibrariesConfigurable.is.expanded&quot;: &quot;true&quot;,
     &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
     &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Aleksa&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/ftn/GODINA4/LETNJI/XML/Vez/Vezbe05-Mikroservisi/microservices_demo&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -65,7 +76,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;go.vgo&quot;
   }
 }</component>
-  <component name="RunManager" selected="Go Build.go build main.go">
+  <component name="RunManager" selected="Go Build.go build main.go (2)">
     <configuration name="go build main.go (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="XWS-TIM15" />
       <working_directory value="$PROJECT_DIR$/Posts_microservice" />
@@ -100,8 +111,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build main.go (2)" />
+        <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build main.go (3)" />
         <item itemvalue="Go Build.go build main.go (1)" />
       </list>
