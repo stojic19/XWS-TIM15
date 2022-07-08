@@ -180,7 +180,9 @@ services:
       MESSAGES_HOST:            ${ENV_CHAT_HOST}
       MESSAGES_PORT:            ${ENV_CHAT_PORT}
     networks:
-      - network
+      network:
+        aliases:
+          - api_gateway
 
   agent_application:
     image: agent_application
@@ -246,6 +248,88 @@ services:
     networks:
       - network
 
+  loki:
+    image: grafana/loki:latest
+    networks:
+      - network
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      GF_RENDERING_SERVER_URL: http://renderer:8081/render
+      GF_RENDERING_CALLBACK_URL: http://grafana:3000/
+      GF_LOG_FILTERS: rendering:debug
+    volumes:
+      - grafana:/var/lib/grafana
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - network
+
+  renderer:
+    image: grafana/grafana-image-renderer:latest
+    environment:
+      ENABLE_METRICS: "true"
+    networks:
+      - network
+
+  fluent-bit:
+    image: grafana/fluent-bit-plugin-loki:latest
+    environment:
+      - LOKI_URL=http://loki:3100/loki/api/v1/push
+    volumes:
+      - ./fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    networks:
+      - network
+
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+    networks:
+      - network
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: on-failure
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus:/var/lib/prometheus
+    networks:
+      - network
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+    networks:
+      - network
+
+  cadvisor:
+    image: google/cadvisor:latest
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - network
+  
 networks:
   network:
     driver: bridge
+
+volumes:
+  grafana:
+    name: grafana
+  prometheus:
+    name: prometheus
