@@ -79,6 +79,12 @@ func (server *Server) initHandlers() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Printf("Notifications: %s:%s\n", server.config.NotificationsHost, server.config.NotificationsPort)
+	notificationsEndpoint := fmt.Sprintf("%s:%s", server.config.NotificationsHost, server.config.NotificationsPort)
+	err = chat.RegisterChatServiceGrpcHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, notificationsEndpoint, opts)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func (server *Server) initCustomHandlers() {
