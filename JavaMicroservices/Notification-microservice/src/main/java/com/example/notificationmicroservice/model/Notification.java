@@ -21,7 +21,10 @@ public class Notification {
     private String id;
     private NotificationType type;
     private NotificationAction action;
+    private String userId;
     private String followerId;
+    private String postId;
+    private String messagesId;
     private Date time;
 
 
