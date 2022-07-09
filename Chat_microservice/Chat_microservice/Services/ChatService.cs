@@ -4,11 +4,13 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using AutoMapper;
+using Chat_microservice.Configuration;
 using Chat_microservice.model;
 using Chat_microservice.Protos;
 using Chat_microservice.Repository;
 using Google.Protobuf.Collections;
 using Grpc.Core;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.Authorization;
 using OpenTracing;
 
@@ -46,7 +48,7 @@ namespace Chat_microservice.Services
 
         public override Task<ChatsMsg> GetForUser(IdMessage id, ServerCallContext context)
         {
-            var scope = _tracer.BuildSpan("Get").StartActive(true);
+            var scope = _tracer.BuildSpan("GetForUser").StartActive(true);
             try
             {
                 var chats = _chatRepository.GetForUser(Guid.Parse(id.Id)).ToList();
@@ -62,7 +64,9 @@ namespace Chat_microservice.Services
 
         public override Task<ChatMsg> Add(NewMessage message, ServerCallContext context)
         {
-            var scope = _tracer.BuildSpan("Get").StartActive(true);
+            var metadata = context.RequestHeaders;
+            var scope = _tracer.BuildSpan("Add").StartActive(true);
+            metadata.Add(new Metadata.Entry("uber-trace-id", scope.Span.Context.ToString()));
             try
             {
                 Authorize(context);
@@ -72,12 +76,16 @@ namespace Chat_microservice.Services
                 {
                     chat = _mapper.Map<Chat>(message);
                     _chatRepository.Add(chat);
+                    SendNotification(message.ReceiverId, chat, metadata);
+                    scope.Span.Finish();
                     return Task.FromResult(_mapper.Map<ChatMsg>(chat));
                 }
 
                 var chatMessage = _mapper.Map<ChatMessage>(message);
                 chat.Messages = chat.Messages.Append(chatMessage);
                 _chatRepository.Update(chat);
+                if(!chat.IsBlocked(message.ReceiverId))SendNotification(message.ReceiverId, chat, metadata);
+                scope.Span.Finish();
                 return Task.FromResult(_mapper.Map<ChatMsg>(chat));
             }
             catch
@@ -85,6 +93,25 @@ namespace Chat_microservice.Services
                 scope.Span.Finish();
                 throw;
             }
+        }
+
+        private static void SendNotification(string receiverId, Chat chat, Metadata metadata)
+        {
+            var config = new EnvironmentConfiguration();
+            var channel = GrpcChannel.ForAddress("http://" + config.NotificationsHost + ":" + config.NotificationsPort);
+            var client = new NotificationsService.NotificationsServiceClient(channel);
+            client.SaveNotificationAsync(new SaveNotificationRequest
+            {
+                Notification = new Notification
+                {
+                    UserId = receiverId,
+                    MessagesId = chat.Id,
+                    Time = chat.Messages.First().CreatedDate.ToShortTimeString(),
+                    Type = "message",
+                    FollowerId = "sdadsa",
+                    Action = "like"
+                }
+            }, metadata);
         }
 
         private void Authorize(ServerCallContext context)

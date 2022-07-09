@@ -4,6 +4,7 @@ import (
 	"context"
 	otgo "github.com/opentracing/opentracing-go"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
+	"github.com/stojic19/XWS-TIM15/common/proto/notifications"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"github.com/stojic19/XWS-TIM15/common/tracer"
@@ -20,16 +21,18 @@ import (
 
 type PostsHandler struct {
 	posts.UnimplementedPostsServiceServer
-	service                *application.PostsService
-	followersClientAddress string
-	usersClientAddress     string
+	service                   *application.PostsService
+	followersClientAddress    string
+	usersClientAddress        string
+	notificationsClientAdress string
 }
 
-func NewPostsHandler(service *application.PostsService, followersClientAddress string, usersClientAddress string) *PostsHandler {
+func NewPostsHandler(service *application.PostsService, followersClientAddress string, usersClientAddress string, notificationsClientAdress string) *PostsHandler {
 	return &PostsHandler{
-		service:                service,
-		followersClientAddress: followersClientAddress,
-		usersClientAddress:     usersClientAddress,
+		service:                   service,
+		followersClientAddress:    followersClientAddress,
+		usersClientAddress:        usersClientAddress,
+		notificationsClientAdress: notificationsClientAdress,
 	}
 }
 
@@ -169,6 +172,7 @@ func (handler *PostsHandler) CreatePost(ctx context.Context, request *posts.Crea
 	span1 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "MongoCreatePost")
 	err := handler.service.CreatePost(post)
 	span1.Finish()
+
 	if err != nil {
 		return nil, err
 	}
@@ -199,6 +203,23 @@ func (handler *PostsHandler) LikePost(ctx context.Context, request *posts.LikePo
 	if err != nil {
 		return nil, err
 	}
+	span2 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "MongoGetPost")
+	post, err := handler.service.Get(postId)
+	span2.Finish()
+	if err != nil {
+		return nil, err
+	}
+	notificationsClient := services.NewNotificationsClient(handler.notificationsClientAdress)
+	notificationsClient.SaveNotification(tracer.InjectToMetadata(ctx, otgo.GlobalTracer(), span), &notifications.SaveNotificationRequest{
+		Notification: &notifications.Notification{
+			PostId:     post.Id.Hex(),
+			UserId:     post.Owner.Id,
+			Type:       "post",
+			Action:     "like",
+			FollowerId: "dsadada",
+			Time:       time.Now().String(),
+		},
+	})
 	return &posts.LikePostResponse{
 		Message: "Like successful",
 	}, nil
@@ -253,6 +274,23 @@ func (handler *PostsHandler) DislikePost(ctx context.Context, request *posts.Dis
 	if err != nil {
 		return nil, err
 	}
+	span2 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "MongoGetPost")
+	post, err := handler.service.Get(postId)
+	span2.Finish()
+	if err != nil {
+		return nil, err
+	}
+	notificationsClient := services.NewNotificationsClient(handler.notificationsClientAdress)
+	notificationsClient.SaveNotification(tracer.InjectToMetadata(ctx, otgo.GlobalTracer(), span), &notifications.SaveNotificationRequest{
+		Notification: &notifications.Notification{
+			PostId:     post.Id.Hex(),
+			UserId:     post.Owner.Id,
+			Type:       "post",
+			Action:     "dislike",
+			FollowerId: "dsadada",
+			Time:       time.Now().String(),
+		},
+	})
 	return &posts.DislikePostResponse{
 		Message: "Dislike successful",
 	}, nil
@@ -307,6 +345,23 @@ func (handler *PostsHandler) CommentPost(ctx context.Context, request *posts.Com
 	if err != nil {
 		return nil, err
 	}
+	span2 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "MongoLikePost")
+	post, err := handler.service.Get(postId)
+	span2.Finish()
+	if err != nil {
+		return nil, err
+	}
+	notificationsClient := services.NewNotificationsClient(handler.notificationsClientAdress)
+	notificationsClient.SaveNotification(tracer.InjectToMetadata(ctx, otgo.GlobalTracer(), span), &notifications.SaveNotificationRequest{
+		Notification: &notifications.Notification{
+			PostId:     post.Id.Hex(),
+			UserId:     post.Owner.Id,
+			Type:       "post",
+			Action:     "comment",
+			FollowerId: "dsadada",
+			Time:       time.Now().String(),
+		},
+	})
 	return &posts.CommentPostResponse{
 		Message: "Comment created successfully",
 	}, nil

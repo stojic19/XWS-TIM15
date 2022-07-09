@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package notifications;
+
+option csharp_namespace = "Chat_microservice.Protos";
+
+service NotificationsService{
+  rpc SaveNotification(SaveNotificationRequest) returns(StringResponse){
+  }
+  rpc GetNotifications(GetNotificationsRequest) returns(GetNotificationsResponse){
+  }
+  rpc GetOneNotification(GetByIdRequest) returns(GetOneNotificationResponse){
+  }
+  rpc GetAllNotificationsByFollowerId(GetByIdRequest) returns(GetNotificationsResponse){
+  }
+  rpc GetAllNotificationsByUserId(GetByIdRequest) returns(GetNotificationsResponse){
+  }
+  rpc DeleteNotification(DeleteByIdRequest) returns(StringResponse){
+  }
+  rpc SaveNotificationSettings(SaveNotificationSettingsRequest) returns(StringResponse){
+  }
+  rpc GetSettingsByUserId(GetByIdRequest) returns(GetSettingsByUserIdResponse){
+  }
+  rpc DeleteNotificationSettings(DeleteByIdRequest) returns(StringResponse){
+  }
+  rpc UpdateSettings(UpdateSettingsRequest) returns(StringResponse){
+  }
+  rpc UpdateMessagesSettings(UpdateMessagesSettingsRequest) returns(StringResponse){
+  }
+  rpc UpdatePostsSettings(UpdatePostsSettingsRequest) returns(StringResponse){
+  }
+}
+
+message Notification{
+  string id = 1;
+  string type = 2;
+  string action = 3;
+  string userId = 4;
+  string followerId = 5;
+  string postId = 6;
+  string messagesId = 7;
+  string time = 8;
+}
+message SaveNotificationRequest{
+  Notification notification = 1;
+}
+message StringResponse{
+  string response = 1;
+  int64 status = 2;
+}
+
+message GetNotificationsRequest{
+}
+message GetNotificationsResponse{
+  repeated Notification notifications = 1;
+}
+
+message GetByIdRequest{
+  string id = 1;
+}
+message GetOneNotificationResponse{
+  Notification notification = 1;
+}
+
+message DeleteByIdRequest{
+  string id = 1;
+}
+
+message NotificationSettings{
+  string id = 1;
+  string userId = 2;
+  repeated string followerIdsForPosts = 3;
+  repeated string followerIdsForMessages = 4;
+  bool getNotificationsForMyPosts = 5;
+}
+message SaveNotificationSettingsRequest{
+  NotificationSettings notificationSettings = 1;
+}
+
+message GetSettingsByUserIdResponse{
+  NotificationSettings notificationSettings = 1;
+}
+
+message UpdateSettingsRequest{
+  NotificationSettings notificationSettings = 1;
+}
+
+message UpdateMessagesSettingsRequest{
+  string userId = 1;
+  repeated string followerIdsForMessages = 2;
+}
+
+message UpdatePostsSettingsRequest{
+  string userId = 1;
+  repeated string followerIdsForPosts = 2;
+}
