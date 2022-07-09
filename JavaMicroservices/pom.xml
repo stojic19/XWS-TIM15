@@ -8,5 +8,6 @@
     <modules>
         <module>common</module>
         <module>User-microservice</module>
+        <module>Notification-microservice</module>
     </modules>
 </project>

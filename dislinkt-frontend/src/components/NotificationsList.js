@@ -1,21 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 
 const NotificationsList = () =>{
 
-    //const [notifications, setNotifications] = useEffect([]);
-
-    let notifications = []
+    const [notifications, setNotifications] = useState();
 
     const fetchNotifications = async () => {
         axios.get('http://localhost:8081/notifications/user/0a93d6c1-ef32-4287-b7db-8ad566481d53')
             .then(res => {
-                // let notifications = Array.from(res.data)
-                notifications = res.data
-                // setNotifications(notifications)
                 console.log(res.data)
+                let notifications = Array.from(res.data)
+                setNotifications(notifications)
             }).catch(err => {
                 console.log(err);
                 Swal.fire({
