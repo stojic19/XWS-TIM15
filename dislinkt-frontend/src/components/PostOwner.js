@@ -11,7 +11,7 @@ const PostOwner = (props) =>{
         axios.get(axios.defaults.baseURL + 'users/' + props.id)
             .then(res => {
                 setUser(res.data.user);
-                console.log(user)
+                //console.log(user)
             }).catch(err => {
                 console.log(err);
                 Swal.fire({

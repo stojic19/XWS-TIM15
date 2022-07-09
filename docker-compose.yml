@@ -1,5 +1,10 @@
 version: "3.8"
 
+x-logging: &fluent-bit
+  driver: fluentd
+  options:
+    fluentd-address: ${FLUENT_BIT_ADDRESS}:24224
+
 services:
   followers_service:
     image: followers_service
@@ -31,12 +36,13 @@ services:
       JAEGER_AGENT_PORT:        ${ENV_JAEGER_AGENT_PORT}
       JAEGER_SAMPLER_TYPE:      ${ENV_JAEGER_SAMPLER_TYPE}
       JAEGER_SAMPLER_PARAM:     ${ENV_JAEGER_SAMPLER_PARAM}
-      
+    logging: *fluent-bit
     depends_on:
       - followers_db
       - nats
     networks:
       - network
+      - monitoring
 
   followers_db:
     image: neo4j
@@ -44,11 +50,13 @@ services:
     restart: on-failure
     environment:
       NEO4J_AUTH: none
+    logging: *fluent-bit
     ports:
       - 7474:7474
       - 7687:7687
     networks:
       - network
+      - monitoring
 
   posts_service:
     image: posts_service
@@ -69,19 +77,23 @@ services:
       JAEGER_AGENT_PORT:        ${ENV_JAEGER_AGENT_PORT}
       JAEGER_SAMPLER_TYPE:      ${ENV_JAEGER_SAMPLER_TYPE}
       JAEGER_SAMPLER_PARAM:     ${ENV_JAEGER_SAMPLER_PARAM}
+    logging: *fluent-bit
     depends_on:
       - posts_db
     networks:
       - network
+      - monitoring
 
   posts_db:
     image: mongo
     container_name: posts_db
+    logging: *fluent-bit
     restart: on-failure
     ports:
       - 27017:27017
     networks:
       - network
+      - monitoring
       
   job_offers_service:
     image: job_offers_service
@@ -100,17 +112,21 @@ services:
         JAEGER_AGENT_PORT:        ${ENV_JAEGER_AGENT_PORT}
         JAEGER_SAMPLER_TYPE:      ${ENV_JAEGER_SAMPLER_TYPE}
         JAEGER_SAMPLER_PARAM:     ${ENV_JAEGER_SAMPLER_PARAM}
+    logging: *fluent-bit
     depends_on:
         - job_offers_db
     networks:
         - network
+        - monitoring
         
   job_offers_db:
     image: mongo
     container_name: job_offers_db
+    logging: *fluent-bit
     restart: on-failure
     networks:
       - network
+      - monitoring
      
 
   chat_service:
@@ -136,11 +152,13 @@ services:
         JAEGER_AGENT_PORT:          ${ENV_JAEGER_AGENT_PORT}
         JAEGER_SAMPLER_TYPE:        ${ENV_JAEGER_SAMPLER_TYPE}
         JAEGER_SAMPLER_PARAM:       ${ENV_JAEGER_SAMPLER_PARAM}
+    logging: *fluent-bit
     depends_on: 
         - chat_db
         - nats
     networks:
         - network
+        - monitoring
      
   chat_db:
     image: mongo
@@ -148,6 +166,7 @@ services:
     restart: on-failure
     networks:
       - network
+      - monitoring
      
   users_service:
     image: users_service
@@ -164,19 +183,23 @@ services:
         JAEGER_AGENT_PORT:        ${ENV_JAEGER_AGENT_PORT}
         JAEGER_SAMPLER_TYPE:      ${ENV_JAEGER_SAMPLER_TYPE}
         JAEGER_SAMPLER_PARAM:     ${ENV_JAEGER_SAMPLER_PARAM}
+    logging: *fluent-bit
     depends_on:
         - users_db
         - jaeger-1
     networks:
       - network
+      - monitoring
         
         
   users_db:
     image: mongo
     container_name: users_db
+    logging: *fluent-bit
     restart: on-failure
     networks:
       - network
+      - monitoring
      
      
   api_gateway:
@@ -204,10 +227,10 @@ services:
       JAEGER_AGENT_PORT:        ${ENV_JAEGER_AGENT_PORT}
       JAEGER_SAMPLER_TYPE:      ${ENV_JAEGER_SAMPLER_TYPE}
       JAEGER_SAMPLER_PARAM:     ${ENV_JAEGER_SAMPLER_PARAM}
+    logging: *fluent-bit
     networks:
-      network:
-        aliases:
-          - api_gateway
+      - network
+      - monitoring
 
   agent_application:
     image: agent_application
@@ -222,10 +245,12 @@ services:
       AGENT_APPLICATION_DB_CONNECTION_STRING: ${ENV_AGENT_APPLICATION_DB_CONNECTION_STRING}
       GATEWAY_PORT: ${ENV_GATEWAY_PORT}
       GATEWAY_HOST: ${ENV_GATEWAY_HOST}
+    logging: *fluent-bit
     depends_on:
         - agent_app_db
     networks:
       - network
+      - monitoring
         
   agent_app_db:
     image: postgres
@@ -235,8 +260,10 @@ services:
         POSTGRES_PASSWORD: "root"
         POSTGRES_USER: "postgres"
         POSTGRES_DB: "AgentApplication"
+    logging: *fluent-bit
     networks:
       - network
+      - monitoring
 
   dislinkt_frontend:
     image: dislinkt_frontend
@@ -246,11 +273,13 @@ services:
         dockerfile: ./dislinkt-frontend/Dockerfile
         args:
           REACT_APP_BASEURL_DISLINKT: ${REACT_APP_BASE_URL_DISLINKT}
+    logging: *fluent-bit
     restart: on-failure
     ports:
       - 3002:3000
     networks:
       - network
+      - monitoring
 
   agent_frontend:
     image: agent_frontend
@@ -260,98 +289,28 @@ services:
         dockerfile: ./agent-app-frontend/Dockerfile
         args:
           REACT_APP_BASEURL_AGENT: ${REACT_APP_BASE_URL_AGENT}
+    logging: *fluent-bit
     restart: on-failure
     ports:
       - 3001:3000
     networks:
       - network
+      - monitoring
 
   nats:
     image: nats
     container_name: nats
+    logging: *fluent-bit
     restart: on-failure
     networks:
       - network
-
-  loki:
-    image: grafana/loki:latest
-    networks:
-      - network
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    environment:
-      GF_RENDERING_SERVER_URL: http://renderer:8081/render
-      GF_RENDERING_CALLBACK_URL: http://grafana:3000/
-      GF_LOG_FILTERS: rendering:debug
-    volumes:
-      - grafana:/var/lib/grafana
-      - ./grafana/dashboards:/var/lib/grafana/dashboards
-      - ./grafana/provisioning:/etc/grafana/provisioning
-    networks:
-      - network
-
-  renderer:
-    image: grafana/grafana-image-renderer:latest
-    environment:
-      ENABLE_METRICS: "true"
-    networks:
-      - network
-
-  fluent-bit:
-    image: grafana/fluent-bit-plugin-loki:latest
-    environment:
-      - LOKI_URL=http://loki:3100/loki/api/v1/push
-    volumes:
-      - ./fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
-    ports:
-      - "24224:24224"
-      - "24224:24224/udp"
-    networks:
-      - network
-
-  jaeger:
-    image: jaegertracing/all-in-one:latest
-    ports:
-      - "16686:16686"
-    networks:
-      - network
-
-  prometheus:
-    image: prom/prometheus:latest
-    restart: on-failure
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus:/etc/prometheus
-      - prometheus:/var/lib/prometheus
-    networks:
-      - network
-
-  node-exporter:
-    image: prom/node-exporter:latest
-    ports:
-      - "9100:9100"
-    networks:
-      - network
-
-  cadvisor:
-    image: google/cadvisor:latest
-    ports:
-      - "8080:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    networks:
-      - network
+      - monitoring
   
 networks:
   network:
     driver: bridge
+  monitoring:
+    external: true
 
 volumes:
   grafana:
