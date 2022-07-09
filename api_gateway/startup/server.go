@@ -11,6 +11,7 @@ import (
 	"github.com/stojic19/XWS-TIM15/common/proto/chat"
 	"github.com/stojic19/XWS-TIM15/common/proto/followers"
 	"github.com/stojic19/XWS-TIM15/common/proto/job_offers"
+	"github.com/stojic19/XWS-TIM15/common/proto/notifications"
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"github.com/stojic19/XWS-TIM15/common/tracer"
@@ -81,7 +82,7 @@ func (server *Server) initHandlers() {
 	}
 	fmt.Printf("Notifications: %s:%s\n", server.config.NotificationsHost, server.config.NotificationsPort)
 	notificationsEndpoint := fmt.Sprintf("%s:%s", server.config.NotificationsHost, server.config.NotificationsPort)
-	err = chat.RegisterChatServiceGrpcHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, notificationsEndpoint, opts)
+	err = notifications.RegisterNotificationsServiceHandlerFromEndpoint(context.TODO(), &server.mux.ServeMux, notificationsEndpoint, opts)
 	if err != nil {
 		panic(err)
 	}
