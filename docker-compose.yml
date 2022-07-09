@@ -27,6 +27,10 @@ services:
       BLOCK_REPLY_SUBJECT:      ${ENV_BLOCK_REPLY_SUBJECT}
       UNBLOCK_COMMAND_SUBJECT:  ${ENV_UNBLOCK_COMMAND_SUBJECT}
       UNBLOCK_REPLY_SUBJECT:    ${ENV_UNBLOCK_REPLY_SUBJECT}
+      JAEGER_AGENT_HOST:        ${ENV_JAEGER_AGENT_HOST}
+      JAEGER_AGENT_PORT:        ${ENV_JAEGER_AGENT_PORT}
+      JAEGER_SAMPLER_TYPE:      ${ENV_JAEGER_SAMPLER_TYPE}
+      JAEGER_SAMPLER_PARAM:     ${ENV_JAEGER_SAMPLER_PARAM}
       
     depends_on:
       - followers_db
@@ -61,6 +65,10 @@ services:
       FOLLOWERS_SERVICE_PORT:   ${ENV_FOLLOWERS_SERVICE_PORT}
       USERS_SERVICE_HOST:       ${ENV_USERS_SERVICE_HOST}
       USERS_PORT:               ${ENV_USERS_PORT}
+      JAEGER_AGENT_HOST:        ${ENV_JAEGER_AGENT_HOST}
+      JAEGER_AGENT_PORT:        ${ENV_JAEGER_AGENT_PORT}
+      JAEGER_SAMPLER_TYPE:      ${ENV_JAEGER_SAMPLER_TYPE}
+      JAEGER_SAMPLER_PARAM:     ${ENV_JAEGER_SAMPLER_PARAM}
     depends_on:
       - posts_db
     networks:
@@ -88,6 +96,10 @@ services:
         JOB_OFFERS_DB_PORT:         ${ENV_JOB_OFFERS_DB_PORT}
         USERS_SERVICE_HOST:         ${ENV_USERS_SERVICE_HOST}
         USERS_PORT:                 ${ENV_USERS_PORT}
+        JAEGER_AGENT_HOST:        ${ENV_JAEGER_AGENT_HOST}
+        JAEGER_AGENT_PORT:        ${ENV_JAEGER_AGENT_PORT}
+        JAEGER_SAMPLER_TYPE:      ${ENV_JAEGER_SAMPLER_TYPE}
+        JAEGER_SAMPLER_PARAM:     ${ENV_JAEGER_SAMPLER_PARAM}
     depends_on:
         - job_offers_db
     networks:
@@ -120,7 +132,11 @@ services:
         BLOCK_REPLY_SUBJECT:        ${ENV_BLOCK_REPLY_SUBJECT}
         UNBLOCK_COMMAND_SUBJECT:    ${ENV_UNBLOCK_COMMAND_SUBJECT}
         UNBLOCK_REPLY_SUBJECT:      ${ENV_UNBLOCK_REPLY_SUBJECT}
-    depends_on:
+        JAEGER_AGENT_HOST:          ${ENV_JAEGER_AGENT_HOST}
+        JAEGER_AGENT_PORT:          ${ENV_JAEGER_AGENT_PORT}
+        JAEGER_SAMPLER_TYPE:        ${ENV_JAEGER_SAMPLER_TYPE}
+        JAEGER_SAMPLER_PARAM:       ${ENV_JAEGER_SAMPLER_PARAM}
+    depends_on: 
         - chat_db
         - nats
     networks:
@@ -144,8 +160,13 @@ services:
         USERS_PORT: ${ENV_USERS_PORT}
         USERS_DB_HOST: ${ENV_USERS_DB_HOST}
         USERS_DB_PORT: ${ENV_USERS_DB_PORT}
+        JAEGER_AGENT_HOST:        ${ENV_JAEGER_AGENT_HOST}
+        JAEGER_AGENT_PORT:        ${ENV_JAEGER_AGENT_PORT}
+        JAEGER_SAMPLER_TYPE:      ${ENV_JAEGER_SAMPLER_TYPE}
+        JAEGER_SAMPLER_PARAM:     ${ENV_JAEGER_SAMPLER_PARAM}
     depends_on:
         - users_db
+        - jaeger-1
     networks:
       - network
         
@@ -177,8 +198,12 @@ services:
       USERS_PORT:               ${ENV_USERS_PORT}
       JOB_OFFERS_SERVICE_HOST:  ${ENV_JOB_OFFERS_SERVICE_HOST}
       JOB_OFFERS_SERVICE_PORT:  ${ENV_JOB_OFFERS_SERVICE_PORT}
-      MESSAGES_HOST:            ${ENV_CHAT_HOST}
-      MESSAGES_PORT:            ${ENV_CHAT_PORT}
+      CHAT_HOST:                ${ENV_CHAT_HOST}
+      CHAT_PORT:                ${ENV_CHAT_PORT}
+      JAEGER_AGENT_HOST:        ${ENV_JAEGER_AGENT_HOST}
+      JAEGER_AGENT_PORT:        ${ENV_JAEGER_AGENT_PORT}
+      JAEGER_SAMPLER_TYPE:      ${ENV_JAEGER_SAMPLER_TYPE}
+      JAEGER_SAMPLER_PARAM:     ${ENV_JAEGER_SAMPLER_PARAM}
     networks:
       network:
         aliases:
