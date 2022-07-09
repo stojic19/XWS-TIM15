@@ -38,6 +38,13 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
+    public List<Notification> findByUserId(String id) {
+        List<Notification> list = repository.findByUserId(id);
+        list.sort(Comparator.comparing(Notification::getTime).reversed());
+        return list;
+    }
+
+    @Override
     public void deleteById(String id) {
         repository.deleteById(id);
     }

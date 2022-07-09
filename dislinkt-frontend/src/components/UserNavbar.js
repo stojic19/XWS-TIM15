@@ -1,3 +1,6 @@
+
+import NotificationsList from "./NotificationsList";
+
 const UserNavbar = () => {
 
     const logout = () => {
@@ -31,6 +34,9 @@ const UserNavbar = () => {
             </li>
             <li className="nav-item" key={6}>
                 <a className="nav-link" href="/personalProfile">Profile</a>
+            </li>
+            <li>
+                <NotificationsList></NotificationsList>
             </li>
             <li className="nav-item" key={8}>
                 <a className="nav-link" href="/" onClick={(e) => logout(e)}>Logout</a>
