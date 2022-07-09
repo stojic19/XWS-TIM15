@@ -9,5 +9,6 @@ public interface NotificationService {
     List<Notification> getNotifications();
     Optional<Notification> findById(String id);
     List<Notification> findByFollowerId(String id);
+    List<Notification> findByUserId(String id);
     void deleteById(String id);
 }

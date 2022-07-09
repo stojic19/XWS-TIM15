@@ -11,12 +11,12 @@ public class NotificationMapper {
 
     public NotificationDto NotificationToDto(Notification notification){
         return new NotificationDto(notification.getId(), notification.getType().toString(), notification.getAction().toString(),
-                notification.getFollowerId(), notification.getTime());
+                notification.getUserId(), notification.getFollowerId(),notification.getPostId(), notification.getMessagesId(),notification.getTime());
     }
 
     public Notification DtoToNotification(NotificationDto dto) {
         return new Notification(dto.getId(), NotificationType.valueOf(dto.getType()), NotificationAction.valueOf(dto.getAction()),
-                                dto.getFollowerId(), dto.getTime());
+                dto.getUserId(),dto.getFollowerId(), dto.getPostId(), dto.getMessagesId(), dto.getTime());
     }
 
     public NotificationSettings DtoToNotificationSettings(NotificationSettingsDto dto) {

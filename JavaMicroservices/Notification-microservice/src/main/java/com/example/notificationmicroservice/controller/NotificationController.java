@@ -19,9 +19,10 @@ public class NotificationController {
 
     final private NotificationMapper mapper = new NotificationMapper();
 
+    @CrossOrigin
     @PostMapping()
     public String saveNotification(@RequestBody NotificationDto dto){
-        if(isNullOrEmpty(dto.getType(), dto.getAction(), dto.getFollowerId(), dto.getTime().toString()))
+        if(isNullOrEmpty(dto.getType(), dto.getAction(),dto.getUserId(), dto.getFollowerId(), dto.getTime().toString()))
             return "None of fields cannot be empty!";
         return "Added notification with id " + service.addNotification(mapper.DtoToNotification(dto)).getId();
     }
@@ -35,6 +36,7 @@ public class NotificationController {
         return false;
     }
 
+    @CrossOrigin
     @GetMapping
     public List<NotificationDto> getNotifications(){
         List<NotificationDto> dtoList = new ArrayList<>();
@@ -43,12 +45,14 @@ public class NotificationController {
         return dtoList;
     }
 
+    @CrossOrigin
     @GetMapping("/{id}")
     public NotificationDto getOne(@PathVariable String id){
         Optional<Notification> notification = service.findById(id);
         return notification.map(mapper::NotificationToDto).orElse(null);
     }
 
+    @CrossOrigin
     @GetMapping("/follower/{id}")
     public List<NotificationDto> getAllByFollowerId(@PathVariable String id){
         List<NotificationDto> dtoList = new ArrayList<>();
@@ -57,6 +61,16 @@ public class NotificationController {
         return dtoList;
     }
 
+    @CrossOrigin
+    @GetMapping("/user/{id}")
+    public List<NotificationDto> getAllByUserId(@PathVariable String id){
+        List<NotificationDto> dtoList = new ArrayList<>();
+        for(Notification notification : service.findByUserId(id))
+            dtoList.add(mapper.NotificationToDto(notification));
+        return dtoList;
+    }
+
+    @CrossOrigin
     @DeleteMapping("/{id}")
     public String deleteNotification(@PathVariable String id){
         service.deleteById(id);
