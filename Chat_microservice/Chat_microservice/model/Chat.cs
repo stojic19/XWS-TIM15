@@ -48,5 +48,20 @@ namespace Chat_microservice.model
             }
             return false;
         }
+
+        public bool IsBlocked(string messageReceiverId)
+        {
+            try
+            {
+                var guidId = Guid.Parse(messageReceiverId);
+                if (FirstParticipant.UserId == guidId) return FirstParticipant.BlockedChat;
+                if (SecondParticipant.UserId == guidId) return SecondParticipant.BlockedChat;
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

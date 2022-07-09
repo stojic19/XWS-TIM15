@@ -73,6 +73,8 @@ services:
       FOLLOWERS_SERVICE_PORT:   ${ENV_FOLLOWERS_SERVICE_PORT}
       USERS_SERVICE_HOST:       ${ENV_USERS_SERVICE_HOST}
       USERS_PORT:               ${ENV_USERS_PORT}
+      NOTIFICATIONS_HOST:       ${ENV_NOTIFICATIONS_HOST}
+      NOTIFICATIONS_PORT:       ${ENV_NOTIFICATIONS_PORT}
       JAEGER_AGENT_HOST:        ${ENV_JAEGER_AGENT_HOST}
       JAEGER_AGENT_PORT:        ${ENV_JAEGER_AGENT_PORT}
       JAEGER_SAMPLER_TYPE:      ${ENV_JAEGER_SAMPLER_TYPE}
@@ -140,6 +142,9 @@ services:
         CHAT_PORT:                  ${ENV_CHAT_PORT}
         CHAT_DB_HOST:               ${ENV_CHAT_DB_HOST}
         CHAT_DB_PORT:               ${ENV_CHAT_DB_PORT}
+        NOTIFICATIONS_HOST:         ${ENV_NOTIFICATIONS_HOST}
+        NOTIFICATIONS_HOST:         ${ENV_NOTIFICATIONS_HOST}
+        NOTIFICATIONS_PORT:         ${ENV_NOTIFICATIONS_PORT}
         NATS_HOST:                  ${ENV_NATS_HOST}
         NATS_PORT:                  ${ENV_NATS_PORT}
         NATS_USER:                  ${ENV_NATS_USER}
@@ -186,7 +191,7 @@ services:
     logging: *fluent-bit
     depends_on:
         - users_db
-        - jaeger-1
+        - jaeger
     networks:
       - network
       - monitoring
@@ -201,7 +206,38 @@ services:
       - network
       - monitoring
      
-     
+  notifications_service:
+    image: notifications_service
+    container_name: notifications_service
+    build:
+        context: .
+        dockerfile: ./JavaMicroservices/Notification-microservice/Dockerfile
+    restart: on-failure
+    environment:
+        NOTIFICATIONS_PORT:     ${ENV_NOTIFICATIONS_PORT}
+        NOTIFICATIONS_DB_HOST:  ${ENV_NOTIFICATIONS_DB_HOST}
+        NOTIFICATIONS_DB_PORT:  ${ENV_NOTIFICATIONS_DB_PORT}
+        JAEGER_AGENT_HOST:      ${ENV_JAEGER_AGENT_HOST}
+        JAEGER_AGENT_PORT:      ${ENV_JAEGER_AGENT_PORT}
+        JAEGER_SAMPLER_TYPE:    ${ENV_JAEGER_SAMPLER_TYPE}
+        JAEGER_SAMPLER_PARAM:   ${ENV_JAEGER_SAMPLER_PARAM}
+    logging: *fluent-bit
+    depends_on:
+        - notifications_db
+        - jaeger
+    networks:
+      - network
+      - monitoring
+      
+  notifications_db:
+    image: mongo
+    container_name: notifications_db
+    logging: *fluent-bit
+    restart: on-failure
+    networks:
+      - network
+      - monitoring
+  
   api_gateway:
     image: api_gateway
     container_name: api_gateway

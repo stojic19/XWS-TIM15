@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Protobuf Include="Protos\Chat.proto" GrpcServices="Server" />
+    <Protobuf Include="Protos\notifications.proto" GrpcServices="Client" />
   </ItemGroup>
 
   <ItemGroup>
