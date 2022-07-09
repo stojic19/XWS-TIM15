@@ -1,0 +1,139 @@
+syntax = "proto3";
+
+option go_package = "github.com/stojic19/XWS-TIM15/common/proto/notifications";
+
+package notifications;
+
+import "google/api/annotations.proto";
+
+service NotificationsService{
+  rpc SaveNotification(SaveNotificationRequest) returns(StringResponse){
+    option(google.api.http) = {
+      post: "/notifications"
+      body: "*"
+    };
+  }
+  rpc GetNotifications(GetNotificationsRequest) returns(GetNotificationsResponse){
+    option(google.api.http) = {
+      get: "/notifications"
+    };
+  }
+  rpc GetOneNotification(GetByIdRequest) returns(GetOneNotificationResponse){
+    option(google.api.http) = {
+      get: "/notifications/{id}"
+    };
+  }
+  rpc GetAllNotificationsByFollowerId(GetByIdRequest) returns(GetNotificationsResponse){
+    option(google.api.http) = {
+      get: "/notifications/follower/{id}"
+    };
+  }
+  rpc GetAllNotificationsByUserId(GetByIdRequest) returns(GetNotificationsResponse){
+    option(google.api.http) = {
+      get: "/notifications/user/{id}"
+    };
+  }
+  rpc DeleteNotification(DeleteByIdRequest) returns(StringResponse){
+    option(google.api.http) = {
+      delete: "/notifications/{id}"
+    };
+  }
+  rpc SaveNotificationSettings(SaveNotificationSettingsRequest) returns(StringResponse){
+    option(google.api.http) = {
+      post: "/notificationSettings"
+      body: "*"
+    };
+  }
+  rpc GetSettingsByUserId(GetByIdRequest) returns(GetSettingsByUserIdResponse){
+    option(google.api.http) = {
+      get: "/notificationSettings/user/{id}"
+    };
+  }
+  rpc DeleteNotificationSettings(DeleteByIdRequest) returns(StringResponse){
+    option(google.api.http) = {
+      delete: "/notifications/user/{id}"
+    };
+  }
+  rpc UpdateSettings(UpdateSettingsRequest) returns(StringResponse){
+    option(google.api.http) = {
+      put: "/notificationSettings"
+      body: "*"
+    };
+  }
+  rpc UpdateMessagesSettings(UpdateMessagesSettingsRequest) returns(StringResponse){
+    option(google.api.http) = {
+      put: "/notificationSettings/messages"
+      body: "*"
+    };
+  }
+  rpc UpdatePostsSettings(UpdatePostsSettingsRequest) returns(StringResponse){
+    option(google.api.http) = {
+      put: "/notificationSettings/posts"
+      body: "*"
+    };
+  }
+}
+
+message Notification{
+  string id = 1;
+  string type = 2;
+  string action = 3;
+  string userId = 4;
+  string followerId = 5;
+  string postId = 6;
+  string messagesId = 7;
+  string time = 8;
+}
+message SaveNotificationRequest{
+  Notification notification = 1;
+}
+message StringResponse{
+  string response = 1;
+  int64 status = 2;
+}
+
+message GetNotificationsRequest{
+}
+message GetNotificationsResponse{
+  repeated Notification notifications = 1;
+}
+
+message GetByIdRequest{
+  string id = 1;
+}
+message GetOneNotificationResponse{
+  Notification notification = 1;
+}
+
+message DeleteByIdRequest{
+  string id = 1;
+}
+
+message NotificationSettings{
+  string id = 1;
+  string userId = 2;
+  repeated string followerIdsForPosts = 3;
+  repeated string followerIdsForMessages = 4;
+  bool getNotificationsForMyPosts = 5;
+}
+message SaveNotificationSettingsRequest{
+  NotificationSettings notificationSettings = 1;
+}
+
+message GetSettingsByUserIdResponse{
+  NotificationSettings notificationSettings = 1;
+}
+
+message UpdateSettingsRequest{
+  NotificationSettings notificationSettings = 1;
+}
+
+message UpdateMessagesSettingsRequest{
+  string userId = 1;
+  repeated string followerIdsForMessages = 2;
+}
+
+message UpdatePostsSettingsRequest{
+  string userId = 1;
+  repeated string followerIdsForPosts = 2;
+}

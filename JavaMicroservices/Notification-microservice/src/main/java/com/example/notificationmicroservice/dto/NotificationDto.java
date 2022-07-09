@@ -17,6 +17,9 @@ public class NotificationDto {
     private String id;
     private String type;
     private String action;
+    private String userId;
     private String followerId;
+    private String postId;
+    private String messagesId;
     private Date time;
 }

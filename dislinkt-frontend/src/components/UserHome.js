@@ -19,7 +19,7 @@ const UserHome = () => {
             .then(res => {
                 let posts = Array.from(res.data.posts)
                 setPosts(posts);
-                console.log(posts)
+                //console.log(posts)
                 setLoading(false);
             }).catch(err => {
                 console.log(err);
