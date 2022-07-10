@@ -22,8 +22,8 @@ const Profile = (props) => {
         history('/blocked');
     }
 
-    const getRelationship = () => {
-        if (relationship === 'NO RELATIONSHIP')
+    const noRelationship = () => {
+        if (props.relationship === 'NO RELATIONSHIP')
             return true;
         return false;
     }
@@ -159,10 +159,10 @@ const Profile = (props) => {
                                 {
                                     !props.hiddenButtons && !props.personalProfile && !props.hiddenContent &&
                                     <div className="d-flex ">
-                                        {getRelationship(props.relationship)
+                                        {noRelationship(props.relationship)
                                             && <button onClick={(e) => follow(e)} className="btn btn-primary follow me-2">Follow</button>
                                         }
-                                        {!getRelationship(props.relationship) && <>
+                                        {!noRelationship(props.relationship) && <>
                                             <button onClick={(e) => unfollow(e)} className="btn btn-primary follow me-2">Unfollow</button>
                                             <button onClick={() => history("/chat/" + props.user.id)} className="btn btn-outline-primary message">Message</button>
                                         </>}
@@ -171,10 +171,10 @@ const Profile = (props) => {
                                 {
                                     !props.hiddenButtons && !props.personalProfile && props.hiddenContent &&
                                     <div className="d-flex ">
-                                        {getRelationship(props.relationship)
+                                        {noRelationship(props.relationship)
                                             && <button onClick={(e) => followRequest(e)} className="btn btn-primary follow me-2">Follow request</button>
                                         }
-                                        {!getRelationship(props.relationship)
+                                        {!noRelationship(props.relationship)
                                             && <button onClick={(e) => cancelFollowRequest(e)} className="btn btn-primary follow me-2">Cancel follow request</button>
                                         }
                                     </div>
