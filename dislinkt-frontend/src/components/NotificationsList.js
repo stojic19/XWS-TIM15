@@ -8,7 +8,7 @@ const NotificationsList = () =>{
     const [notifications, setNotifications] = useState();
 
     const fetchNotifications = async () => {
-        axios.get(axios.defaults.baseURL + 'notifications/user/0a93d6c1-ef32-4287-b7db-8ad566481d53')
+        axios.get('http://localhost:8081/notifications/user/0a93d6c1-ef32-4287-b7db-8ad566481d53')
             .then(res => {
                 console.log(res.data)
                 let notifications = Array.from(res.data)

@@ -23,6 +23,7 @@ public class NotificationController {
     @CrossOrigin
     @PostMapping()
     public String saveNotification(@RequestBody NotificationDto dto){
+
         if(isNullOrEmpty(dto.getType(), dto.getFollowerId(), dto.getTime().toString()))
             return "None of fields cannot be empty!";
 
