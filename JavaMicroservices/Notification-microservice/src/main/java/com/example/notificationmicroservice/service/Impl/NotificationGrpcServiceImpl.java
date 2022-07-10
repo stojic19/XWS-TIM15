@@ -8,6 +8,7 @@ import com.example.notificationmicroservice.dto.UpdateSettingsForMessagesDto;
 import com.example.notificationmicroservice.dto.UpdateSettingsForPostsDto;
 import com.example.notificationmicroservice.mapper.NotificationMapper;
 import com.example.notificationmicroservice.model.Notification;
+import com.example.notificationmicroservice.model.NotificationType;
 import com.example.notificationmicroservice.service.NotificationService;
 import com.example.notificationmicroservice.service.NotificationSettingsService;
 import io.grpc.stub.StreamObserver;
@@ -34,10 +35,13 @@ public class NotificationGrpcServiceImpl extends  NotificationsServiceGrpc.Notif
     @Override
     public void saveNotification(SaveNotificationRequest request, StreamObserver<StringResponse> responseObserver) {
         StringResponse response;
-        if(isNullOrEmpty(request.getNotification().getType(), request.getNotification().getAction(),request.getNotification().getUserId(), request.getNotification().getFollowerId(), request.getNotification().getTime()))
+        if(isNullOrEmpty(request.getNotification().getType()))
             response = StringResponse.newBuilder().setResponse("None of fields cannot be empty!").setStatus(400).build();
         else{
-            response = StringResponse.newBuilder().setResponse("Added notification with id " + notificationService.addNotification(mapper.DtoToNotification(new NotificationDto(request.getNotification().getId(), request.getNotification().getType(), request.getNotification().getAction(), request.getNotification().getUserId(), request.getNotification().getFollowerId(), request.getNotification().getPostId(), request.getNotification().getMessagesId(), new Date()))).getId()).setStatus(200).build();
+            if(request.getNotification().getType().equals(NotificationType.profile.toString()))
+                response = StringResponse.newBuilder().setResponse("Added notification with id " + notificationService.addNotificationForNewPost(mapper.DtoToNotification(new NotificationDto(request.getNotification().getId(), request.getNotification().getType(), request.getNotification().getAction(), request.getNotification().getUserId(), request.getNotification().getFollowerId(), request.getNotification().getPostId(), request.getNotification().getMessagesId(), new Date()))).getId()).setStatus(200).build();
+            else
+                response = StringResponse.newBuilder().setResponse("Added notification with id " + notificationService.addNotification(mapper.DtoToNotification(new NotificationDto(request.getNotification().getId(), request.getNotification().getType(), request.getNotification().getAction(), request.getNotification().getUserId(), request.getNotification().getFollowerId(), request.getNotification().getPostId(), request.getNotification().getMessagesId(), new Date()))).getId()).setStatus(200).build();
         }
         responseObserver.onNext(response);
         responseObserver.onCompleted();
