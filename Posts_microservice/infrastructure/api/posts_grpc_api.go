@@ -172,7 +172,21 @@ func (handler *PostsHandler) CreatePost(ctx context.Context, request *posts.Crea
 	span1 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "MongoCreatePost")
 	err := handler.service.CreatePost(post)
 	span1.Finish()
-
+	if err != nil {
+		return nil, err
+	}
+	notificationsClient := services.NewNotificationsClient(handler.notificationsClientAdress)
+	notificationsClient.SaveNotification(tracer.InjectToMetadata(ctx, otgo.GlobalTracer(), span), &notifications.SaveNotificationRequest{
+		Notification: &notifications.Notification{
+			PostId:     post.Id.Hex(),
+			UserId:     "",
+			Type:       "profile",
+			Action:     "none",
+			FollowerId: post.Owner.Id,
+			Time:       post.CreateTime.String(),
+			MessagesId: "",
+		},
+	})
 	if err != nil {
 		return nil, err
 	}
