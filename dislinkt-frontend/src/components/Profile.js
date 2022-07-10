@@ -23,7 +23,7 @@ const Profile = (props) => {
     }
 
     const noRelationship = () => {
-        if (relationship === 'NO RELATIONSHIP')
+        if (props.relationship === 'NO RELATIONSHIP')
             return true;
         return false;
     }
