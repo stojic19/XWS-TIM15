@@ -3,6 +3,7 @@ package com.example.notificationmicroservice.controller;
 import com.example.notificationmicroservice.dto.*;
 import com.example.notificationmicroservice.mapper.NotificationMapper;
 import com.example.notificationmicroservice.model.Notification;
+import com.example.notificationmicroservice.model.NotificationType;
 import com.example.notificationmicroservice.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,12 @@ public class NotificationController {
     @CrossOrigin
     @PostMapping()
     public String saveNotification(@RequestBody NotificationDto dto){
-        if(isNullOrEmpty(dto.getType(), dto.getAction(),dto.getUserId(), dto.getFollowerId(), dto.getTime().toString()))
+        if(isNullOrEmpty(dto.getType(), dto.getFollowerId(), dto.getTime().toString()))
             return "None of fields cannot be empty!";
+
+        if(dto.getType().equals(NotificationType.profile.toString()))
+            return "Added notification with id " + service.addNotificationForNewPost(mapper.DtoToNotification(dto)).getId();
+        
         return "Added notification with id " + service.addNotification(mapper.DtoToNotification(dto)).getId();
     }
 
