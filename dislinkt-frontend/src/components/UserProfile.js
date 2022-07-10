@@ -71,7 +71,7 @@ const UserProfile = () => {
 
         const getRelationship = async () => {
             if(id!==localStorage.getItem('user_id') && localStorage.getItem('user_id')!=='')
-            axios.get(axios.defaults.baseURL + 'followers/relationship/'+id+'/' + localStorage.getItem('user_id'))
+            axios.get(axios.defaults.baseURL + 'followers/relationship/'+ id +'/' + localStorage.getItem('user_id'))
                 .then(res => {
                     setRelationship(res.data.relationship);
                 }).catch(err => {
@@ -88,8 +88,8 @@ const UserProfile = () => {
         getRelationship();
     }, [])
     const isContentHidden = (user) => {
-        if(!localStorage.getItem('user_id').length==0)
-        return false;
+        if(localStorage.getItem('user_id').length==0)
+        return true;
         if(user.isPrivate){
             if(relationship!=='FOLLOWING')
                 return true;
