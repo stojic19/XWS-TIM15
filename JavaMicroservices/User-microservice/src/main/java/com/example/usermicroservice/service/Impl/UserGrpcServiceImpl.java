@@ -137,13 +137,25 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
                     .setTelephoneNo(presentUser.getTelephoneNo())
                     .setName(presentUser.getName())
                     .setIsPrivate(presentUser.isPrivate())
-                    .setApikey((presentUser.getApiKey() == null) ? "no api key" : presentUser.getApiKey().toString())
+                    .setApikey((presentUser.getApiKey() == null) ? GenerateApiKeyAndUpdateUser(presentUser.getId()) : presentUser.getApiKey().toString())
             ).build();
         }else{
             response = GetUserResponse.newBuilder().setUser(com.example.usermicroservice.User.newBuilder()).build();
         }
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+    }
+
+    private String GenerateApiKeyAndUpdateUser(String id) {
+        UUID apiKey = UUID.randomUUID();
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            user.setApiKey(apiKey);
+            userRepository.save(user);
+            return apiKey.toString();
+        }
+        return "no api key";
     }
 
     @Override
