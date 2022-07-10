@@ -28,6 +28,8 @@ import RecommendedJobOffers from './components/RecommendedJobOffers';
 
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import PostCard from './components/PostCard';
+import ShowOnePost from './components/ShowOnePost';
 
 axios.defaults.baseURL = process.env.REACT_APP_BASEURL_DISLINKT;
 //axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -75,6 +77,7 @@ function App() {
           <Route key={uuidv4()} exact path='/createJobOffer' element={authorized() ? [<UserNavbar key='/createJobOffer1'/>,<CreateJobOffer key='/createJobOffer2'/>] : <Unauthorized/>}/>    
           <Route key={uuidv4()} exact path='/chat/:id' element={authorized() ? [<UserNavbar key={uuidv4()}/>,<Chat key={uuidv4()}/>] : <Unauthorized/>}/> 
           <Route key={uuidv4()} exact path='/blocked' element={authorized() ? [<UserNavbar key={uuidv4()}/>,<BlockedUsers key={uuidv4()}/>] : <Unauthorized/>}/> 
+          <Route key='/post' exact path="/post/:id" element={[<UserNavbar key={uuidv4()}/>,<ShowOnePost key={uuidv4()}/>]}/>
           <Route key={uuidv4()} exact path='/recommendedJobOffers' element={authorized() ? [<UserNavbar key={uuidv4()}/>,<RecommendedJobOffers key={uuidv4()}/>] : <Unauthorized/>}/>
           </Routes>
         </Router>

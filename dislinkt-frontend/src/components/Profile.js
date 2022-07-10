@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import PostList from './PostList';
 import Swal from "sweetalert2";
 import { useState } from "react";
+import {DropdownButton} from 'react-bootstrap';
 
 import axios from 'axios';
+import { Dropdown } from 'react-bootstrap';
+import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 
 const Profile = (props) => {
     const [relationship, setRelationship] = useState(props.relationship);
@@ -147,6 +150,14 @@ const Profile = (props) => {
                     <div className="row">
                         <div className="col-12 bg-white p-0 px-3 py-3 mb-5">
                             <div className="d-flex flex-column align-items-center">
+                                <Dropdown style={{marginBottom: "5%"}}>
+                                        <Dropdown.Toggle variant="light" id="dropdown-basic">
+                                            <img src={require("../images/settings.png")}  style={{ height: "20px", width:"20px"}}/>
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            <DropdownItem>Bla</DropdownItem>
+                                        </Dropdown.Menu>
+                                </Dropdown>
                                 <h6>
                                     {
                                         props.user.isPrivate ? 'Private' : 'Public'
