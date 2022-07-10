@@ -7,6 +7,8 @@ namespace Chat_microservice.Configuration
         public string Port { get; set; }
         public string ChatDbHost { get; set; }
         public string ChatDbPort { get; set; }
+        public string NotificationsHost { get; set; }
+        public string NotificationsPort { get; set; }
         public string NatsHost { get; set; }
         public string NatsPort { get; set; }
         public string NatsUser { get; set; }
@@ -26,6 +28,8 @@ namespace Chat_microservice.Configuration
             Port = GetEnvironmentVarOrDefault("CHAT_PORT", "8004");
             ChatDbHost = GetEnvironmentVarOrDefault("CHAT_DB_HOST", "localhost");
             ChatDbPort = GetEnvironmentVarOrDefault("CHAT_DB_PORT", "27017");
+            NotificationsHost = GetEnvironmentVarOrDefault("NOTIFICATIONS_HOST", "localhost");
+            NotificationsPort = GetEnvironmentVarOrDefault("NOTIFICATIONS_PORT", "8006");
             NatsHost = GetEnvironmentVarOrDefault("NATS_HOST", "localhost");
             NatsPort = GetEnvironmentVarOrDefault("NATS_PORT", "4222");
             NatsUser = GetEnvironmentVarOrDefault("NATS_USER", "ruser");
