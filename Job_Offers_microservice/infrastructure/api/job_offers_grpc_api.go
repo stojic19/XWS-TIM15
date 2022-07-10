@@ -124,13 +124,14 @@ func (handler *JobOffersHandler) Create(ctx context.Context, request *job_offers
 	ctx1 := tracer.InjectToMetadata(ctx, otgo.GlobalTracer(), span)
 	userClient := services.NewUsersClient(handler.usersClientAddress)
 	response, err := userClient.ValidateApiKey(ctx1, &users.ApiKey{ApiKey: apiKey[0]})
-	if err != nil {
-		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+	if response != nil {
+		if err != nil {
+			return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+		}
+		if (sub == nil || sub[0] == "") && (response.IsValid == false) {
+			return nil, status.Error(codes.Unauthenticated, "Unauthorized")
+		}
 	}
-	if (sub == nil || sub[0] == "") && (response.IsValid == false) {
-		return nil, status.Error(codes.Unauthenticated, "Unauthorized")
-	}
-
 	jobOffer := mapNewJobOffer(request)
 	span1 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "MongoCreate")
 	err = handler.service.Create(jobOffer)

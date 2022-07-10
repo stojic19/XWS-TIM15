@@ -57,28 +57,8 @@ const FollowRequestsList = () => {
         setIsPending(true);
 
         const update = {
-            "followerId": localStorage.getItem('user_id'),
-            "followedId": id
-        };
-        axios.delete(axios.defaults.baseURL + 'followers/followRequest', update)
-            .then(res => {
-                setIsPending(false);
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: res.data.response,
-                });
-                window.location.reload()
-            });
-    }
-
-    const remove = async (e, id) => {
-        e.preventDefault();
-        setIsPending(true);
-
-        const update = {
-            "followerId": localStorage.getItem('user_id'),
-            "followedId": id
+            "followerId": id,
+            "followedId": localStorage.getItem('user_id')
         };
         axios.put(axios.defaults.baseURL + 'followers/followRequest', update)
             .then(res => {
@@ -89,6 +69,30 @@ const FollowRequestsList = () => {
                     text: res.data.response,
                 });
                 window.location.reload()
+            }).catch((err)=>{
+                console.log(err);
+            });
+    }
+
+    const remove = async (e, id) => {
+        e.preventDefault();
+        setIsPending(true);
+
+        const update = {
+            "followerId": id,
+            "followedId": localStorage.getItem('user_id')
+        };
+        axios.delete(axios.defaults.baseURL + 'followers/followRequest', update)
+            .then(res => {
+                setIsPending(false);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: res.data.response,
+                });
+                window.location.reload()
+            }).catch((err)=>{
+                console.log(err);
             });
     }
 
