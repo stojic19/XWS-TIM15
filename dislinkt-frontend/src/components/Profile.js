@@ -25,8 +25,8 @@ const Profile = (props) => {
         history('/blocked');
     }
 
-    const getRelationship = () => {
-        if (relationship === 'NO RELATIONSHIP')
+    const noRelationship = () => {
+        if (props.relationship === 'NO RELATIONSHIP')
             return true;
         return false;
     }
@@ -130,6 +130,19 @@ const Profile = (props) => {
             });
     }
 
+    const showApiKey = async (e) => {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'info',
+            title: 'ApiKey',
+            text: props.user.apikey,
+            position: 'center',
+            showConfirmButton: true,
+            timer: 5000
+        });
+    }
+
     return (
         <div className="container">
             <div className="row">
@@ -152,15 +165,15 @@ const Profile = (props) => {
                                 </h6>
                                 <img src={require('../images/user-avatar.png')} />
                                 <p className="fw-bold h4 mt-3">{props.user.name}</p>
-                                <p className="text-muted">Software developer</p> {/* sortirati listu experience pa podesiti poslednji posao */}
+                                {/*<p className="text-muted">Software developer</p>*/} {/* sortirati listu experience pa podesiti poslednji posao */}
                                 <p className="text-muted mb-3">@{props.user.username}</p>
                                 {
                                     !props.hiddenButtons && !props.personalProfile && !props.hiddenContent &&
                                     <div className="d-flex ">
-                                        {getRelationship(props.relationship)
+                                        {noRelationship(props.relationship)
                                             && <button onClick={(e) => follow(e)} className="btn btn-primary follow me-2">Follow</button>
                                         }
-                                        {!getRelationship(props.relationship) && <>
+                                        {!noRelationship(props.relationship) && <>
                                             <button onClick={(e) => unfollow(e)} className="btn btn-primary follow me-2">Unfollow</button>
                                             <button onClick={() => history("/chat/" + props.user.id)} className="btn btn-outline-primary message">Message</button>
                                         </>}
@@ -169,10 +182,10 @@ const Profile = (props) => {
                                 {
                                     !props.hiddenButtons && !props.personalProfile && props.hiddenContent &&
                                     <div className="d-flex ">
-                                        {getRelationship(props.relationship)
+                                        {noRelationship(props.relationship)
                                             && <button onClick={(e) => followRequest(e)} className="btn btn-primary follow me-2">Follow request</button>
                                         }
-                                        {!getRelationship(props.relationship)
+                                        {!noRelationship(props.relationship)
                                             && <button onClick={(e) => cancelFollowRequest(e)} className="btn btn-primary follow me-2">Cancel follow request</button>
                                         }
                                     </div>
@@ -198,6 +211,14 @@ const Profile = (props) => {
                                     <>
                                         <div className="d-flex m-2">
                                             <button onClick={(e) => block(e)} className="btn btn-primary follow me-2">Block</button>
+                                        </div>
+                                    </>
+                                }
+                                {
+                                    props.personalProfile &&
+                                    <>
+                                        <div className="d-flex m-2">
+                                            <button onClick={(e) => showApiKey(e)} className="btn btn-primary follow me-2">Show ApiKey</button>
                                         </div>
                                     </>
                                 }

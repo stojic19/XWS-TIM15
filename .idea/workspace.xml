@@ -6,16 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="092b6a75-e4db-4b16-9c7d-774319aa8f74" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-
-      <change beforePath="$PROJECT_DIR$/JavaMicroservices/Notification-microservice/src/main/java/com/example/notificationmicroservice/service/Impl/NotificationGrpcServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/Notification-microservice/src/main/java/com/example/notificationmicroservice/service/Impl/NotificationGrpcServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaMicroservices/Notification-microservice/src/main/java/com/example/notificationmicroservice/service/Impl/UserGrpcServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaMicroservices/Notification-microservice/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/Notification-microservice/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JavaMicroservices/common/src/main/proto/notifications.proto" beforeDir="false" afterPath="$PROJECT_DIR$/JavaMicroservices/common/src/main/proto/notifications.proto" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/startup/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api_gateway/startup/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/api_gateway/startup/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/NotificationsList.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/NotificationsList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lokalno_pokretanje.txt" beforeDir="false" afterPath="$PROJECT_DIR$/lokalno_pokretanje.txt" afterDir="false" />
-
+      <change beforePath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" beforeDir="false" afterPath="$PROJECT_DIR$/Job_Offers_microservice/infrastructure/api/job_offers_grpc_api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dislinkt-frontend/src/components/UserNavbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/dislinkt-frontend/src/components/UserNavbar.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,8 +69,7 @@
       <recent name="C:\Users\Aleksa\Desktop\XWS-TIM15\common\proto\notifications" />
     </key>
   </component>
-  <component name="RunManager" selected="Go Build.go build main.go">
-
+  <component name="RunManager" selected="Go Build.go build main.go (3)">
     <configuration name="go build main.go (1)" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="XWS-TIM15" />
       <working_directory value="$PROJECT_DIR$/Posts_microservice" />
@@ -111,13 +103,10 @@
       <method v="2" />
     </configuration>
     <recent_temporary>
-      <list>
-
-        <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build main.go (3)" />
         <item itemvalue="Go Build.go build main.go (2)" />
-
         <item itemvalue="Go Build.go build main.go (1)" />
+        <item itemvalue="Go Build.go build main.go" />
       </list>
     </recent_temporary>
   </component>

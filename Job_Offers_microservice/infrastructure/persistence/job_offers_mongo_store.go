@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"strings"
 )
 
 const (
@@ -37,6 +38,28 @@ func (store *JobOffersMongoStore) Get(id primitive.ObjectID) (*domain.JobOffer, 
 func (store *JobOffersMongoStore) GetSubscribed(userId string) ([]*domain.JobOffer, error) {
 	filter := bson.M{"subscribers.id": userId}
 	return store.filter(filter)
+}
+
+func (store *JobOffersMongoStore) GetRecommended(userId string, skills []string) ([]*domain.JobOffer, error) {
+	filter := bson.M{"subscribers.id": bson.M{"$ne": userId}}
+	offers, err := store.filter(filter)
+	if err != nil {
+		return nil, err
+	}
+	recommendedOffers := []*domain.JobOffer{}
+	for _, jobOffer := range offers {
+		requirements := strings.Split(jobOffer.Requirements, ",")
+		requirementsMet := 0
+		for _, requirement := range requirements {
+			if Contains(skills, strings.Trim(requirement, " ")) {
+				requirementsMet++
+			}
+		}
+		if float64(requirementsMet)/float64(len(requirements)) > 0.75 {
+			recommendedOffers = append(recommendedOffers, jobOffer)
+		}
+	}
+	return recommendedOffers, nil
 }
 
 func (store *JobOffersMongoStore) Create(jobOffer *domain.JobOffer) error {
@@ -120,4 +143,14 @@ func decode(cursor *mongo.Cursor) (jobOffers []*domain.JobOffer, err error) {
 	}
 	err = cursor.Err()
 	return
+}
+
+// Contains tells whether a contains x.
+func Contains(a []string, x string) bool {
+	for _, n := range a {
+		if x == n {
+			return true
+		}
+	}
+	return false
 }

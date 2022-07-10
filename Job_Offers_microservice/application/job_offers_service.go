@@ -27,6 +27,10 @@ func (service *JobOffersService) GetSubscribed(userId string) ([]*domain.JobOffe
 	return service.store.GetSubscribed(userId)
 }
 
+func (service *JobOffersService) GetRecommended(userId string, skills []string) ([]*domain.JobOffer, error) {
+	return service.store.GetRecommended(userId, skills)
+}
+
 func (service *JobOffersService) Create(offer *domain.JobOffer) error {
 	offer.IsActive = true
 	return service.store.Create(offer)

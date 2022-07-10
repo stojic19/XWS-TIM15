@@ -12,7 +12,8 @@ const NotificationsList = () =>{
     const [follower, sentFollower] = useState();
 
     const fetchNotifications = async () => {
-        axios.get('http://localhost:8081/notifications/user/' + localStorage.getItem('user_id'))
+
+        axios.get(axios.defaults.baseURL + 'notifications/user/' + localStorage.getItem('user_id'))
             .then(res => {
                 //console.log(res.data)
                 let notifications = Array.from(res.data)

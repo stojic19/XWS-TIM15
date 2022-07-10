@@ -51,12 +51,23 @@ const Registration = () => {
             "isPrivate": isPrivate === "false" ? false : true,
             "dateOfBirth": FormatDate(dateOfBirth),
         };
-        console.log(registration)
+        //console.log(registration)
         axios.post(axios.defaults.baseURL + 'users', registration)
             .then(res => {
-                if (res.data.response.includes("Added user")) {
-                    setIsPending(false);
-                    history('/');
+                if (res.data.response.includes("Id:")) {
+                    let id = res.data.response.split(':')
+                    const notificationSettings = {
+                        "userId": id[1],
+                        "followerIdsForPosts": [],
+                        "followerIdsForMessages": [],
+                        "getNotificationsForMyPosts": true,
+                    };
+                    axios.post(axios.defaults.baseURL + 'notificationSettings', { notificationSettings: notificationSettings })
+                        .then(res => {
+                            console.log(res);
+                            setIsPending(false);
+                            history('/');
+                        });
                 } else {
                     setIsPending(false);
                     Swal.fire({
