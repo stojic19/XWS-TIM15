@@ -87,6 +87,32 @@ func (handler *JobOffersHandler) GetSubscribed(ctx context.Context, request *job
 	return offersPb, nil
 }
 
+func (handler *JobOffersHandler) GetRecommendedJobOffers(ctx context.Context, request *job_offers.GetRecommendedRequest) (*job_offers.GetRecommendedResponse, error) {
+	span := tracer.StartSpanFromContextMetadata(ctx, "GetRecommendedJobOffers")
+	defer span.Finish()
+
+	userId := request.Id
+	ctx1 := tracer.InjectToMetadata(ctx, otgo.GlobalTracer(), span)
+	userClient := services.NewUsersClient(handler.usersClientAddress)
+	response, err := userClient.GetSkills(ctx1, &users.GetUserRequest{Id: userId})
+
+	span1 := tracer.StartSpanFromContext(tracer.ContextWithSpan(ctx, span), "MongoGet")
+	offers, err := handler.service.GetRecommended(userId, response.GetSkills())
+	span1.Finish()
+
+	if err != nil {
+		return nil, err
+	}
+	offersPb := &job_offers.GetRecommendedResponse{
+		JobOffers: []*job_offers.JobOffer{},
+	}
+	for _, jobOffer := range offers {
+		current := mapJobOffer(jobOffer)
+		offersPb.JobOffers = append(offersPb.JobOffers, current)
+	}
+	return offersPb, nil
+}
+
 func (handler *JobOffersHandler) Create(ctx context.Context, request *job_offers.NewJobOffer) (*job_offers.Response, error) {
 	span := tracer.StartSpanFromContextMetadata(ctx, "Create")
 	defer span.Finish()

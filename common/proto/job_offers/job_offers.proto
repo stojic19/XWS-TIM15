@@ -22,6 +22,11 @@ service JobOffersService{
       get: "/job_offers/subscribed/{id}"
     };
   }
+  rpc GetRecommendedJobOffers(GetRecommendedRequest) returns(GetRecommendedResponse){
+    option(google.api.http) = {
+      get: "/job_offers/recommended/{id}"
+    };
+  }
   rpc Create(NewJobOffer) returns(Response){
     option(google.api.http) = {
       post: "/job_offers"
@@ -109,6 +114,14 @@ message Response{
 
 message User{
   string id = 1;
+}
+
+message GetRecommendedRequest{
+  string id = 1;
+}
+
+message GetRecommendedResponse{
+  repeated JobOffer jobOffers = 1;
 }
 
 //protoc -I ./proto --go_out=./proto --go_opt=paths=source_relative --go-grpc_out=./proto --go-grpc_opt=paths=source_relative --grpc-gateway_out=allow_delete_body=true:./proto --grpc-gateway_opt=paths=source_relative ./proto/job_offers/job_offers.proto
