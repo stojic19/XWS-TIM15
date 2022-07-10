@@ -127,6 +127,19 @@ const Profile = (props) => {
             });
     }
 
+    const showApiKey = async (e) => {
+        e.preventDefault();
+
+        Swal.fire({
+            icon: 'info',
+            title: 'ApiKey',
+            text: props.user.apikey,
+            position: 'center',
+            showConfirmButton: true,
+            timer: 5000
+        });
+    }
+
     return (
         <div className="container">
             <div className="row">
@@ -141,7 +154,7 @@ const Profile = (props) => {
                                 </h6>
                                 <img src={require('../images/user-avatar.png')} />
                                 <p className="fw-bold h4 mt-3">{props.user.name}</p>
-                                <p className="text-muted">Software developer</p> {/* sortirati listu experience pa podesiti poslednji posao */}
+                                {/*<p className="text-muted">Software developer</p>*/} {/* sortirati listu experience pa podesiti poslednji posao */}
                                 <p className="text-muted mb-3">@{props.user.username}</p>
                                 {
                                     !props.hiddenButtons && !props.personalProfile && !props.hiddenContent &&
@@ -187,6 +200,14 @@ const Profile = (props) => {
                                     <>
                                         <div className="d-flex m-2">
                                             <button onClick={(e) => block(e)} className="btn btn-primary follow me-2">Block</button>
+                                        </div>
+                                    </>
+                                }
+                                {
+                                    props.personalProfile &&
+                                    <>
+                                        <div className="d-flex m-2">
+                                            <button onClick={(e) => showApiKey(e)} className="btn btn-primary follow me-2">Show ApiKey</button>
                                         </div>
                                     </>
                                 }
