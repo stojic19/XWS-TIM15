@@ -25,6 +25,7 @@ type JobOffersServiceClient interface {
 	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllResponse, error)
 	Get(ctx context.Context, in *JobOfferId, opts ...grpc.CallOption) (*JobOffer, error)
 	GetSubscribed(ctx context.Context, in *GetSubscribedRequest, opts ...grpc.CallOption) (*GetSubscribedResponse, error)
+	GetRecommendedJobOffers(ctx context.Context, in *GetRecommendedRequest, opts ...grpc.CallOption) (*GetRecommendedResponse, error)
 	Create(ctx context.Context, in *NewJobOffer, opts ...grpc.CallOption) (*Response, error)
 	Update(ctx context.Context, in *UpdateJobOffer, opts ...grpc.CallOption) (*Response, error)
 	SubscribeJobOffer(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (*Response, error)
@@ -60,6 +61,15 @@ func (c *jobOffersServiceClient) Get(ctx context.Context, in *JobOfferId, opts .
 func (c *jobOffersServiceClient) GetSubscribed(ctx context.Context, in *GetSubscribedRequest, opts ...grpc.CallOption) (*GetSubscribedResponse, error) {
 	out := new(GetSubscribedResponse)
 	err := c.cc.Invoke(ctx, "/job_offers.JobOffersService/GetSubscribed", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *jobOffersServiceClient) GetRecommendedJobOffers(ctx context.Context, in *GetRecommendedRequest, opts ...grpc.CallOption) (*GetRecommendedResponse, error) {
+	out := new(GetRecommendedResponse)
+	err := c.cc.Invoke(ctx, "/job_offers.JobOffersService/GetRecommendedJobOffers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -109,6 +119,7 @@ type JobOffersServiceServer interface {
 	GetAll(context.Context, *GetAllRequest) (*GetAllResponse, error)
 	Get(context.Context, *JobOfferId) (*JobOffer, error)
 	GetSubscribed(context.Context, *GetSubscribedRequest) (*GetSubscribedResponse, error)
+	GetRecommendedJobOffers(context.Context, *GetRecommendedRequest) (*GetRecommendedResponse, error)
 	Create(context.Context, *NewJobOffer) (*Response, error)
 	Update(context.Context, *UpdateJobOffer) (*Response, error)
 	SubscribeJobOffer(context.Context, *SubscribeRequest) (*Response, error)
@@ -128,6 +139,9 @@ func (UnimplementedJobOffersServiceServer) Get(context.Context, *JobOfferId) (*J
 }
 func (UnimplementedJobOffersServiceServer) GetSubscribed(context.Context, *GetSubscribedRequest) (*GetSubscribedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSubscribed not implemented")
+}
+func (UnimplementedJobOffersServiceServer) GetRecommendedJobOffers(context.Context, *GetRecommendedRequest) (*GetRecommendedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRecommendedJobOffers not implemented")
 }
 func (UnimplementedJobOffersServiceServer) Create(context.Context, *NewJobOffer) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
@@ -204,6 +218,24 @@ func _JobOffersService_GetSubscribed_Handler(srv interface{}, ctx context.Contex
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(JobOffersServiceServer).GetSubscribed(ctx, req.(*GetSubscribedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _JobOffersService_GetRecommendedJobOffers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRecommendedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(JobOffersServiceServer).GetRecommendedJobOffers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/job_offers.JobOffersService/GetRecommendedJobOffers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(JobOffersServiceServer).GetRecommendedJobOffers(ctx, req.(*GetRecommendedRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -298,6 +330,10 @@ var JobOffersService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSubscribed",
 			Handler:    _JobOffersService_GetSubscribed_Handler,
+		},
+		{
+			MethodName: "GetRecommendedJobOffers",
+			Handler:    _JobOffersService_GetRecommendedJobOffers_Handler,
 		},
 		{
 			MethodName: "Create",

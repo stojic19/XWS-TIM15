@@ -24,6 +24,7 @@ import CreateJobOffer from './components/CreateJobOffer';
 import Chat from './components/Chat';
 import Unauthorized from './components/Unauthorized';
 import BlockedUsers from './components/BlockedUsers';
+import RecommendedJobOffers from './components/RecommendedJobOffers';
 
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
@@ -53,27 +54,28 @@ function App() {
     <div className="App">
       <Router>
       <Routes>
-          <Route key='/' exact path="/" element={[<Navbar key={uuidv4()}/>, <PublicProfileSearch key={uuidv4()} displayFollowButtons={false}/>]}/>
-          <Route key='/login' exact path="/login" element={[<Navbar key='/login1'/>,<Login key='/login2'/>]}/>
-          <Route key='/registration' exact path="/registration" element={[<Navbar key='/registration1'/>,<Registration key='/registration2'/>]}/>
-          <Route key='/userPosts' exact path="/userPosts/:id" element={[<Navbar key={uuidv4()}/>,<PostsByUserId key={uuidv4()}/>]}/>
-          <Route key='/home' exact path="/home" element={authorized() ? [<UserNavbar key={uuidv4()}/>, <UserHome key={uuidv4()}/>] : <Unauthorized/>}/>
-          <Route key='/publicProfiles' exact path="/publicProfiles" element={authorized() ? [<UserNavbar key={uuidv4()}/>, <PublicProfileSearch displayFollowButtons={true} key={uuidv4()}/>] : <Unauthorized/>}/>
-          <Route key='/allProfiles' exact path="/allProfiles" element={authorized() ? [<UserNavbar key={uuidv4()}/>, <AllProfiles displayFollowButtons={true} key={uuidv4()}/>] : <Unauthorized/>}/>
-          <Route key='/jobOffers' exact path='/jobOffers' element={authorized() ? [<UserNavbar key={uuidv4()}/>,<AllJobOffers key={uuidv4()}/>] : <Unauthorized/>}/>
-          <Route key='/profile' exact path="/profile/:id" element={authorized() ? [<UserNavbar key={uuidv4()}/>, <UserProfile key={uuidv4()}/>] : <Unauthorized/>}/>
-          <Route key='/publicProfile' exact path="/publicProfile/:id" element={[<Navbar key={uuidv4()}/>, <UserProfile key={uuidv4()}/>]}/>
-          <Route key='/users' exact path="/users" element={[<Navbar key={uuidv4()}/>,<Users key={uuidv4()}/>]}/>
-          <Route key='/editProfile' exact path="/editProfile" element={authorized() ? [<UserNavbar key={uuidv4()}/>,<EditProfile key={uuidv4()}/>] : <Unauthorized/>}/>
-          <Route key='/editWorkExperience' exact path="/editWorkExperience" element={authorized() ? [<UserNavbar key={uuidv4()}/>,<EditWorkExperience key={uuidv4()}/>] : <Unauthorized/>}/>
-          <Route key='/editEducation' exact path="/editEducation" element={authorized() ? [<UserNavbar key={uuidv4()}/>,<EditEducation key={uuidv4()}/>] : <Unauthorized/>}/>
-          <Route key='/editSkillsAndInterests' exact path="/editSkillsAndInterests" element={authorized() ? [<UserNavbar key='/editSkillsAndInterests1'/>,<EditSkillsAndInterests key='/editSkillsAndInterests2'/>] : <Unauthorized/>}/>
-          <Route key='/personalProfile' exact path='/personalProfile' element={authorized() ? [<UserNavbar key='/personalProfile1'/>,<PersonalProfile key='/personalProfile2'/>] : <Unauthorized/>}/>
-          <Route key='/followRequests' exact path='/followRequests' element={authorized() ? [<UserNavbar key='/followRequests1'/>,<FollowRequestsList key='/followRequests2'/>] : <Unauthorized/>}/>   
-          <Route key='/createPost' exact path='/createPost' element={authorized() ? [<UserNavbar key='/createPost1'/>,<CreatePost key='/createPost2'/>] : <Unauthorized/>}/>      
-          <Route key='/createJobOffer' exact path='/createJobOffer' element={authorized() ? [<UserNavbar key='/createJobOffer1'/>,<CreateJobOffer key='/createJobOffer2'/>] : <Unauthorized/>}/>    
-          <Route key='/chat' exact path='/chat/:id' element={authorized() ? [<UserNavbar key={uuidv4()}/>,<Chat key={uuidv4()}/>] : <Unauthorized/>}/> 
+          <Route key={uuidv4()} exact path="/" element={[<Navbar key={uuidv4()}/>, <PublicProfileSearch key={uuidv4()} displayFollowButtons={false}/>]}/>
+          <Route key={uuidv4()} exact path="/login" element={[<Navbar key='/login1'/>,<Login key='/login2'/>]}/>
+          <Route key={uuidv4()} exact path="/registration" element={[<Navbar key='/registration1'/>,<Registration key='/registration2'/>]}/>
+          <Route key={uuidv4()} exact path="/userPosts/:id" element={[<Navbar key={uuidv4()}/>,<PostsByUserId key={uuidv4()}/>]}/>
+          <Route key={uuidv4()} exact path="/home" element={authorized() ? [<UserNavbar key={uuidv4()}/>, <UserHome key={uuidv4()}/>] : <Unauthorized/>}/>
+          <Route key={uuidv4()} exact path="/publicProfiles" element={authorized() ? [<UserNavbar key={uuidv4()}/>, <PublicProfileSearch displayFollowButtons={true} key={uuidv4()}/>] : <Unauthorized/>}/>
+          <Route key={uuidv4()} exact path="/allProfiles" element={authorized() ? [<UserNavbar key={uuidv4()}/>, <AllProfiles displayFollowButtons={true} key={uuidv4()}/>] : <Unauthorized/>}/>
+          <Route key={uuidv4()} exact path='/jobOffers' element={authorized() ? [<UserNavbar key={uuidv4()}/>,<AllJobOffers key={uuidv4()}/>] : <Unauthorized/>}/>
+          <Route key={uuidv4()} exact path="/profile/:id" element={authorized() ? [<UserNavbar key={uuidv4()}/>, <UserProfile key={uuidv4()}/>] : <Unauthorized/>}/>
+          <Route key={uuidv4()} exact path="/publicProfile/:id" element={[<Navbar key={uuidv4()}/>, <UserProfile key={uuidv4()}/>]}/>
+          <Route key={uuidv4()} exact path="/users" element={[<Navbar key={uuidv4()}/>,<Users key={uuidv4()}/>]}/>
+          <Route key={uuidv4()} exact path="/editProfile" element={authorized() ? [<UserNavbar key={uuidv4()}/>,<EditProfile key={uuidv4()}/>] : <Unauthorized/>}/>
+          <Route key={uuidv4()} exact path="/editWorkExperience" element={authorized() ? [<UserNavbar key={uuidv4()}/>,<EditWorkExperience key={uuidv4()}/>] : <Unauthorized/>}/>
+          <Route key={uuidv4()} exact path="/editEducation" element={authorized() ? [<UserNavbar key={uuidv4()}/>,<EditEducation key={uuidv4()}/>] : <Unauthorized/>}/>
+          <Route key={uuidv4()} exact path="/editSkillsAndInterests" element={authorized() ? [<UserNavbar key='/editSkillsAndInterests1'/>,<EditSkillsAndInterests key='/editSkillsAndInterests2'/>] : <Unauthorized/>}/>
+          <Route key={uuidv4()} exact path='/personalProfile' element={authorized() ? [<UserNavbar key='/personalProfile1'/>,<PersonalProfile key='/personalProfile2'/>] : <Unauthorized/>}/>
+          <Route key={uuidv4()} exact path='/followRequests' element={authorized() ? [<UserNavbar key='/followRequests1'/>,<FollowRequestsList key='/followRequests2'/>] : <Unauthorized/>}/>   
+          <Route key={uuidv4()} exact path='/createPost' element={authorized() ? [<UserNavbar key='/createPost1'/>,<CreatePost key='/createPost2'/>] : <Unauthorized/>}/>      
+          <Route key={uuidv4()} exact path='/createJobOffer' element={authorized() ? [<UserNavbar key='/createJobOffer1'/>,<CreateJobOffer key='/createJobOffer2'/>] : <Unauthorized/>}/>    
+          <Route key={uuidv4()} exact path='/chat/:id' element={authorized() ? [<UserNavbar key={uuidv4()}/>,<Chat key={uuidv4()}/>] : <Unauthorized/>}/> 
           <Route key={uuidv4()} exact path='/blocked' element={authorized() ? [<UserNavbar key={uuidv4()}/>,<BlockedUsers key={uuidv4()}/>] : <Unauthorized/>}/> 
+          <Route key={uuidv4()} exact path='/recommendedJobOffers' element={authorized() ? [<UserNavbar key={uuidv4()}/>,<RecommendedJobOffers key={uuidv4()}/>] : <Unauthorized/>}/>
           </Routes>
         </Router>
     </div>
