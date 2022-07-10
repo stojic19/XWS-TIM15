@@ -3,7 +3,9 @@ package startup
 import (
 	"context"
 	"fmt"
+	"github.com/gorilla/mux"
 	otgo "github.com/opentracing/opentracing-go"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/cors"
 	"github.com/stojic19/XWS-TIM15/api_gateway/infrastructure/api"
 	"github.com/stojic19/XWS-TIM15/api_gateway/startup/config"
@@ -15,6 +17,7 @@ import (
 	"github.com/stojic19/XWS-TIM15/common/proto/posts"
 	"github.com/stojic19/XWS-TIM15/common/proto/users"
 	"github.com/stojic19/XWS-TIM15/common/tracer"
+	prometheusmw "gitlab.com/msvechla/mux-prometheus/pkg/middleware"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"io"
@@ -109,5 +112,10 @@ func (server *Server) Start() {
 		AllowedHeaders:   []string{"Accept", "Accept-Language", "Content-Type", "Content-Language", "Origin", "Authorization", "Access-Control-Allow-Origin", "*"},
 		AllowCredentials: true,
 	}).Handler(server.mux)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), handler))
+	router := mux.NewRouter()
+	prometheusInstrumentation := prometheusmw.NewDefaultInstrumentation()
+	router.Use(prometheusInstrumentation.Middleware)
+	router.Path("/metrics").Handler(promhttp.Handler())
+	router.PathPrefix("/").Handler(handler)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", server.config.Port), router))
 }
