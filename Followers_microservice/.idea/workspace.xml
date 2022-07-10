@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fdae2016-0ae1-4084-8674-fe97ba3d89cd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../JavaMicroservices/Notification-microservice/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../JavaMicroservices/Notification-microservice/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../api_gateway/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../api_gateway/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +45,7 @@
     "RunOnceActivity.go.watchers.conflict.with.on.save.actions.check.performed": "true",
     "WebServerToolWindowFactoryState": "false",
     "go.import.settings.migrated": "true",
-    "last_opened_file_path": "C:/Users/Anja/Desktop/FAX/4. GODINA/XML/XWS-TIM15/api_gateway"
+    "last_opened_file_path": "C:/Users/Anja/Desktop/FAX/4. GODINA/XML/XWS-TIM15/Followers_microservice"
   }
 }]]></component>
   <component name="RunManager">
