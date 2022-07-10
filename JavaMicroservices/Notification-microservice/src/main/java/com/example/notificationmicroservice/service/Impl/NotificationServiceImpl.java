@@ -5,6 +5,7 @@ import com.example.notificationmicroservice.model.NotificationType;
 import com.example.notificationmicroservice.repository.NotificationRepository;
 import com.example.notificationmicroservice.repository.NotificationSettingsRepository;
 import com.example.notificationmicroservice.service.NotificationService;
+import com.example.notificationmicroservice.service.NotificationSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,8 @@ public class NotificationServiceImpl implements NotificationService {
     private NotificationRepository repository;
     @Autowired
     private NotificationSettingsRepository settingsRepository;
+    @Autowired
+    private NotificationSettingsService notificationSettingsService;
 
     @Override
     public Notification addNotification(Notification notification) {
@@ -85,7 +88,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     public Boolean checkNotificationSettings(Notification notification){
 
-        NotificationSettings settings = settingsRepository.findByUserId(notification.getUserId());
+        NotificationSettings settings = notificationSettingsService.findByUserId(notification.getUserId());
 
         if(notification.getType() == NotificationType.message){
             List<String> followers = settings.getFollowerIdsForMessages(); //pratioci za koje su iskljucene notifikacije za poruke

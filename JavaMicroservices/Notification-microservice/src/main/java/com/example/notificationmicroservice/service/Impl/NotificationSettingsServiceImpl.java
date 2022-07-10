@@ -39,7 +39,9 @@ public class NotificationSettingsServiceImpl implements NotificationSettingsServ
 
     @Override
     public NotificationSettings findByUserId(String id) {
-        return repository.findByUserId(id);
+        if(settingsForUserExists(id))
+            return repository.findByUserId(id);
+        return repository.save(new NotificationSettings(UUID.randomUUID().toString(), id, new ArrayList<>(), new ArrayList<>(), true));
     }
 
     @Override

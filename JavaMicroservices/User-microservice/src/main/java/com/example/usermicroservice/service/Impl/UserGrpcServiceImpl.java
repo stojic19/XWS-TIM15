@@ -79,7 +79,7 @@ public class UserGrpcServiceImpl extends UsersServiceGrpc.UsersServiceImplBase {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            response = AddUserResponse.newBuilder().setResponse("Added user with id " + userRepository.save(new User(UUID.randomUUID().toString(), request.getUsername(), request.getPassword(), request.getName(), request.getEmail(), request.getTelephoneNo(), request.getGender(), dateOfBirth, request.getBiography(),request.getIsPrivate(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>())).getId()).build();
+            response = AddUserResponse.newBuilder().setResponse("Id:" + userRepository.save(new User(UUID.randomUUID().toString(), request.getUsername(), request.getPassword(), request.getName(), request.getEmail(), request.getTelephoneNo(), request.getGender(), dateOfBirth, request.getBiography(),request.getIsPrivate(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>())).getId()).build();
         }
         responseObserver.onNext(response);
         responseObserver.onCompleted();
