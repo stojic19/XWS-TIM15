@@ -6,6 +6,7 @@ import java.util.Optional;
 
 public interface NotificationService {
     Notification addNotification(Notification notification);
+    Notification addNotificationForNewPost(Notification notification);
     List<Notification> getNotifications();
     Optional<Notification> findById(String id);
     List<Notification> findByFollowerId(String id);
