@@ -16,6 +16,7 @@ public class NotificationSettingsController {
     private NotificationSettingsService service;
     final private NotificationMapper mapper = new NotificationMapper();
 
+    @CrossOrigin
     @PostMapping()
     public String saveNotificationSettings(@RequestBody NotificationSettingsDto dto){
         if(service.settingsForUserExists(dto.getUserId()))
@@ -24,17 +25,20 @@ public class NotificationSettingsController {
             return "Added notification settings with id " + service.addNotificationSettings(mapper.DtoToNotificationSettings(dto)).getId();
     }
 
+    @CrossOrigin
     @GetMapping("/user/{id}")
     public NotificationSettingsDto getOneByUserId(@PathVariable String id){
         return mapper.NotificationSettingsToDto(service.findByUserId(id));
     }
 
+    @CrossOrigin
     @DeleteMapping("/user/{id}")
     public String deleteNotificationSettings(@PathVariable String id){
         service.deleteByUserId(id);
         return "Notification settings deleted for user with id " + id;
     }
 
+    @CrossOrigin
     @PutMapping()
     public String updateSettings(@RequestBody NotificationSettingsDto dto){
         if(!service.settingsForUserExists(dto.getUserId()))
@@ -45,10 +49,12 @@ public class NotificationSettingsController {
             return "Updated user with id " + service.updateSettings(mapper.DtoToNotificationSettings(dto)).getId();
     }
 
+    @CrossOrigin
     @PutMapping("/messages")
     public String updateMessagesSettings(@RequestBody UpdateSettingsForMessagesDto dto){
         return "Updated messages settings for user with id " + service.updateSettingsForMessages(dto).getUserId();
     }
+    @CrossOrigin
     @PutMapping("/posts")
     public String updatePostsSettings(@RequestBody UpdateSettingsForPostsDto dto){
         return "Updated posts settings for user with id " + service.updateSettingsForPosts(dto).getUserId();
