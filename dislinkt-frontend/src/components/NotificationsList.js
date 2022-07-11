@@ -13,7 +13,7 @@ const NotificationsList = () =>{
 
     const fetchNotifications = async () => {
 
-        axios.get(axios.defaults.baseURL + 'notifications/user/' + localStorage.getItem('user_id'))
+        axios.get('http://localhost:8081/notifications/user/' + localStorage.getItem('user_id'))
             .then(res => {
                 //console.log(res.data)
                 let notifications = Array.from(res.data)
@@ -35,7 +35,7 @@ const NotificationsList = () =>{
     const openNotification = (notification) =>{
         switch(notification.type){
             case 'message':
-                history('/chat/' + notification.messagesId);
+                history('/chat/' + notification.followerId);
                 window.location.reload(true);
                 break;
             case 'profile':

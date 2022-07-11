@@ -1,17 +1,26 @@
 import '../css/userProfile.css'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PostList from './PostList';
 import Swal from "sweetalert2";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {DropdownButton} from 'react-bootstrap';
 
 import axios from 'axios';
 import { Dropdown } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
+import BootstrapSwitchButton from 'bootstrap-switch-button-react';
 
 const Profile = (props) => {
+    const {id} = useParams();
     const [relationship, setRelationship] = useState(props.relationship);
+    const [newPostNotificationState, setNotificationState] = useState(false);
+    const [notificationSettings, setNotificationSettings] = useState();
     const history = useNavigate();
+
+    useEffect(() =>{
+
+        getNotificationsSettings();
+    }, []);
 
     const followRequests = () => {
         history('/followRequests');
@@ -143,6 +152,77 @@ const Profile = (props) => {
         });
     }
 
+    const getNotificationsSettings = async () =>{
+        axios.get('http://localhost:8081/notificationSettings/user/' + localStorage.getItem('user_id'))
+            .then(res => {
+                //console.log(res.data)
+                setNotificationSettings(res.data)
+                let list = res.data.followerIdsForPosts
+                //console.log(list)
+                list.forEach(element => {
+                    if(element == id)
+                        setNotificationState(true)
+                });
+            });
+    }
+    const switchNotificationState = async () =>{
+        let settings = notificationSettings
+        
+        if(notificationSettings.getNotificationsForMyPosts)
+            settings.getNotificationsForMyPosts = false
+        else
+            settings.getNotificationsForMyPosts = true
+
+        console.log(settings)
+
+        axios.put('http://localhost:8081/notificationSettings', settings)
+            .then(res => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: res.data.response,
+                });
+            }).catch(err => {
+                console.log(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.data,
+                });
+            });
+    }
+     
+
+    const switchNotificationStateNewPost = async () =>{
+        let settings = notificationSettings
+        let list = settings.followerIdsForPosts
+
+        console.log(notificationSettings)
+        if(newPostNotificationState){
+            settings.followerIdsForPosts = list.filter(element => element != id);
+        }  
+        else{
+            list.push(id)
+            settings.followerIdsForPosts = list
+        } 
+
+        axios.put('http://localhost:8081/notificationSettings', settings)
+            .then(res => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: res.data.response,
+                });
+            }).catch(err => {
+                console.log(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.data,
+                });
+            });
+    }
+
     return (
         <div className="container">
             <div className="row">
@@ -150,14 +230,14 @@ const Profile = (props) => {
                     <div className="row">
                         <div className="col-12 bg-white p-0 px-3 py-3 mb-5">
                             <div className="d-flex flex-column align-items-center">
-                                <Dropdown style={{marginBottom: "5%"}}>
+                                {/* <Dropdown style={{marginBottom: "5%"}}>
                                         <Dropdown.Toggle variant="light" id="dropdown-basic">
                                             <img src={require("../images/settings.png")}  style={{ height: "20px", width:"20px"}}/>
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
                                             <DropdownItem>Bla</DropdownItem>
                                         </Dropdown.Menu>
-                                </Dropdown>
+                                </Dropdown> */}
                                 <h6>
                                     {
                                         props.user.isPrivate ? 'Private' : 'Public'
@@ -222,6 +302,24 @@ const Profile = (props) => {
                                         </div>
                                     </>
                                 }
+                                {localStorage.getItem('user_id') == props.user.id && notificationSettings && 
+                                <>
+                                <label>Notifications:</label>
+                                <BootstrapSwitchButton
+                                    checked={notificationSettings.getNotificationsForMyPosts}
+                                    onlabel='On'
+                                    offlabel='Off'
+                                    onChange={()=>switchNotificationState()}
+                                /></>}
+                                {localStorage.getItem('user_id') != props.user.id && notificationSettings && 
+                                <>
+                                <label>New post notifications:</label>
+                                <BootstrapSwitchButton
+                                    checked={newPostNotificationState}
+                                    onlabel='On'
+                                    offlabel='Off'
+                                    onChange={()=>switchNotificationStateNewPost()}
+                                /></>}
                             </div>
                         </div>
                         {
