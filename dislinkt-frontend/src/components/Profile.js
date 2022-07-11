@@ -172,7 +172,9 @@ const Profile = (props) => {
             settings.getNotificationsForMyPosts = false
         else
             settings.getNotificationsForMyPosts = true
-/
+
+        console.log(settings)
+
         axios.put('http://localhost:8081/notificationSettings', settings)
             .then(res => {
                 Swal.fire({
@@ -300,7 +302,7 @@ const Profile = (props) => {
                                         </div>
                                     </>
                                 }
-                                {localStorage.getItem('user_id') == id && notificationSettings && 
+                                {localStorage.getItem('user_id') == props.user.id && notificationSettings && 
                                 <>
                                 <label>Notifications:</label>
                                 <BootstrapSwitchButton
@@ -309,7 +311,7 @@ const Profile = (props) => {
                                     offlabel='Off'
                                     onChange={()=>switchNotificationState()}
                                 /></>}
-                                {localStorage.getItem('user_id') != id && notificationSettings && 
+                                {localStorage.getItem('user_id') != props.user.id && notificationSettings && 
                                 <>
                                 <label>New post notifications:</label>
                                 <BootstrapSwitchButton

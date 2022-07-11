@@ -76,7 +76,7 @@ namespace Chat_microservice.Services
                 {
                     chat = _mapper.Map<Chat>(message);
                     _chatRepository.Add(chat);
-                    SendNotification(message.ReceiverId, chat, metadata);
+                    SendNotification(message.ReceiverId, message.SenderId, chat, metadata);
                     scope.Span.Finish();
                     return Task.FromResult(_mapper.Map<ChatMsg>(chat));
                 }
@@ -84,7 +84,7 @@ namespace Chat_microservice.Services
                 var chatMessage = _mapper.Map<ChatMessage>(message);
                 chat.Messages = chat.Messages.Append(chatMessage);
                 _chatRepository.Update(chat);
-                if(!chat.IsBlocked(message.ReceiverId))SendNotification(message.ReceiverId, chat, metadata);
+                if(!chat.IsBlocked(message.ReceiverId))SendNotification(message.ReceiverId, message.SenderId, chat, metadata);
                 scope.Span.Finish();
                 return Task.FromResult(_mapper.Map<ChatMsg>(chat));
             }
@@ -95,7 +95,7 @@ namespace Chat_microservice.Services
             }
         }
 
-        private static void SendNotification(string receiverId, Chat chat, Metadata metadata)
+        private static void SendNotification(string receiverId, string senderId, Chat chat, Metadata metadata)
         {
             var config = new EnvironmentConfiguration();
             var channel = GrpcChannel.ForAddress("http://" + config.NotificationsHost + ":" + config.NotificationsPort);
@@ -108,7 +108,7 @@ namespace Chat_microservice.Services
                     MessagesId = chat.Id,
                     Time = chat.Messages.First().CreatedDate.ToShortTimeString(),
                     Type = "message",
-                    FollowerId = "sdadsa",
+                    FollowerId = senderId,
                     Action = "like"
                 }
             }, metadata);

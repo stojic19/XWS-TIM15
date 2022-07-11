@@ -230,7 +230,7 @@ func (handler *PostsHandler) LikePost(ctx context.Context, request *posts.LikePo
 			UserId:     post.Owner.Id,
 			Type:       "post",
 			Action:     "like",
-			FollowerId: "dsadada",
+			FollowerId: request.UserId,
 			Time:       time.Now().String(),
 		},
 	})
@@ -372,7 +372,7 @@ func (handler *PostsHandler) CommentPost(ctx context.Context, request *posts.Com
 			UserId:     post.Owner.Id,
 			Type:       "post",
 			Action:     "comment",
-			FollowerId: "dsadada",
+			FollowerId: request.UserId,
 			Time:       time.Now().String(),
 		},
 	})
